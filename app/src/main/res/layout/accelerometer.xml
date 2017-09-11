@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/accelerometer_TextView1"
+        android:textSize="18sp"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/accelerometer_textview2"
+        android:layout_below="@+id/accelerometer_TextView1"
+        android:layout_alignLeft="@+id/accelerometer_TextView1"
+        android:layout_alignStart="@+id/accelerometer_TextView1"
+        android:layout_marginTop="-10dp" />
+
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/accelerometer_button"
+        android:padding="10dp"
+        android:elevation="0dp"
+        android:height="80dp"
+        android:layout_below="@+id/accelerometer_textview2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:width="160dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/accelerometer_pitch"
+        android:textSize="18sp"
+        android:layout_below="@+id/accelerometer_button"
+        android:layout_alignLeft="@+id/accelerometer_button"
+        android:layout_alignStart="@+id/accelerometer_button"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/accelerometer_roll"
+        android:textSize="18sp"
+        android:layout_below="@+id/accelerometer_pitch"
+        android:layout_alignLeft="@+id/accelerometer_pitch"
+        android:layout_alignStart="@+id/accelerometer_pitch"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>

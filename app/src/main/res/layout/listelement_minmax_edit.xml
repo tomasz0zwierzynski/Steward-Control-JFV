@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="X: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listelement_minmax_edit_TextView"
+        android:textSize="24sp"
+        android:layout_alignBaseline="@+id/listelement_toggle_ToggleButton"
+        android:layout_alignBottom="@+id/listelement_toggle_ToggleButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/listelement_toggle_ToggleButton"
+        android:layout_toStartOf="@+id/listelement_toggle_ToggleButton"
+        android:layout_margin="10dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/listelement_minmax_EditTextMin"
+        android:hint="min"
+        android:layout_alignTop="@+id/listelement_minmax_minsign"
+        android:layout_toRightOf="@+id/listelement_minmax_minsign"
+        android:width="130dp"
+        android:maxLength="10" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listelement_minmax_minsign"
+        android:layout_alignBaseline="@+id/listelement_minmax_edit_TextView"
+        android:layout_alignBottom="@+id/listelement_minmax_edit_TextView"
+        android:layout_toRightOf="@+id/listelement_minmax_edit_TextView"
+        android:layout_toEndOf="@+id/listelement_minmax_edit_TextView" />
+
+    <TextView
+        android:text="negative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView6"
+        android:layout_alignBottom="@+id/listelement_minmax_EditTextMin"
+        android:layout_toLeftOf="@+id/listelement_minmax_EditTextMin"
+        android:layout_toStartOf="@+id/listelement_minmax_EditTextMin" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/listelement_minmax_EditTextMin"
+        android:layout_toRightOf="@+id/listelement_minmax_EditTextMin"
+        android:layout_toEndOf="@+id/listelement_minmax_EditTextMin"
+        android:id="@+id/listelement_minmax_maxsign" />
+
+    <TextView
+        android:text="negative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView7"
+        android:layout_alignBottom="@+id/listelement_minmax_EditTextMin"
+        android:layout_alignRight="@+id/listelement_minmax_maxsign"
+        android:layout_alignEnd="@+id/listelement_minmax_maxsign" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/liselement_minmax_EditTextMax"
+        android:hint="max"
+        android:layout_alignTop="@+id/listelement_minmax_maxsign"
+        android:layout_toRightOf="@+id/listelement_minmax_maxsign"
+        android:layout_toEndOf="@+id/listelement_minmax_maxsign"
+        android:maxLength="10" />
+
+</RelativeLayout>
