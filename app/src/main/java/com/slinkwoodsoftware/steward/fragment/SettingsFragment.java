@@ -12,14 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.slinkwoodsoftware.steward.R;
-import com.slinkwoodsoftware.steward.fragment.listelements.ButtonElement;
-import com.slinkwoodsoftware.steward.fragment.listelements.GeneralElement;
-import com.slinkwoodsoftware.steward.fragment.listelements.MinmaxElement;
-import com.slinkwoodsoftware.steward.fragment.listelements.TitleElement;
-import com.slinkwoodsoftware.steward.fragment.listelements.ToggleElement;
-import com.slinkwoodsoftware.steward.fragment.listelements.TwolineElement;
+import com.slinkwoodsoftware.steward.fragment.listelements.*;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +46,6 @@ public class SettingsFragment extends Fragment {
         private List<GeneralElement> elements;
 
         public SettingsAdapter(){
-            //Creating whole list here, because it is static
-            //listLength = elementNames.length;
             elements = new ArrayList<GeneralElement>();
             elements.add(new TitleElement("btTitle",getString(R.string.settings_TV_btTitle)));
             elements.add(new ToggleElement("btToggle",getString(R.string.settings_TV_btToggleTextOFF)));
@@ -66,6 +58,11 @@ public class SettingsFragment extends Fragment {
             elements.add(new MinmaxElement("invB",getString(R.string.settings_TV_invB)));
             elements.add(new MinmaxElement("invC",getString(R.string.settings_TV_invC)));
             elements.add(new ButtonElement("invButton",getString(R.string.settings_TV_invButton),getString(R.string.settings_Buton_invButton)));
+            elements.add(new TitleElement("accTitle", getString(R.string.settings_TV_accTitle)));
+            elements.add(new TwolineElement("accNote",getString(R.string.settings_TV_accTip1),getString(R.string.settings_TV_accTip2)));
+            elements.add(new SliderElement("accPitchSlider",getString(R.string.settings_TV_accPitch),"0"));
+            elements.add(new SliderElement("accRollSlider",getString(R.string.settings_TV_accRoll),"0"));
+            elements.add(new ButtonElement("accButton",getString(R.string.settings_TV_accButton),getString(R.string.settings_Buton_accButton)));
             //elements.add(new )
         }
 

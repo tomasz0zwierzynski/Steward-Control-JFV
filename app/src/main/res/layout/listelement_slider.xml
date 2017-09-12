@@ -24,6 +24,7 @@
         android:layout_alignTop="@+id/listelement_slider_TextView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:progressTint="@android:color/holo_blue_dark"
         android:thumb="@drawable/thumb_image"
         android:layout_marginRight="10dp" />
 

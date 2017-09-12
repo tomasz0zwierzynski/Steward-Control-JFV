@@ -13,7 +13,7 @@
     <string name="settings_TV_btTitle">Bluetooth</string>
     <string name="settings_TV_btToggleTextOFF">Connection to device:</string>
     <string name="settings_TV_invTitle">Inverse</string>
-    <string name="settings_TV_invTip1">Type in axes boundries values</string>
+    <string name="settings_TV_invTip1">Type in the axes boundries values</string>
     <string name="settings_TV_invTip2">check box if value is negative, use mm/deg units</string>
     <string name="settings_TV_invX">X:</string>
     <string name="settings_TV_invY">Y:</string>
@@ -23,6 +23,13 @@
     <string name="settings_TV_invC">C:</string>
     <string name="settings_TV_invButton">Press to save settings</string>
     <string name="settings_Buton_invButton">SAVE</string>
+    <string name="settings_TV_accTitle">Accelerometer</string>
+    <string name="settings_TV_accTip1">Set accelerometer\'s pitch/roll gain</string>
+    <string name="settings_TV_accTip2">this value is the multiplier after pitch/roll calulation</string>
+    <string name="settings_TV_accPitch">pitch:</string>
+    <string name="settings_TV_accRoll">roll :</string>
+    <string name="settings_TV_accButton">Press to save settings</string>
+    <string name="settings_Buton_accButton">SAVE</string>
 
     <string name="inverse_TV_tip1">Inverse control</string>
     <string name="inverse_TV_tip2">Control position by moving sliders</string>
@@ -42,5 +49,9 @@
     <string name="accelerometer_whenON_button">STOP CONTROL</string>
     <string name="accelerometer_TV_pitch">Pitch: </string>
     <string name="accelerometer_TV_roll">Roll: </string>
+
+    <string name="target_TV_tip1">Target control</string>
+    <string name="target_TV_tip2">Touch point where ball should appear</string>
+
 
 </resources>
