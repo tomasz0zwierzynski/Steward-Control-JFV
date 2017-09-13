@@ -21,7 +21,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.slinkwoodsoftware.steward.fragment.StatusBarFragment"
+        android:name="com.oldwoodsoftware.steward.view.fragment.StatusBarFragment"
         android:id="@+id/fragment" />
 
 </LinearLayout>

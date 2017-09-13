@@ -26,7 +26,9 @@
         android:layout_alignParentEnd="true"
         android:progressTint="@android:color/holo_blue_dark"
         android:thumb="@drawable/thumb_image"
-        android:layout_marginRight="10dp" />
+        android:layout_marginRight="10dp"
+        android:max="1000"
+        android:progress="500" />
 
     <TextView
         android:text="TextView"
