@@ -1,5 +1,6 @@
 package com.slinkwoodsoftware.steward.fragment;
 
+import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.slinkwoodsoftware.steward.MainActivity;
 import com.slinkwoodsoftware.steward.R;
+import com.slinkwoodsoftware.steward.fragment.listener.AccelerometerFragmentStateListener;
 
 public class AccelerometerFragment extends Fragment{
     private TextView textview1;
@@ -20,7 +21,8 @@ public class AccelerometerFragment extends Fragment{
 
     private boolean active = false;
 
-    private MainActivity parentActivity;
+    private Activity parentActivity;
+    private AccelerometerFragmentStateListener stateListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,8 @@ public class AccelerometerFragment extends Fragment{
     // Set the associated text for the title
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentActivity = (MainActivity) getActivity();
+        parentActivity = getActivity();
+        stateListener = (AccelerometerFragmentStateListener) parentActivity;
 
         View view = inflater.inflate(R.layout.accelerometer, container, false);
         textview1 = (TextView) view.findViewById(R.id.accelerometer_TextView1);
@@ -73,7 +76,7 @@ public class AccelerometerFragment extends Fragment{
             textRoll.setText(getString(R.string.accelerometer_TV_roll));
             button.setText(getString(R.string.accelerometer_whenOFF_button));
         }
-        parentActivity.onAccelerometerFragmentStateChange(toState);
+        stateListener.onAccelerometerFragmentStateChange(toState);
     }
 
     public void updateControls(float nPitch, float nRoll){

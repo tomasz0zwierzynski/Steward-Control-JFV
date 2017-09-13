@@ -9,11 +9,12 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.slinkwoodsoftware.steward.fragment.AccelerometerFragment;
 import com.slinkwoodsoftware.steward.fragment.FragmentType;
 import com.slinkwoodsoftware.steward.fragment.StewardFragmentPagerAdapter;
-import com.slinkwoodsoftware.steward.model.BluetoothStatus;
 import com.slinkwoodsoftware.steward.model.StatusBarUpdater;
+import com.slinkwoodsoftware.steward.fragment.listener.AccelerometerFragmentStateListener;
 import com.slinkwoodsoftware.steward.sensor.AccelerometerHandler;
+import com.slinkwoodsoftware.steward.sensor.AccelerometerHandlerListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AccelerometerFragmentStateListener, AccelerometerHandlerListener {
 
     private StewardFragmentPagerAdapter fragmentAdapter;
     private StatusBarUpdater statusBar;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         //Creating StatusBarUpdater
         statusBar = new StatusBarUpdater(this);
 
-        //Create Accelerometer handler
+        //Creating Accelerometer handler
         accHandler = new AccelerometerHandler(this);
     }
 
@@ -74,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
         accHandler.onResume();
     }
 
+
+    //Accelerometer interface implementations
+    //AccelerometerFragmentStateListener interface
     public void onAccelerometerFragmentStateChange(boolean state){
         if (state) { //active
             accHandler.startRead();
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //AccelerometerHandlerListener interface
     public void onAccelerometerHandlerNewData(float pitch, float roll){
         //TODO: Bluetooth Transmit
         try {
