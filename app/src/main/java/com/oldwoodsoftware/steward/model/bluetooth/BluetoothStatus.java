@@ -1,4 +1,4 @@
-package com.oldwoodsoftware.steward.view;
+package com.oldwoodsoftware.steward.model.bluetooth;
 
 public enum BluetoothStatus {
     Off,
@@ -6,5 +6,6 @@ public enum BluetoothStatus {
     Connected,
     TurningOff,
     TurningOn,
-    Connecting
+    Connecting,
+    Disconnected
 }

@@ -18,12 +18,15 @@ public class SliderElement extends GeneralElement{
     private int iProgress;
     private SliderPatron parent;
 
-    public SliderElement(SliderPatron _parent, String _name, String _text, String _text2){
+    private int init_progress;
+
+    public SliderElement(SliderPatron _parent,int _init_progress ,String _name, String _text, String _text2){
         parent = _parent;
 
         name = _name;
         tvText = _text;
         tvText2 = _text2;
+        init_progress = _init_progress;
     }
 
     public String getName(){
@@ -63,6 +66,7 @@ public class SliderElement extends GeneralElement{
         textview2 = (TextView) view.findViewById(R.id.listelement_slider_Textview2);
         textview2.setText(tvText2);
         seekbar = (SeekBar) view.findViewById(R.id.listelement_slider_seekbar);
+        seekbar.setProgress(init_progress);
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

@@ -24,6 +24,8 @@ public class PanelView extends View {
     private float realPanelWidth = 297.0f;
     private float realPanelHeight = 210.0f;
 
+    private float widthheightratio = realPanelHeight/realPanelWidth;
+
     private Rect panelRect;
     private Rect frameRect;
 
@@ -45,7 +47,6 @@ public class PanelView extends View {
         //Calculate Screen Panel Representation
         int viewWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         int viewHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-        float widthheightratio = realPanelHeight/realPanelWidth;
 
         panelRect = new Rect(0 + PADDING_SIDE, 0 + PADDING_TOP, viewWidth - PADDING_SIDE, (int)((viewWidth - 2 * PADDING_SIDE)*widthheightratio));
 
@@ -83,7 +84,19 @@ public class PanelView extends View {
 
     }
 
-    //TODO: set ball positions changable
-    //public void set ;
+    public void setPanelRatio(float ratio){
+        widthheightratio = ratio;
+    }
 
+    public void setBallPosition(int pos_x, int pos_y){ //in pixels
+        ballPosition = new Point(pos_x,pos_y);
+        invalidate();
+    }
+
+    public void setTargetPosition(int pos_x, int pos_y){
+        targetPosition = new Point(pos_x,pos_y);
+        invalidate();
+    }
+
+    //TODO: methods to determine if xy is in plate, and that gives general geometrics of representation
 }

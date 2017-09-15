@@ -1,359 +1,177 @@
 package com.oldwoodsoftware.steward.model.bluetooth;
 
-        import java.io.IOException;
-        import java.io.InputStream;
-        import java.io.OutputStream;
-        import java.lang.reflect.Method;
-        import java.util.ArrayList;
-        import java.util.List;
-        import java.util.UUID;
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.os.Handler;
+import android.os.Looper;
 
-        import android.bluetooth.BluetoothAdapter;
-        import android.bluetooth.BluetoothDevice;
-        import android.bluetooth.BluetoothSocket;
-        import android.content.BroadcastReceiver;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.content.IntentFilter;
-        import android.os.AsyncTask;
-        import android.support.v4.content.LocalBroadcastManager;
-        import android.util.Log;
+import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
 
-/**
- * Provides a high level wrapper around all the lower level bluetooth operations. Handles connecting to,
- * reestablishing connections, and reading from the serialInputStream.
- *
- * @author jpetrocik
- *
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class BluetoothConnection {
-    private static String BMX_BLUETOOTH = "BMXBluetooth";
-    public static String BLUETOOTH_CONNECTED = "bluetooth-connection-started";
-    public static String BLUETOOTH_DISCONNECTED = "bluetooth-connection-lost";
-    public static String BLUETOOTH_FAILED = "bluetooth-connection-failed";
-    boolean connected = false;
 
-    BluetoothDevice bluetoothDevice;
-    BluetoothSocket serialSocket;
+    private final int BUFFER_SIZE = 255;
 
-    InputStream serialInputStream;
-    OutputStream serialOutputStream;
-    SerialReader serialReader;
-    MessageHandler messageHandler;
-    Context context;
+    private BluetoothSocket _socket = null;
+    private BluetoothAdapter _adapter;
+    private BluetoothDevice _device;
 
-    AsyncTask<Void, Void, BluetoothDevice> connectionTask;
+    private boolean stop_request=false;
+    private Thread readThread;
 
-    String devicePrefix;
-    /**
-     * Listens for discount message from bluetooth system and restablishing a connection
-     */
-    private final BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            BluetoothDevice eventDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+    public byte[] _data;
 
-            if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                if (bluetoothDevice != null && bluetoothDevice.equals(eventDevice)){
-                    Log.i(BMX_BLUETOOTH, "Received bluetooth disconnect notice");
+    private Activity mainActivity;
+    private BluetoothDataListener btReciever;
 
-                    //clean up any streams
-                    close();
-
-                    //reestablish connect
-                    connect();
-
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(BLUETOOTH_DISCONNECTED));
-                }
+    private void getAdapter() {
+        _adapter = BluetoothAdapter.getDefaultAdapter();
+    }
+    private void getDevice() {
+        final List<BluetoothDevice> pairedDevices = new ArrayList<BluetoothDevice>(_adapter.getBondedDevices());
+        for (BluetoothDevice device : pairedDevices) {
+            if (device.getName().toUpperCase().startsWith("HC-05")){
+               _device = device;
             }
         }
-    };
-
-    public BluetoothConnection(Context context, MessageHandler messageHandler, String devicePrefix){
-        this.context = context;
-        this.messageHandler = messageHandler;
-        this.devicePrefix = devicePrefix;
     }
 
-    public void onPause() {
-        context.unregisterReceiver(bluetoothReceiver);
-    }
+    public BluetoothConnection(final Activity parent) throws Exception{
+        mainActivity = parent;
+        btReciever = (BluetoothDataListener) mainActivity;
+        //We creating connection when constructing new object
 
-    public void onResume() {
-        //listen for bluetooth disconnect
-        IntentFilter disconnectIntent = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        context.registerReceiver(bluetoothReceiver, disconnectIntent);
-
-        //reestablishes a connection is one doesn't exist
-        if(!connected){
-            connect();
-        } else {
-            Intent intent = new Intent(BLUETOOTH_CONNECTED);
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-        }
-    }
-
-    /**
-     * Initializes the bluetooth serial connections, uses the LocalBroadcastManager when
-     * connection is established
-     *
-     * @param localBroadcastManager
-     */
-    public void connect(){
-
-        if (connected){
-            Log.e(BMX_BLUETOOTH,"Connection request while already connected");
-            return;
+        //Get the adapter
+        getAdapter();
+        if (_adapter == null) {
+            throw new Exception("No default bluetooth adapter found!");
         }
 
-        if (connectionTask != null && connectionTask.getStatus()==AsyncTask.Status.RUNNING){
-            Log.e(BMX_BLUETOOTH,"Connection request while attempting connection");
-            return;
+        //Check if bluetooth is turned on
+        if (_adapter.isEnabled() == false){
+            throw new Exception("Turn on bluetooth!");
         }
 
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter== null || !bluetoothAdapter.isEnabled()) {
-            return;
+        //Get the device from paired devices
+        getDevice();
+        if (_device == null){
+            throw new Exception("Cannot found HC-05 device!");
         }
 
-        final List<BluetoothDevice> pairedDevices = new ArrayList<BluetoothDevice>(bluetoothAdapter.getBondedDevices());
-        if (pairedDevices.size() > 0) {
-            bluetoothAdapter.cancelDiscovery();
+        //Create communication socket
+        _socket = _device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
+         if (_socket == null){
+            throw new Exception("Error while creating RfcommSocket");
+         }
 
-            /**
-             * AsyncTask to handle the establishing of a bluetooth connection
-             */
-            connectionTask = new AsyncTask<Void, Void, BluetoothDevice>(){
+        //TODO: make running this whole connect thing in another thread or something it blocks UI
+        //Simply connect to the device
+        _socket.connect();
 
-                int MAX_ATTEMPTS = 30;
+        if (_socket.isConnected() == false){
+            throw new Exception("Error while establishing connection!");
+        }
 
-                int attemptCounter = 0;
+        _data = new byte[BUFFER_SIZE];
 
-                @Override
-                protected BluetoothDevice doInBackground(Void... params) {
-                    while(!isCancelled()){ //need to kill without calling onCancel
+        readThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < _data.length; i++){
+                    _data[i] = 0;
+                }
 
-                        for (BluetoothDevice device : pairedDevices) {
-                            if (device.getName().toUpperCase().startsWith(devicePrefix)){
-                                Log.i(BMX_BLUETOOTH, attemptCounter + ": Attempting connection to " + device.getName());
+                Handler mainHandler = new Handler(Looper.getMainLooper()); //Used later
 
-                                try {
+                //Why java not allow to define enum here, classes can be defined...
+                int state=0; //0-data, 1-term_r 2-term_n
+                int ctr=0;
+                byte next;
+                boolean whole_msg=false;
 
-                                    try {
-                                        // Standard SerialPortService ID
-                                        UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-                                        serialSocket = device.createRfcommSocketToServiceRecord(uuid);
-                                    } catch (Exception ce){
-                                        serialSocket = connectViaReflection(device);
+                while (stop_request == false)
+                {
+                    try
+                    {
+                        if(_socket.getInputStream().available() > 0){
+                            //Some decoder maybe or something???
+                            next = (byte)_socket.getInputStream().read();
+                            switch (state){
+                                case 0: //data
+                                    if (next == '\r'){
+                                        state = 1;
                                     }
-
-                                    //setup the connect streams
-                                    serialSocket.connect();
-                                    serialInputStream = serialSocket.getInputStream();
-                                    serialOutputStream = serialSocket.getOutputStream();
-
-                                    connected = true;
-                                    Log.i(BMX_BLUETOOTH,"Connected to " + device.getName());
-
-                                    return device;
-                                } catch (Exception e) {
-                                    serialSocket = null;
-                                    serialInputStream=null;
-                                    serialOutputStream=null;
-                                    Log.i(BMX_BLUETOOTH, e.getMessage());
-                                }
+                                    break;
+                                case 1: //term_r
+                                    if (next == '\n'){
+                                        state = 2;
+                                        whole_msg = true;
+                                    }
+                                    break;
+                                case 2: //term_n
+                                    state = 0;
+                                    ctr=0;
+                                    break;
+                                default:
+                                    break;
                             }
-                        }
-
-                        try {
-                            attemptCounter++;
-                            if (attemptCounter>MAX_ATTEMPTS)
-                                this.cancel(false);
-                            else
-                                Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            break;
-                        }
-                    }
-
-                    Log.i(BMX_BLUETOOTH, "Stopping connection attempts");
-
-                    Intent intent = new Intent(BLUETOOTH_FAILED);
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(BluetoothDevice result) {
-                    super.onPostExecute(result);
-
-                    bluetoothDevice = result;
-
-                    //start thread responsible for reading from inputstream
-                    serialReader = new SerialReader();
-                    serialReader.start();
-
-                    //send connection message
-                    Intent intent = new Intent(BLUETOOTH_CONNECTED);
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                }
-
-            };
-            connectionTask.execute();
-        }
-    }
-
-    // see: http://stackoverflow.com/questions/3397071/service-discovery-failed-exception-using-bluetooth-on-android
-    private BluetoothSocket connectViaReflection(BluetoothDevice device) throws Exception {
-        Method m = device.getClass().getMethod("createRfcommSocket", new Class[] {int.class});
-        return (BluetoothSocket) m.invoke(device, 1);
-    }
-
-    public int available() throws IOException{
-        if (connected)
-            return serialInputStream.available();
-
-        throw new RuntimeException("Connection lost, reconnecting now.");
-    }
-
-    public int read() throws IOException{
-        if (connected)
-            return serialInputStream.read();
-
-        throw new RuntimeException("Connection lost, reconnecting now.");
-    }
-
-    public int read(byte[] buffer) throws IOException{
-        if (connected)
-            return serialInputStream.read(buffer);
-
-        throw new RuntimeException("Connection lost, reconnecting now.");
-    }
-
-    public int read(byte[] buffer, int byteOffset, int byteCount) throws IOException{
-        if (connected)
-            return serialInputStream.read(buffer, byteOffset, byteCount);
-
-        throw new RuntimeException("Connection lost, reconnecting now.");
-    }
-
-    public void write(byte[] buffer) throws IOException{
-        if (connected)
-            serialOutputStream.write(buffer);
-
-        throw new RuntimeException("Connection lost, reconnecting now.");
-    }
-
-    public void write(int oneByte) throws IOException{
-        if (connected)
-            serialOutputStream.write(oneByte);
-
-        throw new RuntimeException("Connection lost, reconnecting now.");
-    }
-
-    public void write(byte[] buffer, int offset, int count) throws IOException {
-        serialOutputStream.write(buffer, offset, count);
-
-        throw new RuntimeException("Connection lost, reconnecting now.");
-    }
-
-    private class SerialReader extends Thread {
-        private static final int MAX_BYTES = 125;
-
-        byte[] buffer = new byte[MAX_BYTES];
-
-        int bufferSize = 0;
-
-        public void run() {
-            Log.i("serialReader", "Starting serial loop");
-            while (!isInterrupted()) {
-                try {
-
-					/*
-					 * check for some bytes, or still bytes still left in
-					 * buffer
-					 */
-                    if (available() > 0){
-
-                        int newBytes = read(buffer, bufferSize, MAX_BYTES - bufferSize);
-                        if (newBytes > 0)
-                            bufferSize += newBytes;
-
-                        Log.d(BMX_BLUETOOTH, "read " + newBytes);
-                    }
-
-                    if (bufferSize > 0) {
-                        int read = messageHandler.read(bufferSize, buffer);
-
-                        // shift unread data to start of buffer
-                        if (read > 0) {
-                            int index = 0;
-                            for (int i = read; i < bufferSize; i++) {
-                                buffer[index++] = buffer[i];
+                            _data[ctr] = next;
+                            ctr++;
+                            //handle data and post it to main
+                            if (whole_msg){
+                                Runnable myRunnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            btReciever.onBluetoothData(_data);
+                                        }catch (Exception ex){
+                                        }
+                                    }
+                                };
+                                mainHandler.post(myRunnable);
+                                whole_msg = false;
                             }
-                            bufferSize = index;
-                        }
-                    } else {
 
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException ie) {
-                            break;
+                        }else{
+                            this.wait(100);
                         }
                     }
-                } catch (Exception e) {
-                    Log.e(BMX_BLUETOOTH, "Error reading serial data", e);
+                    catch (Exception ex)
+                    { }
                 }
             }
-            Log.i(BMX_BLUETOOTH, "Shutting serial loop");
-        }
-    };
+        });
+        readThread.start();
 
-    /**
-     * Reads from the serial buffer, processing any available messages.  Must return the number of bytes
-     * consumer from the buffer
-     *
-     * @author jpetrocik
-     *
-     */
-    public static interface MessageHandler {
-        public int read(int bufferSize, byte[] buffer);
     }
 
-    public void close() {
-
-        connected = false;
-
-        if (serialReader != null) {
-            serialReader.interrupt();
-
-            try {
-                serialReader.join(1000);
-            } catch (InterruptedException ie) {}
+    public boolean isConnected(){
+        if (_socket != null){
+            return _socket.isConnected();
+        }else {
+            return false;
         }
+    }
 
-        try {
-            serialInputStream.close();
-        } catch (Exception e) {
-            Log.e(BMX_BLUETOOTH, "Failed releasing inputstream connection");
+    public void disconnect() throws Exception{
+        stop_request = true;
+        readThread.join();
+        _socket.close();
+
+    }
+
+    public void sendMessage(byte[] buffer) throws Exception{
+        for (int i = 0; i < buffer.length; i++){
+            _socket.getOutputStream().write(buffer[i]);
+
         }
-
-        try {
-            serialOutputStream.close();
-        } catch (Exception e) {
-            Log.e(BMX_BLUETOOTH, "Failed releasing outputstream connection");
-        }
-
-        try {
-            serialSocket.close();
-        } catch (Exception e) {
-            Log.e(BMX_BLUETOOTH, "Failed closing socket");
-        }
-
-        Log.i(BMX_BLUETOOTH, "Released bluetooth connections");
-
+        _socket.getOutputStream().write('\r');
+        _socket.getOutputStream().write('\n');
     }
 
 }

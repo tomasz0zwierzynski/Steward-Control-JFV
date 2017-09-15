@@ -12,7 +12,7 @@ public class InverseKinematics {
     private float[] minXYZABCranges = new float[6]; //0-X 1-Y 2-Z 3-A 4-B 5-C
     private float[] maxXYZABCranges = new float[6];
 
-    private float[] currentXYZABCvalues = new float[6];
+    private float[] currentXYZABCvalues = {0f, 0f, 0f, 0f, 0f, 0f};
 
     //TODO: Control the 6 axes in arrays
     public InverseKinematics(Context _context, float[] _minXYZABCranges, float[] _maxXYZABCranges){
@@ -30,6 +30,14 @@ public class InverseKinematics {
     public float[] getCurrentXYZABCvalues(){
 
         return currentXYZABCvalues;
+    }
+
+    public int[] getPromilesFromCurrentXYZABCvalues(){
+        int[] promiles = new int[6];
+        for (int i=0; i<currentXYZABCvalues.length;i++){
+            promiles[i] = (int) (1000 * ((currentXYZABCvalues[i]-minXYZABCranges[i])/(maxXYZABCranges[i]-minXYZABCranges[i])));
+        }
+        return promiles;
     }
 
     public String[] getStringRepresentation(){

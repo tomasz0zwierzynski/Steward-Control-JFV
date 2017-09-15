@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.oldwoodsoftware.steward.MainActivity;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.model.responsibility.listener.InverseFragmentSliderListener;
 import com.oldwoodsoftware.steward.model.responsibility.patron.ButtonPatron;
@@ -17,7 +18,6 @@ import com.oldwoodsoftware.steward.model.responsibility.patron.SliderPatron;
 import com.oldwoodsoftware.steward.view.listelement.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class InverseFragment extends Fragment {
@@ -26,6 +26,9 @@ public class InverseFragment extends Fragment {
     private InverseFragmentSliderListener sliderListener;
 
     private InverseFragment.InverseAdapter inverseAdapter;
+
+    private int[] initial_progresses;
+    private String[] initial_strings;
 
     public InverseAdapter getInverseAdapter() {
         return inverseAdapter;
@@ -42,6 +45,9 @@ public class InverseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentActivity = getActivity();
         sliderListener = (InverseFragmentSliderListener) parentActivity;
+
+        initial_progresses = sliderListener.getCurrentSliderProgresses();
+        initial_strings = sliderListener.getInverseFragmentSliderTexts();
 
         View view = inflater.inflate(R.layout.inverse, container, false);
 
@@ -64,10 +70,11 @@ public class InverseFragment extends Fragment {
         private int[] sliderValues = new int[6];
         private List<SliderElement> sliderObjects = new ArrayList<SliderElement>();
 
-
         public InverseAdapter(){
+            InverseFragment t = InverseFragment.this;
+
             for (int i=0;i<6;i++){
-                sliderValues[i] = 500;
+                sliderValues[i] = t.initial_progresses[i];
             }
 
             //Creating whole list here, because it is static
@@ -75,22 +82,22 @@ public class InverseFragment extends Fragment {
             elements = new ArrayList<GeneralElement>();
             elements.add(new TwolineElement("invTitle",getString(R.string.inverse_TV_tip1),getString(R.string.inverse_TV_tip2)));
 
-            SliderElement se = new SliderElement(this,"invX",getString(R.string.inverse_TV_X),"0 [mm]");
+            SliderElement se = new SliderElement(this,t.initial_progresses[0],"invX",getString(R.string.inverse_TV_X),t.initial_strings[0]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,"invY",getString(R.string.inverse_TV_Y),"0 [mm]");
+            se = new SliderElement(this,t.initial_progresses[1],"invY",getString(R.string.inverse_TV_Y),t.initial_strings[1]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,"invZ",getString(R.string.inverse_TV_Z),"0 [mm]");
+            se = new SliderElement(this,t.initial_progresses[2],"invZ",getString(R.string.inverse_TV_Z),t.initial_strings[2]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,"invA",getString(R.string.inverse_TV_A),"0 [deg]");
+            se = new SliderElement(this,t.initial_progresses[3],"invA",getString(R.string.inverse_TV_A),t.initial_strings[3]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,"invB",getString(R.string.inverse_TV_B),"0 [deg]");
+            se = new SliderElement(this,t.initial_progresses[4],"invB",getString(R.string.inverse_TV_B),t.initial_strings[4]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,"invC",getString(R.string.inverse_TV_C),"0 [deg]");
+            se = new SliderElement(this,t.initial_progresses[5],"invC",getString(R.string.inverse_TV_C),t.initial_strings[5]);
             elements.add(se);
             sliderObjects.add(se);
 
@@ -142,7 +149,7 @@ public class InverseFragment extends Fragment {
         }
 
         @Override
-        public void setButtonText(String[] texts) {
+        public void setButtonText(String text) {
 
         }
     }

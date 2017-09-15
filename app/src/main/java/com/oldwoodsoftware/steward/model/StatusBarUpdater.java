@@ -4,7 +4,7 @@ import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.MainActivity;
 import com.oldwoodsoftware.steward.R;
-import com.oldwoodsoftware.steward.view.BluetoothStatus;
+import com.oldwoodsoftware.steward.model.bluetooth.BluetoothStatus;
 
 public class StatusBarUpdater {
     private TextView btStatusText;
@@ -68,9 +68,15 @@ public class StatusBarUpdater {
             case TurningOn:
                 btStatusText.setText(R.string.btGettingOn);
                 break;
+            case Disconnected:
+                btStatusText.setText(R.string.btDisconnected);
             default:
                 btStatusText.setText("");
         }
+    }
+
+    public void updateBluetoothStatus(String msg){
+        btStatusText.setText(msg);
     }
 
 }

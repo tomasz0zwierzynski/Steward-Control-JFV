@@ -1,7 +1,8 @@
 <resources>
 
     <string name="app_name">Steward Control JFV</string>
-    <string name="btConnected">Connected to device.</string>
+    <string name="btConnected">Connected to platform.</string>
+    <string name="btDisconnected">Disconnected from platform.</string>
     <string name="btOff">Bluetooth turned off.</string>
     <string name="btOn">Bluetooth turned on.</string>
     <string name="btGettingOn">Bluetooth is turning on...</string>
