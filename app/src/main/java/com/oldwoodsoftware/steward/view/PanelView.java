@@ -84,8 +84,30 @@ public class PanelView extends View {
 
     }
 
+    public float getLeftEdge(){
+        return panelRect.left;
+    }
+
+    public float getRightEdge(){
+        return panelRect.right;
+    }
+
+    public float getTopEdge(){
+        return panelRect.top;
+    }
+
+    public float getBottomEdge(){
+        return panelRect.bottom;
+    }
+
+    public boolean isInRect(int pos_x, int pos_y){
+        return panelRect.contains(pos_x,pos_y);
+    }
+
     public void setPanelRatio(float ratio){
         widthheightratio = ratio;
+        init();
+        invalidate();
     }
 
     public void setBallPosition(int pos_x, int pos_y){ //in pixels

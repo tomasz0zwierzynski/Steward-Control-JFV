@@ -46,7 +46,9 @@ public class SliderElement extends GeneralElement{
     }
 
     public void setSeekbarProgress(int prog){
-        seekbar.setProgress(prog);
+        try {
+            seekbar.setProgress(prog);
+        }catch(Exception ex){}
     }
 
     public void setSeekbarDescription(String _text){

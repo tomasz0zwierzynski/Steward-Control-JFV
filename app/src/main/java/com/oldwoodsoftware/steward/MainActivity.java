@@ -7,21 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.oldwoodsoftware.steward.model.InverseKinematics;
+import com.oldwoodsoftware.steward.model.PanelGeometrics;
 import com.oldwoodsoftware.steward.model.bluetooth.BluetoothConnection;
-import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
-import com.oldwoodsoftware.steward.model.responsibility.listener.InverseFragmentSliderListener;
-import com.oldwoodsoftware.steward.model.responsibility.listener.SettingsFragmentListener;
+import com.oldwoodsoftware.steward.model.bluetooth.CmdProtocol;
+import com.oldwoodsoftware.steward.model.responsibility.listener.*;
 import com.oldwoodsoftware.steward.model.bluetooth.BluetoothStatus;
-import com.oldwoodsoftware.steward.model.responsibility.listener.TargetFragmentListener;
-import com.oldwoodsoftware.steward.view.fragment.AccelerometerFragment;
-import com.oldwoodsoftware.steward.view.fragment.FragmentType;
+import com.oldwoodsoftware.steward.view.fragment.*;
 import com.oldwoodsoftware.steward.view.StewardFragmentPagerAdapter;
 import com.oldwoodsoftware.steward.model.StatusBarUpdater;
-import com.oldwoodsoftware.steward.model.responsibility.listener.AccelerometerFragmentStateListener;
 import com.oldwoodsoftware.steward.model.sensor.AccelerometerHandler;
-import com.oldwoodsoftware.steward.model.responsibility.listener.AccelerometerHandlerListener;
-import com.oldwoodsoftware.steward.view.fragment.InverseFragment;
-import com.oldwoodsoftware.steward.view.fragment.TargetFragment;
 
 import java.nio.charset.StandardCharsets;
 
@@ -34,12 +28,10 @@ public class MainActivity extends AppCompatActivity
     private AccelerometerHandler accHandler;
 
     private BluetoothConnection btConnection;
+    private CmdProtocol cmdProtocol;
 
     private InverseKinematics ik;
-    /*
-    private BluetoothSerial bluetoothConnection;
-    private String deviceNamePrefix = "HC-05";
-    */
+    private PanelGeometrics pg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +77,8 @@ public class MainActivity extends AppCompatActivity
 
         //IK paramters
         ik = new InverseKinematics(getBaseContext(), new float[] {-20,-20,-20,-30,-30,-30}, new float[] {+20,+20,+20,+30,+30,+30} );
-    }
-
-    private int doRead(int bufferSize, byte[] buffer) {
-        //Toast.makeText(getBaseContext(),new String(buffer, StandardCharsets.UTF_8),Toast.LENGTH_SHORT);
-
-        return bufferSize;
+        //Geometrical parameters
+        pg = new PanelGeometrics(getBaseContext(), 297.0f, 210.0f); // default: 297.0f, 210.0f
     }
 
     @Override
@@ -122,7 +110,9 @@ public class MainActivity extends AppCompatActivity
     //AccelerometerHandlerListener interface
     @Override
     public void onAccelerometerHandlerNewData(float pitch, float roll){
-        //TODO: Bluetooth Transmit
+        try {
+            cmdProtocol.putAccelerometerCommand(pitch,roll);
+        } catch (Exception e) { }
         try {
             ((AccelerometerFragment) fragmentAdapter.getItem(FragmentType.Accelerometer)).updateControls(pitch,roll);
         }catch(IllegalStateException ex){ }
@@ -133,15 +123,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onInverseFragmentSliderChange(int[] new_progresses) {
         //Deal with int values of sliders eg. recalculate real values
-        //TODO: Current values in IK must be updated over time
+        //TODO: Current values in IK must be updated over time, when got new values of ik: ik.setcurrentxyzabcValues();
         ik.calculateCurrentXYZABCvalues(new_progresses);
         float[] realValues = ik.getCurrentXYZABCvalues();
         String[] strings = ik.getStringRepresentation();
 
         setInverseFragmentSliderTexts(strings);
-        //bluetoothProtocol.sendInverse(realValues);
         try {
-            btConnection.sendMessage( ("3=" + String.valueOf(realValues[0])).getBytes());
+            cmdProtocol.putInverseCommand(realValues);
         } catch (Exception e) { }
     }
 
@@ -171,6 +160,7 @@ public class MainActivity extends AppCompatActivity
 
         try {
             btConnection = new BluetoothConnection(this);
+            cmdProtocol = new CmdProtocol(btConnection);
         } catch (Exception e) {
             statusBar.updateBluetoothStatus(e.getMessage());
         }
@@ -197,6 +187,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         btConnection = null;
+        cmdProtocol = null;
         statusBar.updateBluetoothStatus(BluetoothStatus.Disconnected);
     }
 
@@ -209,23 +200,47 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void onBluetoothData(byte[] data){
+    public void onBluetoothData(byte[] data){ //here we recieve command that is
+        //TODO: data reciever
+
         statusBar.updateBluetoothStatus(new String(data, StandardCharsets.UTF_8));
     }
 
     @Override
     public void onNewTargetPosition(float x_per, float y_per) {
-        //TODO:Recalculate percentages to real values and btSend
-        //propably there will be class handling metrics
+        pg.calculateRealTargetXY(x_per,y_per);
+        float x = pg.getTargetX();
+        float y = pg.getTargetY();
+
+        try {
+            cmdProtocol.putTargetCommand(x,y);
+        } catch (Exception e) { }
     }
 
     @Override
-    public void setCurrentBallPosition(float x_per, float y_per, boolean show) {
-        //TODO:When new data about ball - call proper function
-        //try {
-        //    ((TargetFragment) fragmentAdapter.getItem(FragmentType.Target)).setCurrentBallPos();
-        //}catch(IllegalStateException ex){ }
+    public void setCurrentBallPosition(float x, float y, boolean show) {
+        pg.setBallXY(x,y);
+
+        if(show){
+            float[] per_XY = pg.getPercentBallXY();
+            try {
+                ((TargetFragment) fragmentAdapter.getItem(FragmentType.Target)).onCurrentBallPositionChanged(per_XY[0],per_XY[1],true);
+            }catch(IllegalStateException ex){ }
+        }else{
+            try {
+                ((TargetFragment) fragmentAdapter.getItem(FragmentType.Target)).onCurrentBallPositionChanged(0,0,false);
+            }catch(IllegalStateException ex){ }
+        }
     }
+
+    @Override
+    public float getPanelLenghtRatio() {
+        return pg.getRatio();
+    }
+
+    //TODO: somewhere whem new XY ball value come up:
+    // setCurrentBallPosition();
+    // statusBar.setBall();
 
     @Deprecated
     public void testMsg(){
@@ -234,5 +249,9 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) { }
     }
 
+    @Deprecated
+    public void testBall(){
+        setCurrentBallPosition(0f,0f,true);
+    }
 
 }

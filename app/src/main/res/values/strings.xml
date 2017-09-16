@@ -9,7 +9,7 @@
     <string name="btGettingOff">Bluetooth is turning off...</string>
     <string name="btGettingConnected">Connecting to device...</string>
     <string name="ballUndetected">Ball undetected on platform</string>
-    <string name="ballDetected">position </string>
+    <string name="ballDetected">position: </string>
 
     <string name="settings_TV_btTitle">Bluetooth</string>
     <string name="settings_TV_btToggleTextOFF">Connection to device:</string>

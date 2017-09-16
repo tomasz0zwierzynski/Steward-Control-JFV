@@ -21,6 +21,12 @@ public class InverseKinematics {
         context = _context;
     }
 
+    public void setCurrentXYZABCvalues(float[] XYZABC){
+        for(int i=0;i<currentXYZABCvalues.length;i++){
+            currentXYZABCvalues[i] = XYZABC[i];
+        }
+    }
+
     public void calculateCurrentXYZABCvalues(int[] sliderProgresses){
         for (int i=0; i<sliderProgresses.length;i++){
             currentXYZABCvalues[i] = (float) (0.001 * (maxXYZABCranges[i]-minXYZABCranges[i])*sliderProgresses[i] + minXYZABCranges[i]);

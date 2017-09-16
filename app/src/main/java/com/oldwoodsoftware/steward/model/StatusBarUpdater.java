@@ -42,7 +42,7 @@ public class StatusBarUpdater {
 
     public void updateBallStatus(float posX, float posY, boolean detected){
         if (detected){
-            ballStatusText.setText(R.string.ballDetected + "X: " + String.valueOf(posX) + " Y: " + String.valueOf(posY));
+            ballStatusText.setText(parentActivity.getString(R.string.ballDetected) + " X: " + String.valueOf(posX) + " Y: " + String.valueOf(posY));
         }else{
             ballStatusText.setText(R.string.ballUndetected);
         }
