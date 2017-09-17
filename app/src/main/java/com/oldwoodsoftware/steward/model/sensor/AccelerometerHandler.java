@@ -8,13 +8,16 @@ import android.hardware.SensorManager;
 
 import com.oldwoodsoftware.steward.model.responsibility.listener.AccelerometerHandlerListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AccelerometerHandler implements SensorEventListener {
 
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
 
     private Activity parentActivity;
-    private AccelerometerHandlerListener handlerListener;
+    private List<AccelerometerHandlerListener> handlerListeners = new ArrayList<AccelerometerHandlerListener>();
 
     private float pitchGain = 0.3f;
     private float rollGain = 0.3f;
@@ -23,7 +26,9 @@ public class AccelerometerHandler implements SensorEventListener {
 
     public AccelerometerHandler(Activity ma){
         parentActivity = ma;
-        handlerListener = (AccelerometerHandlerListener) parentActivity;
+
+        //To remove
+        //handlerListeners.add( (AccelerometerHandlerListener) parentActivity );
 
         senSensorManager = (SensorManager) ma.getSystemService(ma.getApplicationContext().SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -32,7 +37,9 @@ public class AccelerometerHandler implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         calculateOutput(event);
-        handlerListener.onAccelerometerHandlerNewData(pitchOut,rollOut);
+        for (AccelerometerHandlerListener ahl : handlerListeners){
+            ahl.onAccelerometerHandlerNewData(pitchOut,rollOut);
+        }
     }
 
     @Override
@@ -75,5 +82,9 @@ public class AccelerometerHandler implements SensorEventListener {
 */
         rollOut = roll * rollGain;
         pitchOut = pitch * pitchGain;
+    }
+
+    public void addSensorChangedListener(AccelerometerHandlerListener listener){
+        handlerListeners.add(listener);
     }
 }

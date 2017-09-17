@@ -12,6 +12,9 @@ import android.widget.ListView;
 
 import com.oldwoodsoftware.steward.MainActivity;
 import com.oldwoodsoftware.steward.R;
+import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.model.event.FragmentEvent;
+import com.oldwoodsoftware.steward.model.event.InverseEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.InverseFragmentSliderListener;
 import com.oldwoodsoftware.steward.model.responsibility.patron.ButtonPatron;
 import com.oldwoodsoftware.steward.model.responsibility.patron.SliderPatron;
@@ -20,15 +23,15 @@ import com.oldwoodsoftware.steward.view.listelement.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InverseFragment extends Fragment {
+public class InverseFragment extends GeneralFragment {
 
     private Activity parentActivity;
-    private InverseFragmentSliderListener sliderListener;
+    private List<InverseFragmentSliderListener> sliderListeners = new ArrayList<InverseFragmentSliderListener>();
 
     private InverseFragment.InverseAdapter inverseAdapter;
 
-    private int[] initial_progresses;
-    private String[] initial_strings;
+    private int[] initial_progresses = {500,500,500,500,500,500};
+    private String[] initial_strings = {" ", " ", " ", " ", " ", " "};
 
     public InverseAdapter getInverseAdapter() {
         return inverseAdapter;
@@ -44,10 +47,11 @@ public class InverseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentActivity = getActivity();
-        sliderListener = (InverseFragmentSliderListener) parentActivity;
 
-        initial_progresses = sliderListener.getCurrentSliderProgresses();
-        initial_strings = sliderListener.getInverseFragmentSliderTexts();
+        for(InverseFragmentSliderListener ifl : sliderListeners){
+            initial_progresses = ifl.getCurrentSliderProgresses();
+            initial_strings = ifl.getInverseFragmentSliderTexts();
+        }
 
         View view = inflater.inflate(R.layout.inverse, container, false);
 
@@ -111,7 +115,9 @@ public class InverseFragment extends Fragment {
             int index = sliderObjects.indexOf(sender);
             sliderValues[index] = sender.getProgress();
 
-            InverseFragment.this.sliderListener.onInverseFragmentSliderChange(sliderValues);
+            for(InverseFragmentSliderListener ifl : InverseFragment.this.sliderListeners) {
+                ifl.onInverseFragmentSliderChange(sliderValues);
+            }
         }
 
         @Override
@@ -146,13 +152,23 @@ public class InverseFragment extends Fragment {
             for (SliderElement se : sliderObjects){
                 se.setSeekbarProgress(500);
             }
-            ((MainActivity)parentActivity).testMsg();
         }
 
         @Override
         public void setButtonText(String text) {
 
         }
+    }
+
+    public FragmentEvent createFragmentEvent(PlatformContext context){
+        return new InverseEvents(this, context);
+    }
+
+    @Override
+    public void addFragmentListener(FragmentEvent fe) {
+        try {
+            sliderListeners.add((InverseFragmentSliderListener) fe);
+        }catch (ClassCastException ex){}
     }
 
 

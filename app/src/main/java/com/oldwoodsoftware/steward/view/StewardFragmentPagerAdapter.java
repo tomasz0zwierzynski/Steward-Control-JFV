@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.model.event.FragmentEvent;
 import com.oldwoodsoftware.steward.view.fragment.*;
 
 import java.util.ArrayList;
@@ -11,11 +13,13 @@ import java.util.List;
 
 public class StewardFragmentPagerAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> fragments;
+    private List<GeneralFragment> fragments;
+    private PlatformContext pContext;
 
-    public StewardFragmentPagerAdapter(FragmentManager fm) {
+    public StewardFragmentPagerAdapter(FragmentManager fm, PlatformContext context) {
         super(fm);
-        fragments = new ArrayList<Fragment>();
+        pContext = context;
+        fragments = new ArrayList<GeneralFragment>();
         fragments.add(new SettingsFragment());
         fragments.add(new InverseFragment());
         fragments.add(new AccelerometerFragment());
@@ -31,6 +35,16 @@ public class StewardFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         return fragments.get(position);
+    }
+
+    public List<FragmentEvent> createFragmentEvents() {
+        List<FragmentEvent> fragmentEvents = new ArrayList<FragmentEvent>();
+        for (GeneralFragment gf: fragments){
+            FragmentEvent fe = gf.createFragmentEvent(pContext);
+            gf.addFragmentListener(fe);
+            fragmentEvents.add( gf.createFragmentEvent(pContext) );
+        }
+        return fragmentEvents;
     }
 
     public Fragment getItem(FragmentType ft){

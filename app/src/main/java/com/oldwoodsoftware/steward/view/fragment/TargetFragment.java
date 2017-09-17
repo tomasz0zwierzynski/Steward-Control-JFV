@@ -12,16 +12,22 @@ import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.MainActivity;
 import com.oldwoodsoftware.steward.R;
+import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.model.event.FragmentEvent;
+import com.oldwoodsoftware.steward.model.event.TargetEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.TargetFragmentListener;
 import com.oldwoodsoftware.steward.view.PanelView;
 
-public class TargetFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TargetFragment extends GeneralFragment {
     private TextView textview1;
     private TextView textview2;
     private PanelView panelview;
 
     private Activity parentActivity;
-    private TargetFragmentListener targetListener;
+    private List<TargetFragmentListener> targetListeners = new ArrayList<TargetFragmentListener>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +39,7 @@ public class TargetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentActivity = getActivity();
-        targetListener = (TargetFragmentListener) parentActivity;
+        //targetListeners.add( (TargetFragmentListener) parentActivity );
 
         View view = inflater.inflate(R.layout.target, container, false);
         textview1 = (TextView) view.findViewById(R.id.target_TextView1);
@@ -41,7 +47,12 @@ public class TargetFragment extends Fragment {
         textview2 = (TextView) view.findViewById(R.id.target_TextView2);
         textview2.setText(getString(R.string.target_TV_tip2));
         panelview = (PanelView) view.findViewById(R.id.target_panelview);
-        panelview.setPanelRatio(targetListener.getPanelLenghtRatio());
+            float ratio = 1.41f;
+        for (TargetFragmentListener tfl : targetListeners){
+            ratio = tfl.getPanelLenghtRatio();
+        }
+        panelview.setPanelRatio(ratio);
+        //panelview.setOnDragListener(n);
         panelview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -66,7 +77,9 @@ public class TargetFragment extends Fragment {
         float x_percent = (100/width)*((float)x_pixels - (float)panelview.getLeftEdge());
         float y_percent = (100/height)*((float)y_pixels - (float)panelview.getTopEdge());
 
-        targetListener.onNewTargetPosition(x_percent,y_percent);
+        for (TargetFragmentListener tfl : targetListeners) {
+            tfl.onNewTargetPosition(x_percent, y_percent);
+        }
     }
 
     public void onCurrentBallPositionChanged(float x_percent, float y_percent, boolean detected){
@@ -86,6 +99,17 @@ public class TargetFragment extends Fragment {
     @Override
     public String toString(){
         return "Target";
+    }
+
+    public FragmentEvent createFragmentEvent(PlatformContext context){
+        return new TargetEvents(this,context);
+    }
+
+    @Override
+    public void addFragmentListener(FragmentEvent fe) {
+        try {
+            targetListeners.add((TargetFragmentListener) fe);
+        }catch (ClassCastException ex){}
     }
 
 }

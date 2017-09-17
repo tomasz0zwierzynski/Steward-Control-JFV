@@ -1,19 +1,25 @@
 package com.oldwoodsoftware.steward.model.bluetooth;
 
+import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
+
 import java.nio.charset.StandardCharsets;
 
-public class CmdProtocol {
+public class CmdProtocol implements BluetoothDataListener {
 
     private BluetoothConnection btCon;
 
     private CommandTypeMode ctMode = CommandTypeMode.zero;
 
-    public CmdProtocol(BluetoothConnection bluetoothConnection) throws Exception{
+    private PlatformContext pContext;
+
+    public CmdProtocol(BluetoothConnection bluetoothConnection, PlatformContext context) throws Exception{
         if (bluetoothConnection == null){
             throw new Exception("Bluetooth connection not established");
         }
 
         btCon = bluetoothConnection;
+        pContext = context;
     }
 
     public void putCommand(Command... cmds) throws Exception{
@@ -46,7 +52,7 @@ public class CmdProtocol {
     //X is swaped with Y intentionally
     public void putTargetCommand(float x, float y) throws Exception{
         if (ctMode != CommandTypeMode.target){
-            setPlatformMode(CommandTypeMode.ik);
+            setPlatformMode(CommandTypeMode.target);
         }
         String command = CommandType.setTargetY.get_uC_command_code_as_string() + "=" + String.valueOf(x);
         btCon.sendMessage(command.getBytes());
@@ -77,4 +83,20 @@ public class CmdProtocol {
         ctMode = mode;
     }
 
+    @Override
+    public void onBluetoothData(byte[] data) {
+        Command cmd = readCommand(data);
+
+        System.out.println("Recieved: " + new String(data, StandardCharsets.UTF_8));
+        //TODO: decide what to do with data
+        if(cmd.commandType == CommandType.pidXerror){
+
+            String sXerr = String.valueOf(cmd.value);
+            pContext.getStatusBar().updatePlatfromStatus(0,sXerr);
+        }else if(cmd.commandType == CommandType.pidYerror){
+            String sYerr = String.valueOf(cmd.value);
+            pContext.getStatusBar().updatePlatfromStatus(1,sYerr);
+        }
+
+    }
 }

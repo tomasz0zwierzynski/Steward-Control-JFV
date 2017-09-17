@@ -11,6 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.oldwoodsoftware.steward.R;
+import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.model.event.FragmentEvent;
+import com.oldwoodsoftware.steward.model.event.SettingsEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.SettingsFragmentListener;
 import com.oldwoodsoftware.steward.model.responsibility.patron.ButtonPatron;
 import com.oldwoodsoftware.steward.model.responsibility.patron.SliderPatron;
@@ -26,10 +29,10 @@ import com.oldwoodsoftware.steward.view.listelement.TwolineElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends GeneralFragment {
 
     private Activity parentActivity;
-    private SettingsFragmentListener settingsListener;
+    private List<SettingsFragmentListener> settingsListeners = new ArrayList<SettingsFragmentListener>();
 
     private boolean isBTconnected;
 
@@ -43,9 +46,10 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentActivity = getActivity();
-        settingsListener = (SettingsFragmentListener) parentActivity;
 
-        isBTconnected = settingsListener.isBluetoothConnected();
+        for (SettingsFragmentListener sfl : settingsListeners){
+            isBTconnected = sfl.isBluetoothConnected();
+        }
 
         View view = inflater.inflate(R.layout.settings, container, false);
         final ListView listview = (ListView) view.findViewById(R.id.settings_listview);
@@ -139,17 +143,30 @@ public class SettingsFragment extends Fragment {
         public void onButtonToggled(ToggleElement sender) {
             //One toggle element for now, so just send it further
             boolean state = sender.getButtonState();
-            if (state){
-                settingsListener.onBluetoothConnectionButtonChecked();
-            }else{
-                settingsListener.onBluetoothConnectionButtonUnchecked();
-            }
 
+            for (SettingsFragmentListener sfl : settingsListeners) {
+                if (state) {
+                    sfl.onBluetoothConnectionButtonChecked();
+                } else {
+                    sfl.onBluetoothConnectionButtonUnchecked();
+                }
+            }
         }
 
         @Override
         public void setButtonText(String text) {
 
         }
+    }
+
+    public FragmentEvent createFragmentEvent(PlatformContext context){
+        return new SettingsEvents(this,context);
+    }
+
+    @Override
+    public void addFragmentListener(FragmentEvent fe) {
+        try {
+            settingsListeners.add((SettingsFragmentListener) fe);
+        }catch (ClassCastException ex){}
     }
 }

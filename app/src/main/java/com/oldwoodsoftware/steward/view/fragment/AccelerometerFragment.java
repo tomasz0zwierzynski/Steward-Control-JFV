@@ -10,9 +10,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
+import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.model.event.AccelerometerEvents;
+import com.oldwoodsoftware.steward.model.event.FragmentEvent;
 import com.oldwoodsoftware.steward.model.responsibility.listener.AccelerometerFragmentStateListener;
 
-public class AccelerometerFragment extends Fragment{
+import java.util.ArrayList;
+import java.util.List;
+
+public class AccelerometerFragment extends GeneralFragment{
     private TextView textview1;
     private TextView textview2;
     private Button button;
@@ -22,7 +28,7 @@ public class AccelerometerFragment extends Fragment{
     private boolean active = false;
 
     private Activity parentActivity;
-    private AccelerometerFragmentStateListener stateListener;
+    private List<AccelerometerFragmentStateListener> stateListeners = new ArrayList<AccelerometerFragmentStateListener>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,7 @@ public class AccelerometerFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         parentActivity = getActivity();
-        stateListener = (AccelerometerFragmentStateListener) parentActivity;
+        //stateListeners.add((AccelerometerFragmentStateListener) parentActivity);
 
         View view = inflater.inflate(R.layout.accelerometer, container, false);
         textview1 = (TextView) view.findViewById(R.id.accelerometer_TextView1);
@@ -76,7 +82,9 @@ public class AccelerometerFragment extends Fragment{
             textRoll.setText(getString(R.string.accelerometer_TV_roll));
             button.setText(getString(R.string.accelerometer_whenOFF_button));
         }
-        stateListener.onAccelerometerFragmentStateChange(toState);
+        for(AccelerometerFragmentStateListener afl : stateListeners) {
+            afl.onAccelerometerFragmentStateChange(toState);
+        }
     }
 
     public void updateControls(float nPitch, float nRoll){
@@ -87,6 +95,17 @@ public class AccelerometerFragment extends Fragment{
     @Override
     public String toString(){
         return "Accelerometer";
+    }
+
+    public FragmentEvent createFragmentEvent(PlatformContext context){
+        return new AccelerometerEvents(this,context);
+    }
+
+    @Override
+    public void addFragmentListener(FragmentEvent fe) {
+        try {
+            stateListeners.add((AccelerometerFragmentStateListener) fe);
+        }catch (ClassCastException ex){}
     }
 
 }

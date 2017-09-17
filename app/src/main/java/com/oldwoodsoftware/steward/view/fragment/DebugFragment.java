@@ -10,11 +10,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
+import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.model.event.DebugEvents;
+import com.oldwoodsoftware.steward.model.event.FragmentEvent;
 import com.oldwoodsoftware.steward.model.responsibility.listener.DebugFragmentListener;
 
-public class DebugFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
 
-    DebugFragmentListener debugFragmentListener;
+public class DebugFragment extends GeneralFragment {
+
+    List<DebugFragmentListener> debugFragmentListeners = new ArrayList<DebugFragmentListener>();
 
     Button button;
     EditText editTextCommand;
@@ -34,7 +40,8 @@ public class DebugFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.debug_fragment, container, false);
 
-        debugFragmentListener = (DebugFragmentListener) getActivity();
+        //To remove later
+        //debugFragmentListeners.add((DebugFragmentListener) getActivity());
 
         button = (Button) view.findViewById(R.id.debug_send_button);
         editTextCommand = (EditText) view.findViewById(R.id.debug_ET1);
@@ -48,7 +55,9 @@ public class DebugFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String command_to_send = editTextCommand.getText() + "=" + editTextValue.getText();
-                debugFragmentListener.onDebugCommand(command_to_send);
+                for(DebugFragmentListener dfl : debugFragmentListeners){
+                    dfl.onDebugCommand(command_to_send);
+                }
             }
         });
 
@@ -58,6 +67,18 @@ public class DebugFragment extends Fragment {
     @Override
     public String toString(){
         return "Debug";
+    }
+
+    @Override
+    public FragmentEvent createFragmentEvent(PlatformContext context){
+        return new DebugEvents(this, context);
+    }
+
+    @Override
+    public void addFragmentListener(FragmentEvent fe) {
+        try {
+            debugFragmentListeners.add((DebugFragmentListener) fe);
+        }catch (ClassCastException ex){}
     }
 
 }
