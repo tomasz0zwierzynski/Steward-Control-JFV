@@ -29,7 +29,7 @@ public class BluetoothConnection {
     public byte[] _data;
 
     private Activity mainActivity;
-    private BluetoothDataListener btReciever;
+    private List<BluetoothDataListener> btRecievers = new ArrayList<BluetoothDataListener>();
 
     private void getAdapter() {
         _adapter = BluetoothAdapter.getDefaultAdapter();
@@ -43,9 +43,13 @@ public class BluetoothConnection {
         }
     }
 
+    public void addBluetoothListener(BluetoothDataListener listener){
+        btRecievers.add(listener);
+    }
+
     public BluetoothConnection(final Activity parent) throws Exception{
         mainActivity = parent;
-        btReciever = (BluetoothDataListener) mainActivity;
+        //btReciever = (BluetoothDataListener) mainActivity;
         //We creating connection when constructing new object
 
         //Get the adapter
@@ -110,7 +114,9 @@ public class BluetoothConnection {
                                     @Override
                                     public void run() {
                                         try {
-                                            btReciever.onBluetoothData(pack);
+                                            for(BluetoothDataListener bdl : btRecievers){
+                                                bdl.onBluetoothData(pack);
+                                            }
                                         } catch (Exception ex) {
                                         }
                                     }
@@ -156,6 +162,8 @@ public class BluetoothConnection {
         }
         _socket.getOutputStream().write('\r');
         _socket.getOutputStream().write('\n');
+
+        //System.out.println("Send btBuffer: " + new String(buffer, StandardCharsets.UTF_8));
     }
 
 }
