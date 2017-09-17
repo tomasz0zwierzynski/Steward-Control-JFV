@@ -2,7 +2,6 @@ package com.oldwoodsoftware.steward.model.event;
 
 import com.oldwoodsoftware.steward.model.PlatformContext;
 import com.oldwoodsoftware.steward.model.responsibility.listener.TargetFragmentListener;
-import com.oldwoodsoftware.steward.view.fragment.FragmentType;
 import com.oldwoodsoftware.steward.view.fragment.TargetFragment;
 
 public class TargetEvents extends FragmentEvent implements TargetFragmentListener {
@@ -22,7 +21,6 @@ public class TargetEvents extends FragmentEvent implements TargetFragmentListene
         float y = pContext.getPG().getTargetY();
 
         //TODO: btConenction
-
         try {
             pContext.getCmdProtocol().putTargetCommand(x,y);
         } catch (Exception e) { }

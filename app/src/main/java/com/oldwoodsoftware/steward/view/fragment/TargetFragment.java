@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,7 +53,33 @@ public class TargetFragment extends GeneralFragment {
             ratio = tfl.getPanelLenghtRatio();
         }
         panelview.setPanelRatio(ratio);
-        //panelview.setOnDragListener(n);
+       /* panelview.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                final int action = event.getAction();
+                switch(action){
+                    case (DragEvent.ACTION_DRAG_ENTERED):
+
+                        break;
+                    case (DragEvent.ACTION_DRAG_LOCATION):
+
+                        break;
+                    case (DragEvent.ACTION_DRAG_EXITED):
+
+                        break;
+                    default:
+                        break;
+                }
+                int x = (int)event.getX();
+                int y = (int)event.getY();
+                if (panelview.isInRect(x,y)){
+                    ((PanelView) v).setTargetPosition((int)event.getX(),(int)event.getY());
+                    TargetFragment.this.onTargetPositionChanged((int)event.getX(),(int)event.getY());
+                }
+                return false;
+            }
+        });*/
+
         panelview.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -62,7 +89,7 @@ public class TargetFragment extends GeneralFragment {
                     ((PanelView) v).setTargetPosition((int)event.getX(),(int)event.getY());
                     TargetFragment.this.onTargetPositionChanged((int)event.getX(),(int)event.getY());
                 }
-                return false;
+                return true;
             }
         });
 

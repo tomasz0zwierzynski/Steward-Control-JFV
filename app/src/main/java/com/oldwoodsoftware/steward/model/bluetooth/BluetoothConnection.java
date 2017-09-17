@@ -163,7 +163,7 @@ public class BluetoothConnection {
         _socket.getOutputStream().write('\r');
         _socket.getOutputStream().write('\n');
 
-        //System.out.println("Send btBuffer: " + new String(buffer, StandardCharsets.UTF_8));
+        System.out.println("Send: " + new String(buffer, StandardCharsets.UTF_8));
     }
 
 }

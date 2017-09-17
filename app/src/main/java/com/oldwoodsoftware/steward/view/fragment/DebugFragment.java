@@ -28,6 +28,7 @@ public class DebugFragment extends GeneralFragment {
     TextView textTip1;
     TextView textTip2;
 
+    TextView consoleView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class DebugFragment extends GeneralFragment {
         textTip2 = (TextView) view.findViewById(R.id.debug_Text2);
         textTip2.setText(R.string.debug_TV_tip2);
 
+        consoleView = (TextView)  view.findViewById(R.id.debugLog);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +70,18 @@ public class DebugFragment extends GeneralFragment {
     @Override
     public String toString(){
         return "Debug";
+    }
+
+    public void println(String str){
+        String old = consoleView.getText().toString();
+        String newString = old + '\n' + str;
+        int len = newString.length();
+        String newest_string = newString;
+        if (len > 100){
+            int chars_to_remove = len - 100;
+            newest_string = newString.substring(chars_to_remove);
+        }
+        consoleView.setText(newest_string);
     }
 
     @Override

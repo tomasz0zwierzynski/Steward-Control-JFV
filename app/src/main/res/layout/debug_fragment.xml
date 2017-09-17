@@ -24,39 +24,56 @@
         android:layout_marginTop="-10dp" />
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/debug_Text2"
-        android:layout_alignStart="@+id/debug_Text2"
-        android:layout_marginTop="21dp">
+        android:layout_alignParentStart="true">
 
-        <EditText
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/debug_ET1"
-            android:layout_weight="1"
-            android:hint="command"
-            android:inputType="number"
-            android:maxLength="3" />
+            android:layout_below="@+id/debug_Text2"
+            android:layout_alignStart="@+id/debug_Text2"
+            android:layout_marginTop="21dp">
 
-        <EditText
-            android:layout_width="wrap_content"
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/debug_ET1"
+                android:layout_weight="1"
+                android:hint="command"
+                android:inputType="number"
+                android:maxLength="3" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/debug_ET2"
+                android:layout_weight="1"
+                android:hint="value"
+                android:inputType="number|numberSigned|numberDecimal" />
+
+        </LinearLayout>
+
+        <Button
+            android:text="Put Command"
+            android:layout_width="194dp"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:id="@+id/debug_ET2"
-            android:layout_weight="1"
-            android:hint="value"
-            android:inputType="number|numberSigned|numberDecimal" />
+            android:id="@+id/debug_send_button"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/debugLog"
+            android:layout_weight="1" />
+
     </LinearLayout>
-
-    <Button
-        android:text="Put Command"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/debug_send_button"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

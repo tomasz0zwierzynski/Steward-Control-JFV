@@ -33,6 +33,7 @@
         android:layout_alignStart="@+id/target_TextView2"
         android:id="@+id/target_panelview"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:focusable="true" />
 
 </RelativeLayout>

@@ -22,4 +22,9 @@ public class DebugEvents extends FragmentEvent implements DebugFragmentListener{
             pContext.getCmdProtocol().putCommand(cmd);
         } catch (Exception e) { }
     }
+
+    @Override
+    public void printCommandLine(String command) {
+        own.println(command);
+    }
 }
