@@ -9,13 +9,15 @@ import android.os.Looper;
 
 import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 public class BluetoothConnection {
 
-    private final int BUFFER_SIZE = 255;
+    private final int BUFFER_SIZE = 32;
 
     private BluetoothSocket _socket = null;
     private BluetoothAdapter _adapter;
@@ -89,10 +91,9 @@ public class BluetoothConnection {
                 Handler mainHandler = new Handler(Looper.getMainLooper()); //Used later
 
                 //Why java not allow to define enum here, classes can be defined...
-                int state=0; //0-data, 1-term_r 2-term_n
+                //int state=0; //0-data, 1-term_r 2-term_n
                 int ctr=0;
                 byte next;
-                boolean whole_msg=false;
 
                 while (stop_request == false)
                 {
@@ -101,42 +102,26 @@ public class BluetoothConnection {
                         if(_socket.getInputStream().available() > 0){
                             //Some decoder maybe or something???
                             next = (byte)_socket.getInputStream().read();
-                            switch (state){
-                                case 0: //data
-                                    if (next == '\r'){
-                                        state = 1;
-                                    }
-                                    break;
-                                case 1: //term_r
-                                    if (next == '\n'){
-                                        state = 2;
-                                        whole_msg = true;
-                                    }
-                                    break;
-                                case 2: //term_n
-                                    state = 0;
-                                    ctr=0;
-                                    break;
-                                default:
-                                    break;
-                            }
-                            _data[ctr] = next;
-                            ctr++;
-                            //handle data and post it to main
-                            if (whole_msg){
+                            if(next == '\n'){
+                                _data[ctr] = 0;
+                                ctr=0;
+                                final byte[] pack = Arrays.copyOf(_data,BUFFER_SIZE);
                                 Runnable myRunnable = new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
-                                            btReciever.onBluetoothData(_data);
-                                        }catch (Exception ex){
+                                            btReciever.onBluetoothData(pack);
+                                        } catch (Exception ex) {
                                         }
                                     }
                                 };
                                 mainHandler.post(myRunnable);
-                                whole_msg = false;
+                                for (int i = 0; i < _data.length; i++) {
+                                    _data[i] = 0;
+                                }
+                            }else if (next != '\r'){
+                                _data[ctr++] = next;
                             }
-
                         }else{
                             this.wait(100);
                         }
@@ -147,7 +132,6 @@ public class BluetoothConnection {
             }
         });
         readThread.start();
-
     }
 
     public boolean isConnected(){

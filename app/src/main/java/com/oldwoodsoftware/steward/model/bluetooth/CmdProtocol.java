@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.model.bluetooth;
 
+import java.nio.charset.StandardCharsets;
+
 public class CmdProtocol {
 
     private BluetoothConnection btCon;
@@ -33,10 +35,28 @@ public class CmdProtocol {
         btCon.sendMessage(command.getBytes());
     }
 
+    //X is swaped with Y intentionally
     public void putTargetCommand(float x, float y) throws Exception{
-        String command = CommandType.setTargetX.get_uC_command_code_as_string() + "=" + String.valueOf(x);
+        String command = CommandType.setTargetY.get_uC_command_code_as_string() + "=" + String.valueOf(x);
         btCon.sendMessage(command.getBytes());
-        command = CommandType.setTargetY.get_uC_command_code_as_string() + "=" + String.valueOf(y);
+        command = CommandType.setTargetX.get_uC_command_code_as_string() + "=" + String.valueOf(-y);
         btCon.sendMessage(command.getBytes());
     }
+
+    public Command readCommand(byte[] bytes){
+        String sBytes = new String(bytes, StandardCharsets.UTF_8);
+        String sCommand = sBytes.substring(0, sBytes.indexOf('='));
+        String sValue = sBytes.substring(sBytes.indexOf('=')+1, sBytes.length());
+
+        int command = Integer.parseInt(sCommand);
+        float value = Float.parseFloat(sValue);
+
+        return new Command( CommandType.getCommandType(command),value) ;
+    }
+
+    public void putCommand(String command) throws Exception{
+        //TODO: Watch out for formating
+        btCon.sendMessage(command.getBytes());
+    }
+
 }

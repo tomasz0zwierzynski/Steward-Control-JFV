@@ -10,6 +10,8 @@ import com.oldwoodsoftware.steward.model.InverseKinematics;
 import com.oldwoodsoftware.steward.model.PanelGeometrics;
 import com.oldwoodsoftware.steward.model.bluetooth.BluetoothConnection;
 import com.oldwoodsoftware.steward.model.bluetooth.CmdProtocol;
+import com.oldwoodsoftware.steward.model.bluetooth.Command;
+import com.oldwoodsoftware.steward.model.bluetooth.CommandType;
 import com.oldwoodsoftware.steward.model.responsibility.listener.*;
 import com.oldwoodsoftware.steward.model.bluetooth.BluetoothStatus;
 import com.oldwoodsoftware.steward.view.fragment.*;
@@ -21,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends AppCompatActivity
         implements AccelerometerFragmentStateListener, AccelerometerHandlerListener, InverseFragmentSliderListener, SettingsFragmentListener,
-                    BluetoothDataListener, TargetFragmentListener {
+                    BluetoothDataListener, TargetFragmentListener, DebugFragmentListener {
 
     private StewardFragmentPagerAdapter fragmentAdapter;
     private StatusBarUpdater statusBar;
@@ -78,23 +80,8 @@ public class MainActivity extends AppCompatActivity
         //IK paramters
         ik = new InverseKinematics(getBaseContext(), new float[] {-20,-20,-20,-30,-30,-30}, new float[] {+20,+20,+20,+30,+30,+30} );
         //Geometrical parameters
-        pg = new PanelGeometrics(getBaseContext(), 297.0f, 210.0f); // default: 297.0f, 210.0f
+        pg = new PanelGeometrics(getBaseContext(), 150f, 100f); // default: 297.0f, 210.0f
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        accHandler.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //bluetoothConnection.onResume();
-
-        accHandler.onResume();
-    }
-
 
     //Accelerometer interface implementations
     //AccelerometerFragmentStateListener interface
@@ -129,6 +116,7 @@ public class MainActivity extends AppCompatActivity
         String[] strings = ik.getStringRepresentation();
 
         setInverseFragmentSliderTexts(strings);
+
         try {
             cmdProtocol.putInverseCommand(realValues);
         } catch (Exception e) { }
@@ -164,7 +152,6 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             statusBar.updateBluetoothStatus(e.getMessage());
         }
-
 
         try {
             if (btConnection.isConnected()) {
@@ -202,8 +189,19 @@ public class MainActivity extends AppCompatActivity
 
     public void onBluetoothData(byte[] data){ //here we recieve command that is
         //TODO: data reciever
+        Command retrieve = cmdProtocol.readCommand(data);
 
-        statusBar.updateBluetoothStatus(new String(data, StandardCharsets.UTF_8));
+        System.out.println(" Cmd: " + retrieve.commandType.toString() + " :" + String.valueOf(retrieve.value));
+
+        if(retrieve.commandType == CommandType.pidXerror){
+
+            String sXerr = String.valueOf(retrieve.value);
+            statusBar.updatePlatfromStatus(0,sXerr);
+        }else if(retrieve.commandType == CommandType.pidYerror){
+            String sYerr = String.valueOf(retrieve.value);
+            statusBar.updatePlatfromStatus(1,sYerr);
+        }
+        //statusBar.updateBluetoothStatus(new String(data, StandardCharsets.UTF_8));
     }
 
     @Override
@@ -242,11 +240,30 @@ public class MainActivity extends AppCompatActivity
     // setCurrentBallPosition();
     // statusBar.setBall();
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        accHandler.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        accHandler.onResume();
+    }
+
     @Deprecated
     public void testMsg(){
+
+        try {
+            cmdProtocol.putCommand(new Command(CommandType.off,0));
+        } catch (Exception e) { }
+
+        /*
         try {
             btConnection.sendMessage( "3=9.0;4=100.01".getBytes());
         } catch (Exception e) { }
+        */
     }
 
     @Deprecated
@@ -254,4 +271,10 @@ public class MainActivity extends AppCompatActivity
         setCurrentBallPosition(0f,0f,true);
     }
 
+    @Override
+    public void onDebugCommand(String cmd) {
+        try {
+            cmdProtocol.putCommand(cmd);
+        } catch (Exception e) { }
+    }
 }

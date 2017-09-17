@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.oldwoodsoftware.steward.view.fragment.AccelerometerFragment;
+import com.oldwoodsoftware.steward.view.fragment.DebugFragment;
 import com.oldwoodsoftware.steward.view.fragment.FragmentType;
 import com.oldwoodsoftware.steward.view.fragment.InverseFragment;
 import com.oldwoodsoftware.steward.view.fragment.SettingsFragment;
@@ -24,6 +25,7 @@ public class StewardFragmentPagerAdapter extends FragmentPagerAdapter {
         fragments.add(new InverseFragment());
         fragments.add(new AccelerometerFragment());
         fragments.add(new TargetFragment());
+        fragments.add(new DebugFragment());
     }
 
     @Override

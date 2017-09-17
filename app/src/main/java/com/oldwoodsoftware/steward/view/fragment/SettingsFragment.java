@@ -64,18 +64,33 @@ public class SettingsFragment extends Fragment {
 
         private List<GeneralElement> elements;
 
+        private List<MinmaxElement> minmaxElements;
+
         public SettingsAdapter(){
             elements = new ArrayList<GeneralElement>();
+            minmaxElements = new ArrayList<MinmaxElement>();
             elements.add(new TitleElement("btTitle",getString(R.string.settings_TV_btTitle)));
             elements.add(new ToggleElement(this,SettingsFragment.this.isBTconnected,"btToggle",getString(R.string.settings_TV_btToggleTextOFF)));
             elements.add(new TitleElement("invTitle",getString(R.string.settings_TV_invTitle)));
             elements.add(new TwolineElement("invNote",getString(R.string.settings_TV_invTip1),getString(R.string.settings_TV_invTip2)));
-            elements.add(new MinmaxElement("invX",getString(R.string.settings_TV_invX)));
-            elements.add(new MinmaxElement("invY",getString(R.string.settings_TV_invY)));
-            elements.add(new MinmaxElement("invZ",getString(R.string.settings_TV_invZ)));
-            elements.add(new MinmaxElement("invA",getString(R.string.settings_TV_invA)));
-            elements.add(new MinmaxElement("invB",getString(R.string.settings_TV_invB)));
-            elements.add(new MinmaxElement("invC",getString(R.string.settings_TV_invC)));
+            MinmaxElement minmax = new MinmaxElement("invX",getString(R.string.settings_TV_invX));
+            minmaxElements.add(minmax);
+            elements.add(minmax);
+            minmax = new MinmaxElement("invY",getString(R.string.settings_TV_invY));
+            minmaxElements.add(minmax);
+            elements.add(minmax);
+            minmax = new MinmaxElement("invZ",getString(R.string.settings_TV_invZ));
+            minmaxElements.add(minmax);
+            elements.add(minmax);
+            minmax = new MinmaxElement("invA",getString(R.string.settings_TV_invA));
+            minmaxElements.add(minmax);
+            elements.add(minmax);
+            minmax = new MinmaxElement("invB",getString(R.string.settings_TV_invB));
+            elements.add(minmax);
+            minmaxElements.add(minmax);
+            minmax = new MinmaxElement("invC",getString(R.string.settings_TV_invC));
+            elements.add(minmax);
+            minmaxElements.add(minmax);
             elements.add(new ButtonElement(this,"invButton",getString(R.string.settings_TV_invButton),getString(R.string.settings_Buton_invButton)));
             elements.add(new TitleElement("accTitle", getString(R.string.settings_TV_accTitle)));
             elements.add(new TwolineElement("accNote",getString(R.string.settings_TV_accTip1),getString(R.string.settings_TV_accTip2)));

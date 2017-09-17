@@ -146,6 +146,7 @@ public class InverseFragment extends Fragment {
             for (SliderElement se : sliderObjects){
                 se.setSeekbarProgress(500);
             }
+            ((MainActivity)parentActivity).testMsg();
         }
 
         @Override

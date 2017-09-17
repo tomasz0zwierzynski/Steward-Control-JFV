@@ -28,6 +28,10 @@ public class StatusBarUpdater {
         parentActivity = ma;
     }
 
+    public void updatePlatfromStatus(int slot, String msg){
+        platformStatusText[slot].setText(msg);
+    }
+
     public void updatePlatformStatus(float[] posvals, boolean show){
         if (show){
             for (int i=0; i<posvals.length; i++){
