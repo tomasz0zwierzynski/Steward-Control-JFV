@@ -188,10 +188,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onBluetoothData(byte[] data){ //here we recieve command that is
-        //TODO: data reciever
+        //TODO: data reciever its temporary here now
         Command retrieve = cmdProtocol.readCommand(data);
-
-        System.out.println(" Cmd: " + retrieve.commandType.toString() + " :" + String.valueOf(retrieve.value));
 
         if(retrieve.commandType == CommandType.pidXerror){
 

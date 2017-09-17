@@ -4,12 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.oldwoodsoftware.steward.view.fragment.AccelerometerFragment;
-import com.oldwoodsoftware.steward.view.fragment.DebugFragment;
-import com.oldwoodsoftware.steward.view.fragment.FragmentType;
-import com.oldwoodsoftware.steward.view.fragment.InverseFragment;
-import com.oldwoodsoftware.steward.view.fragment.SettingsFragment;
-import com.oldwoodsoftware.steward.view.fragment.TargetFragment;
+import com.oldwoodsoftware.steward.view.fragment.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +43,8 @@ public class StewardFragmentPagerAdapter extends FragmentPagerAdapter {
                 return fragments.get(2);
             case Target:
                 return fragments.get(3);
+            case Debug:
+                return fragments.get(4);
             default:
                 return new Fragment();
         }

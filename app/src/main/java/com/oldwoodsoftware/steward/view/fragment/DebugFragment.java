@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.model.responsibility.listener.DebugFragmentListener;
@@ -18,6 +19,9 @@ public class DebugFragment extends Fragment {
     Button button;
     EditText editTextCommand;
     EditText editTextValue;
+    TextView textTip1;
+    TextView textTip2;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,9 +38,11 @@ public class DebugFragment extends Fragment {
 
         button = (Button) view.findViewById(R.id.debug_send_button);
         editTextCommand = (EditText) view.findViewById(R.id.debug_ET1);
-        editTextCommand.setText(R.string.debug_TV_tip1);
+        textTip1 = (TextView) view.findViewById(R.id.debug_Text1);
+        textTip1.setText(R.string.debug_TV_tip1);
         editTextValue = (EditText) view.findViewById(R.id.debug_ET2);
-        editTextValue.setText(R.string.debug_TV_tip2);
+        textTip2 = (TextView) view.findViewById(R.id.debug_Text2);
+        textTip2.setText(R.string.debug_TV_tip2);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -13,6 +13,7 @@ public enum CommandType {
     setTargetY(32),
     pidXerror(33),
     pidYerror(34),
+    setMode(50),
     //etc
     ;
 

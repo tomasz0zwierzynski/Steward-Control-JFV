@@ -34,24 +34,25 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/debug_ET1"
             android:layout_weight="1"
-            android:hint="command" />
+            android:hint="command"
+            android:inputType="number"
+            android:maxLength="3" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/debug_ET2"
             android:layout_weight="1"
-            android:hint="value" />
+            android:hint="value"
+            android:inputType="number|numberSigned|numberDecimal" />
     </LinearLayout>
 
     <Button
-        android:text="Button"
+        android:text="Put Command"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/debug_send_button"
