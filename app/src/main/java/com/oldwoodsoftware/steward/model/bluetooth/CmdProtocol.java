@@ -5,6 +5,8 @@ import com.oldwoodsoftware.steward.model.event.DebugEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CmdProtocol implements BluetoothDataListener {
 
@@ -12,6 +14,10 @@ public class CmdProtocol implements BluetoothDataListener {
 
     private CommandTypeMode ctMode = CommandTypeMode.demo;
     private boolean isModeStarted = false;
+
+    private boolean isTransferUnlocked = true;
+    private Timer timer;
+    private final int TRANSFER_INTERVAL_MS = 50;
 
     private CommandReciever commandReciever;
     private PlatformContext pContext;
@@ -24,6 +30,15 @@ public class CmdProtocol implements BluetoothDataListener {
         btCon = bluetoothConnection;
         pContext = context;
         commandReciever = new CommandReciever(pContext);
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Timer run()");
+                isTransferUnlocked = true;
+            }
+        },TRANSFER_INTERVAL_MS,TRANSFER_INTERVAL_MS);
     }
 
     public void putCommand(Command... cmds) throws Exception{
@@ -34,44 +49,50 @@ public class CmdProtocol implements BluetoothDataListener {
     }
 
     public void putInverseCommand(float[] values) throws Exception{
-        if (ctMode != CommandTypeMode.ikMode){
-            setPlatformMode(CommandTypeMode.ikMode);
+        if (isTransferUnlocked) {
+            if (ctMode != CommandTypeMode.ikMode) {
+                setPlatformMode(CommandTypeMode.ikMode);
+            }
+            putMoveToCommand();
+            for (int i = 0; i < values.length; i++) {
+                String command = String.valueOf(CommandType.setIkX.get_uC_command_code() + i) + "=" + String.valueOf(values[i]);
+                btCon.sendMessage(command.getBytes());
+            }
+            putSubmitCommand();
         }
-        putMoveToCommand();
-        for( int i=0;i<values.length;i++ ){
-            String command = String.valueOf(CommandType.setIkX.get_uC_command_code() + i) + "=" + String.valueOf(values[i]);
-            btCon.sendMessage(command.getBytes());
-        }
-        putSubmitCommand();
     }
 
     public void putAccelerometerCommand(float pitch, float roll) throws Exception{
-        if (ctMode != CommandTypeMode.ikMode){
-            setPlatformMode(CommandTypeMode.ikMode);
+        if (isTransferUnlocked) {
+            if (ctMode != CommandTypeMode.ikMode) {
+                setPlatformMode(CommandTypeMode.ikMode);
+            }
+            putMoveToCommand();
+            String command = CommandType.setIkPitch.get_uC_command_code_as_string() + "=" + String.valueOf(pitch);
+            btCon.sendMessage(command.getBytes());
+            command = CommandType.setIkRoll.get_uC_command_code_as_string() + "=" + String.valueOf(roll);
+            btCon.sendMessage(command.getBytes());
+            putSubmitCommand();
         }
-        putMoveToCommand();
-        String command = CommandType.setIkPitch.get_uC_command_code_as_string() + "=" + String.valueOf(pitch);
-        btCon.sendMessage(command.getBytes());
-        command = CommandType.setIkRoll.get_uC_command_code_as_string() + "=" + String.valueOf(roll);
-        btCon.sendMessage(command.getBytes());
-        putSubmitCommand();
     }
 
     //X is swaped with Y intentionally
     public void putTargetCommand(float x, float y) throws Exception{
-        if (ctMode != CommandTypeMode.pidMode){
-            setPlatformMode(CommandTypeMode.pidMode);
-        }
-        if (isModeStarted == false){
-            putStartModeCommand();
-        }
+        if (isTransferUnlocked) {
+            if (ctMode != CommandTypeMode.pidMode) {
+                setPlatformMode(CommandTypeMode.pidMode);
+            }
+            if (isModeStarted == false) {
+                putStartModeCommand();
+            }
 
-        putMoveToCommand();
-        String command = CommandType.setSetpointY.get_uC_command_code_as_string() + "=" + String.valueOf(x);
-        btCon.sendMessage(command.getBytes());
-        command = CommandType.setSetpointX.get_uC_command_code_as_string() + "=" + String.valueOf(-y);
-        btCon.sendMessage(command.getBytes());
-        putSubmitCommand();
+            putMoveToCommand();
+            String command = CommandType.setSetpointY.get_uC_command_code_as_string() + "=" + String.valueOf(x);
+            btCon.sendMessage(command.getBytes());
+            command = CommandType.setSetpointX.get_uC_command_code_as_string() + "=" + String.valueOf(-y);
+            btCon.sendMessage(command.getBytes());
+            putSubmitCommand();
+        }
     }
 
     public Command readCommand(byte[] bytes){
