@@ -1,7 +1,5 @@
 package com.oldwoodsoftware.steward.view.fragment;
 
-import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +9,16 @@ import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.model.PlatformContext;
-import com.oldwoodsoftware.steward.model.event.AccelerometerEvents;
-import com.oldwoodsoftware.steward.model.event.FragmentEvent;
+import com.oldwoodsoftware.steward.model.event.AccelerometerFragmentEvents;
+import com.oldwoodsoftware.steward.model.event.FragmentEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.AccelerometerFragmentStateListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccelerometerFragment extends GeneralFragment{
+    private List<AccelerometerFragmentStateListener> stateListeners = new ArrayList<AccelerometerFragmentStateListener>();
+
     private TextView textview1;
     private TextView textview2;
     private Button button;
@@ -26,9 +26,6 @@ public class AccelerometerFragment extends GeneralFragment{
     private TextView textRoll;
 
     private boolean active = false;
-
-    private Activity parentActivity;
-    private List<AccelerometerFragmentStateListener> stateListeners = new ArrayList<AccelerometerFragmentStateListener>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,9 +36,6 @@ public class AccelerometerFragment extends GeneralFragment{
     // Set the associated text for the title
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentActivity = getActivity();
-        //stateListeners.add((AccelerometerFragmentStateListener) parentActivity);
-
         View view = inflater.inflate(R.layout.accelerometer, container, false);
         textview1 = (TextView) view.findViewById(R.id.accelerometer_TextView1);
         textview1.setText(getString(R.string.accelerometer_TV_tip1));
@@ -93,19 +87,19 @@ public class AccelerometerFragment extends GeneralFragment{
     }
 
     @Override
-    public String toString(){
-        return "Accelerometer";
-    }
-
-    public FragmentEvent createFragmentEvent(PlatformContext context){
-        return new AccelerometerEvents(this,context);
+    public FragmentEvents createFragmentEvent(PlatformContext context){
+        return new AccelerometerFragmentEvents(this,context);
     }
 
     @Override
-    public void addFragmentListener(FragmentEvent fe) {
+    public void addFragmentListener(FragmentEvents fe) {
         try {
             stateListeners.add((AccelerometerFragmentStateListener) fe);
         }catch (ClassCastException ex){}
     }
 
+    @Override
+    public String toString(){
+        return "Accelerometer";
+    }
 }

@@ -1,19 +1,14 @@
 package com.oldwoodsoftware.steward.model.event;
 
-import android.app.Activity;
-
 import com.oldwoodsoftware.steward.model.PlatformContext;
 import com.oldwoodsoftware.steward.model.responsibility.listener.AccelerometerFragmentStateListener;
 import com.oldwoodsoftware.steward.model.responsibility.listener.AccelerometerHandlerListener;
 import com.oldwoodsoftware.steward.view.fragment.AccelerometerFragment;
-import com.oldwoodsoftware.steward.view.fragment.FragmentType;
 
-public class AccelerometerEvents extends FragmentEvent implements AccelerometerFragmentStateListener, AccelerometerHandlerListener{
-
+public class AccelerometerFragmentEvents extends FragmentEvents implements AccelerometerFragmentStateListener, AccelerometerHandlerListener{
     AccelerometerFragment own;
-    PlatformContext pContext;
 
-    public AccelerometerEvents(AccelerometerFragment fragment, PlatformContext context){
+    public AccelerometerFragmentEvents(AccelerometerFragment fragment, PlatformContext context){
         own = fragment;
         pContext = context;
         pContext.getAccHandler().addSensorChangedListener(this);

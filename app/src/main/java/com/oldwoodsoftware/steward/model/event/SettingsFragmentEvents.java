@@ -7,12 +7,10 @@ import com.oldwoodsoftware.steward.model.bluetooth.CmdProtocol;
 import com.oldwoodsoftware.steward.model.responsibility.listener.SettingsFragmentListener;
 import com.oldwoodsoftware.steward.view.fragment.SettingsFragment;
 
-public class SettingsEvents extends FragmentEvent implements SettingsFragmentListener{
-
+public class SettingsFragmentEvents extends FragmentEvents implements SettingsFragmentListener{
     SettingsFragment own;
-    PlatformContext pContext;
 
-    public SettingsEvents(SettingsFragment fragment, PlatformContext context){
+    public SettingsFragmentEvents(SettingsFragment fragment, PlatformContext context){
         own = fragment;
         pContext = context;
     }

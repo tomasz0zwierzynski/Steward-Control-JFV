@@ -1,12 +1,10 @@
 package com.oldwoodsoftware.steward.model;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import com.oldwoodsoftware.steward.R;
 
 public class InverseKinematics {
-
     private Context context;
 
     private float[] minXYZABCranges = new float[6]; //0-X 1-Y 2-Z 3-A 4-B 5-C
@@ -25,6 +23,11 @@ public class InverseKinematics {
         for(int i=0;i<currentXYZABCvalues.length;i++){
             currentXYZABCvalues[i] = XYZABC[i];
         }
+    }
+
+    public void setCurrentXYZABCvalues(float value, int index){
+        currentXYZABCvalues[index] = value;
+        //object like Servo would emit changedCurrentValue signal;
     }
 
     public void calculateCurrentXYZABCvalues(int[] sliderProgresses){

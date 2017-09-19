@@ -7,23 +7,15 @@ import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
 
-public class TitleElement  extends GeneralElement {
+public class TitleListElement extends GeneralListElement {
 
-    public TitleElement(String _name, String _text){
+    public TitleListElement(String _name, String _text){
         name = _name;
         tvText = _text;
     }
 
     public String getName(){
         return name;
-    }
-
-    public String getText(){
-        return tvText;
-    }
-
-    public void setName(String _name){
-        name = _name;
     }
 
     public void setText(String _text){

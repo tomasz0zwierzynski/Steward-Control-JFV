@@ -57,6 +57,7 @@ public enum CommandType {
     getIkPitch(773),
     getIkYaw(774),
     getFreeHeap(775),
+    getCpuUsage(776),
     //etc
     ;
 
@@ -180,6 +181,10 @@ public enum CommandType {
                 return CommandType.getIkPitch;
             case 774:
                 return CommandType.getIkYaw;
+            case 775:
+                return CommandType.getFreeHeap;
+            case 776:
+                return CommandType.getCpuUsage;
             default:
                 return CommandType.empty;
         }

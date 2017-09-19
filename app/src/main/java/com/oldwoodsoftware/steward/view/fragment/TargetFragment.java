@@ -1,21 +1,16 @@
 package com.oldwoodsoftware.steward.view.fragment;
 
-import android.app.Activity;
-import android.os.StrictMode;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.oldwoodsoftware.steward.MainActivity;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.model.PlatformContext;
-import com.oldwoodsoftware.steward.model.event.FragmentEvent;
-import com.oldwoodsoftware.steward.model.event.TargetEvents;
+import com.oldwoodsoftware.steward.model.event.FragmentEvents;
+import com.oldwoodsoftware.steward.model.event.TargetFragmentEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.TargetFragmentListener;
 import com.oldwoodsoftware.steward.view.PanelView;
 
@@ -23,12 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TargetFragment extends GeneralFragment {
+    private List<TargetFragmentListener> targetListeners = new ArrayList<TargetFragmentListener>();
+
     private TextView textview1;
     private TextView textview2;
     private PanelView panelview;
-
-    private Activity parentActivity;
-    private List<TargetFragmentListener> targetListeners = new ArrayList<TargetFragmentListener>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,9 +33,6 @@ public class TargetFragment extends GeneralFragment {
     // Set the associated text for the title
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentActivity = getActivity();
-        //targetListeners.add( (TargetFragmentListener) parentActivity );
-
         View view = inflater.inflate(R.layout.target, container, false);
         textview1 = (TextView) view.findViewById(R.id.target_TextView1);
         textview1.setText(getString(R.string.target_TV_tip1));
@@ -53,32 +44,6 @@ public class TargetFragment extends GeneralFragment {
             ratio = tfl.getPanelLenghtRatio();
         }
         panelview.setPanelRatio(ratio);
-       /* panelview.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                final int action = event.getAction();
-                switch(action){
-                    case (DragEvent.ACTION_DRAG_ENTERED):
-
-                        break;
-                    case (DragEvent.ACTION_DRAG_LOCATION):
-
-                        break;
-                    case (DragEvent.ACTION_DRAG_EXITED):
-
-                        break;
-                    default:
-                        break;
-                }
-                int x = (int)event.getX();
-                int y = (int)event.getY();
-                if (panelview.isInRect(x,y)){
-                    ((PanelView) v).setTargetPosition((int)event.getX(),(int)event.getY());
-                    TargetFragment.this.onTargetPositionChanged((int)event.getX(),(int)event.getY());
-                }
-                return false;
-            }
-        });*/
 
         panelview.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -128,12 +93,12 @@ public class TargetFragment extends GeneralFragment {
         return "Target";
     }
 
-    public FragmentEvent createFragmentEvent(PlatformContext context){
-        return new TargetEvents(this,context);
+    public FragmentEvents createFragmentEvent(PlatformContext context){
+        return new TargetFragmentEvents(this,context);
     }
 
     @Override
-    public void addFragmentListener(FragmentEvent fe) {
+    public void addFragmentListener(FragmentEvents fe) {
         try {
             targetListeners.add((TargetFragmentListener) fe);
         }catch (ClassCastException ex){}

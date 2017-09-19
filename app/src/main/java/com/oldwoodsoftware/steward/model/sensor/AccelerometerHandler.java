@@ -68,6 +68,12 @@ public class AccelerometerHandler implements SensorEventListener {
         float y = e.values[1];
         float z = e.values[2];
 
+        try{
+            z  = (float) Math.sqrt(9.81*9.81 - x*x - y*y );
+        }catch (Exception ex){
+            z = 0;
+        }
+
         //old equations that seemed to work, but honestly I don't believe that
         float roll = (float) (Math.atan(x / Math.sqrt(Math.pow(z, 2) + Math.pow(y, 2))));
         float pitch = (float) (Math.atan(y / Math.sqrt(Math.pow(x, 2) + Math.pow(z, 2))));

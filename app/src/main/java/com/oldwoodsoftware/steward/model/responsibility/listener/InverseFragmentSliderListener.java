@@ -5,4 +5,5 @@ public interface InverseFragmentSliderListener {
     void setInverseFragmentSliderTexts(String[] texts);
     String[] getInverseFragmentSliderTexts();
     int[] getCurrentSliderProgresses();
+    void onZeroButtonPressed();
 }

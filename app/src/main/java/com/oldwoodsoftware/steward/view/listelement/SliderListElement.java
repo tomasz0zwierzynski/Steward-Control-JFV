@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.model.responsibility.patron.SliderPatron;
 
-public class SliderElement extends GeneralElement{
+public class SliderListElement extends GeneralListElement {
 
     private TextView textview2;
     private String tvText2;
@@ -20,7 +20,7 @@ public class SliderElement extends GeneralElement{
 
     private int init_progress;
 
-    public SliderElement(SliderPatron _parent,int _init_progress ,String _name, String _text, String _text2){
+    public SliderListElement(SliderPatron _parent, int _init_progress , String _name, String _text, String _text2){
         parent = _parent;
 
         name = _name;
@@ -31,14 +31,6 @@ public class SliderElement extends GeneralElement{
 
     public String getName(){
         return name;
-    }
-
-    public String getText(){
-        return tvText;
-    }
-
-    public void setName(String _name){
-        name = _name;
     }
 
     public void setText(String _text){
@@ -74,7 +66,7 @@ public class SliderElement extends GeneralElement{
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 iProgress = progress;
-                parent.onSliderProgressChanged(SliderElement.this);
+                parent.onSliderProgressChanged(SliderListElement.this);
             }
 
             @Override

@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.oldwoodsoftware.steward.model.PlatformContext;
-import com.oldwoodsoftware.steward.model.event.FragmentEvent;
+import com.oldwoodsoftware.steward.model.event.FragmentEvents;
 import com.oldwoodsoftware.steward.view.fragment.*;
 
 import java.util.ArrayList;
@@ -37,12 +37,12 @@ public class StewardFragmentPagerAdapter extends FragmentPagerAdapter {
         return fragments.get(position);
     }
 
-    public List<FragmentEvent> createFragmentEvents() {
-        List<FragmentEvent> fragmentEvents = new ArrayList<FragmentEvent>();
+    public List<FragmentEvents> createFragmentEvents() {
+        List<FragmentEvents> fragmentEvents = new ArrayList<FragmentEvents>();
         for (GeneralFragment gf: fragments){
-            FragmentEvent fe = gf.createFragmentEvent(pContext);
+            FragmentEvents fe = gf.createFragmentEvent(pContext);
             gf.addFragmentListener(fe);
-            fragmentEvents.add( gf.createFragmentEvent(pContext) );
+            fragmentEvents.add( fe );
         }
         return fragmentEvents;
     }
@@ -66,7 +66,6 @@ public class StewardFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        // Generate title based on item position
         return fragments.get(position).toString();
     }
 }

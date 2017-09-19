@@ -1,8 +1,8 @@
 package com.oldwoodsoftware.steward.model.responsibility.patron;
 
-import com.oldwoodsoftware.steward.view.listelement.ToggleElement;
+import com.oldwoodsoftware.steward.view.listelement.ToggleListElement;
 
 public interface TogglePatron {
-    void onButtonToggled(ToggleElement sender);
+    void onButtonToggled(ToggleListElement sender);
     void setButtonText(String texts);
 }

@@ -9,14 +9,14 @@ import android.widget.TextView;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.model.responsibility.patron.ButtonPatron;
 
-public class ButtonElement extends GeneralElement {
+public class ButtonListElement extends GeneralListElement {
 
     private Button button;
     private String buttonText;
 
     private ButtonPatron parent;
 
-    public ButtonElement(ButtonPatron _parent, String _name, String _text, String _buttonText){
+    public ButtonListElement(ButtonPatron _parent, String _name, String _text, String _buttonText){
         name = _name;
         tvText = _text;
         buttonText = _buttonText;
@@ -25,14 +25,6 @@ public class ButtonElement extends GeneralElement {
 
     public String getName(){
         return name;
-    }
-
-    public String getText(){
-        return tvText;
-    }
-
-    public void setName(String _name){
-        name = _name;
     }
 
     public void setText(String _text){
@@ -48,7 +40,7 @@ public class ButtonElement extends GeneralElement {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parent.onButtonPressed(ButtonElement.this);
+                parent.onButtonPressed(ButtonListElement.this);
             }
         });
 

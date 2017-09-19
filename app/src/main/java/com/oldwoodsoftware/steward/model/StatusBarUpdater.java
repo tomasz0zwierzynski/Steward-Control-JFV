@@ -12,6 +12,9 @@ public class StatusBarUpdater {
     private TextView ballStatusText2;
     private TextView[] platformStatusText;
 
+    private TextView cpuUsage;
+    private TextView freeHeap;
+
     private MainActivity parentActivity;
 
     public StatusBarUpdater(MainActivity ma){
@@ -27,11 +30,26 @@ public class StatusBarUpdater {
         platformStatusText[4] = (TextView) ma.findViewById(R.id.platformBtext); //B
         platformStatusText[5] = (TextView) ma.findViewById(R.id.platformCtext); //C
 
+        cpuUsage = (TextView) ma.findViewById(R.id.status_freecpu_value);
+        freeHeap = (TextView) ma.findViewById(R.id.status_freeheap);
+
         parentActivity = ma;
     }
 
-    public void updatePlatfromStatus(int slot, String msg){
+    public void updateFreeHeap(int value){
+        freeHeap.setText(" " + String.valueOf(value) + " bytes");
+    }
+
+    public void updateCPUusage(float value){
+        cpuUsage.setText(" " + String.valueOf(value) + " %");
+    }
+
+    public void updatePlatformStatus(int slot, String msg){
         platformStatusText[slot].setText(msg);
+    }
+
+    public void updatePlatformStatus(float pos, int index){
+        platformStatusText[index].setText(String.valueOf(pos));
     }
 
     public void updatePlatformStatus(float[] posvals, boolean show){

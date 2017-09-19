@@ -5,6 +5,7 @@ import android.content.Context;
 import com.oldwoodsoftware.steward.MainActivity;
 import com.oldwoodsoftware.steward.model.bluetooth.BluetoothConnection;
 import com.oldwoodsoftware.steward.model.bluetooth.CmdProtocol;
+import com.oldwoodsoftware.steward.model.event.FragmentEventManager;
 import com.oldwoodsoftware.steward.model.sensor.AccelerometerHandler;
 
 public class PlatformContext {
@@ -18,8 +19,9 @@ public class PlatformContext {
     private StatusBarUpdater statusBar;
     private AccelerometerHandler accHandler;
 
-    private MainActivity parentActivity;
+    private FragmentEventManager fragmentEventManager;
 
+    private MainActivity parentActivity;
 
     public PlatformContext(MainActivity activity){
         parentActivity = activity;
@@ -29,9 +31,19 @@ public class PlatformContext {
         //Creating Accelerometer handler
         accHandler = new AccelerometerHandler(activity);
         //IK paramters
-        ik = new InverseKinematics(activity.getBaseContext(), new float[] {-20,-20,-20,-30,-30,-30}, new float[] {+20,+20,+20,+30,+30,+30} );
+        ik = new InverseKinematics(activity.getBaseContext(), new float[] {-20,-20,-20,-12,-12,-12}, new float[] {+20,+20,+20,+12,+12,+12} );
         //Geometrical parameters
         pg = new PanelGeometrics(activity.getBaseContext(), 150f, 100f); // default: 297.0f, 210.0f
+
+        fragmentEventManager = parentActivity.getFragmentEventManager();
+    }
+
+    public void setFragmentEventManager(FragmentEventManager fem){
+        fragmentEventManager = fem;
+    }
+
+    public FragmentEventManager getFragmentEventManager(){
+        return fragmentEventManager;
     }
 
     public void setBtConnection(BluetoothConnection btConnection) {

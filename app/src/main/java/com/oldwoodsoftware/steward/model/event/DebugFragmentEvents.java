@@ -4,12 +4,10 @@ import com.oldwoodsoftware.steward.model.PlatformContext;
 import com.oldwoodsoftware.steward.model.responsibility.listener.DebugFragmentListener;
 import com.oldwoodsoftware.steward.view.fragment.DebugFragment;
 
-public class DebugEvents extends FragmentEvent implements DebugFragmentListener{
-
+public class DebugFragmentEvents extends FragmentEvents implements DebugFragmentListener{
     DebugFragment own;
-    PlatformContext pContext;
 
-    public DebugEvents(DebugFragment fragment, PlatformContext context){
+    public DebugFragmentEvents(DebugFragment fragment, PlatformContext context){
         own = fragment;
         pContext = context;
     }

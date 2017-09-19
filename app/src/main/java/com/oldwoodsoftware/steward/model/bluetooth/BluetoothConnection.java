@@ -28,7 +28,6 @@ public class BluetoothConnection {
 
     public byte[] _data;
 
-    private Activity mainActivity;
     private List<BluetoothDataListener> btRecievers = new ArrayList<BluetoothDataListener>();
 
     private void getAdapter() {
@@ -48,8 +47,6 @@ public class BluetoothConnection {
     }
 
     public BluetoothConnection(final Activity parent) throws Exception{
-        mainActivity = parent;
-        //btReciever = (BluetoothDataListener) mainActivity;
         //We creating connection when constructing new object
 
         //Get the adapter

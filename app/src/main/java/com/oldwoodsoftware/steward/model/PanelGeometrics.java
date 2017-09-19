@@ -3,11 +3,8 @@ package com.oldwoodsoftware.steward.model;
 import android.content.Context;
 
 public class PanelGeometrics {
-
-    private Context context;
-
-    private float usable_width;
-    private float usable_height;
+    private final float usable_width;
+    private final float usable_height;
 
     private float length_ratio;
 
@@ -18,7 +15,6 @@ public class PanelGeometrics {
     private float ball_y = 0;
 
     public PanelGeometrics(Context _context, float _width_in_mm, float _height_in_mm){
-        context = _context;
         usable_height = _height_in_mm;
         usable_width = _width_in_mm;
         length_ratio = usable_height/usable_width;

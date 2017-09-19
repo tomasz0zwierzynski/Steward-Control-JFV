@@ -1,8 +1,6 @@
 package com.oldwoodsoftware.steward.view.fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import com.oldwoodsoftware.steward.MainActivity;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.model.PlatformContext;
-import com.oldwoodsoftware.steward.model.event.FragmentEvent;
-import com.oldwoodsoftware.steward.model.event.InverseEvents;
+import com.oldwoodsoftware.steward.model.event.FragmentEvents;
+import com.oldwoodsoftware.steward.model.event.InverseFragmentEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.InverseFragmentSliderListener;
 import com.oldwoodsoftware.steward.model.responsibility.patron.ButtonPatron;
 import com.oldwoodsoftware.steward.model.responsibility.patron.SliderPatron;
@@ -24,16 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InverseFragment extends GeneralFragment {
-
-    private Activity parentActivity;
     private List<InverseFragmentSliderListener> sliderListeners = new ArrayList<InverseFragmentSliderListener>();
 
-    private InverseFragment.InverseAdapter inverseAdapter;
+    private InverseListAdapter inverseAdapter;
 
     private int[] initial_progresses = {500,500,500,500,500,500};
     private String[] initial_strings = {" ", " ", " ", " ", " ", " "};
 
-    public InverseAdapter getInverseAdapter() {
+    public InverseListAdapter getInverseAdapter() {
         return inverseAdapter;
     }
 
@@ -46,7 +41,6 @@ public class InverseFragment extends GeneralFragment {
     // Set the associated text for the title
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentActivity = getActivity();
 
         for(InverseFragmentSliderListener ifl : sliderListeners){
             initial_progresses = ifl.getCurrentSliderProgresses();
@@ -56,10 +50,22 @@ public class InverseFragment extends GeneralFragment {
         View view = inflater.inflate(R.layout.inverse, container, false);
 
         final ListView listview = (ListView) view.findViewById(R.id.inverse_listview);
-        inverseAdapter = new InverseFragment.InverseAdapter();
+        inverseAdapter = new InverseListAdapter();
         listview.setAdapter(inverseAdapter);
 
         return view;
+    }
+
+    @Override
+    public FragmentEvents createFragmentEvent(PlatformContext context){
+        return new InverseFragmentEvents(this, context);
+    }
+
+    @Override
+    public void addFragmentListener(FragmentEvents fe) {
+        try {
+            sliderListeners.add((InverseFragmentSliderListener) fe);
+        }catch (ClassCastException ex){}
     }
 
     @Override
@@ -67,14 +73,13 @@ public class InverseFragment extends GeneralFragment {
         return "Inverse";
     }
 
-    public class InverseAdapter extends BaseAdapter implements SliderPatron, ButtonPatron{
-
-        private List<GeneralElement> elements;
+    public class InverseListAdapter extends BaseAdapter implements SliderPatron, ButtonPatron{
+        private List<GeneralListElement> elements;
 
         private int[] sliderValues = new int[6];
-        private List<SliderElement> sliderObjects = new ArrayList<SliderElement>();
+        private List<SliderListElement> sliderObjects = new ArrayList<SliderListElement>();
 
-        public InverseAdapter(){
+        public InverseListAdapter(){
             InverseFragment t = InverseFragment.this;
 
             for (int i=0;i<6;i++){
@@ -83,35 +88,35 @@ public class InverseFragment extends GeneralFragment {
 
             //Creating whole list here, because it is static
             //listLength = elementNames.length;
-            elements = new ArrayList<GeneralElement>();
-            elements.add(new TwolineElement("invTitle",getString(R.string.inverse_TV_tip1),getString(R.string.inverse_TV_tip2)));
+            elements = new ArrayList<GeneralListElement>();
+            elements.add(new TwolineListElement("invTitle",getString(R.string.inverse_TV_tip1),getString(R.string.inverse_TV_tip2)));
 
-            SliderElement se = new SliderElement(this,t.initial_progresses[0],"invX",getString(R.string.inverse_TV_X),t.initial_strings[0]);
+            SliderListElement se = new SliderListElement(this,t.initial_progresses[0],"invX",getString(R.string.inverse_TV_X),t.initial_strings[0]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,t.initial_progresses[1],"invY",getString(R.string.inverse_TV_Y),t.initial_strings[1]);
+            se = new SliderListElement(this,t.initial_progresses[1],"invY",getString(R.string.inverse_TV_Y),t.initial_strings[1]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,t.initial_progresses[2],"invZ",getString(R.string.inverse_TV_Z),t.initial_strings[2]);
+            se = new SliderListElement(this,t.initial_progresses[2],"invZ",getString(R.string.inverse_TV_Z),t.initial_strings[2]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,t.initial_progresses[3],"invA",getString(R.string.inverse_TV_A),t.initial_strings[3]);
+            se = new SliderListElement(this,t.initial_progresses[3],"invA",getString(R.string.inverse_TV_A),t.initial_strings[3]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,t.initial_progresses[4],"invB",getString(R.string.inverse_TV_B),t.initial_strings[4]);
+            se = new SliderListElement(this,t.initial_progresses[4],"invB",getString(R.string.inverse_TV_B),t.initial_strings[4]);
             elements.add(se);
             sliderObjects.add(se);
-            se = new SliderElement(this,t.initial_progresses[5],"invC",getString(R.string.inverse_TV_C),t.initial_strings[5]);
+            se = new SliderListElement(this,t.initial_progresses[5],"invC",getString(R.string.inverse_TV_C),t.initial_strings[5]);
             elements.add(se);
             sliderObjects.add(se);
 
-            ButtonElement be = new ButtonElement(this,"invButton",getString(R.string.inverse_TV_button),getString(R.string.inverse_Buton_invButton));
+            ButtonListElement be = new ButtonListElement(this,"invButton",getString(R.string.inverse_TV_button),getString(R.string.inverse_Buton_invButton));
             elements.add(be);
             //elements.add(new )
         }
 
         @Override
-        public void onSliderProgressChanged(SliderElement sender) {
+        public void onSliderProgressChanged(SliderListElement sender) {
             int index = sliderObjects.indexOf(sender);
             sliderValues[index] = sender.getProgress();
 
@@ -148,8 +153,11 @@ public class InverseFragment extends GeneralFragment {
         }
 
         @Override
-        public void onButtonPressed(ButtonElement sender) {
-            for (SliderElement se : sliderObjects){
+        public void onButtonPressed(ButtonListElement sender) {
+            for (InverseFragmentSliderListener lis :sliderListeners){
+                lis.onZeroButtonPressed();
+            }
+            for (SliderListElement se : sliderObjects){
                 se.setSeekbarProgress(500);
             }
         }
@@ -159,17 +167,5 @@ public class InverseFragment extends GeneralFragment {
 
         }
     }
-
-    public FragmentEvent createFragmentEvent(PlatformContext context){
-        return new InverseEvents(this, context);
-    }
-
-    @Override
-    public void addFragmentListener(FragmentEvent fe) {
-        try {
-            sliderListeners.add((InverseFragmentSliderListener) fe);
-        }catch (ClassCastException ex){}
-    }
-
 
 }

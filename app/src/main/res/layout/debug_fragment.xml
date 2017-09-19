@@ -67,12 +67,19 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/debugLog"
-            android:layout_weight="1" />
+        <ScrollView
+            android:id="@+id/debug_scroll"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:fillViewport="true">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/debugLog"
+                android:layout_weight="1"
+                android:layout_margin="10dp" />
+        </ScrollView>
 
     </LinearLayout>
 

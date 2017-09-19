@@ -4,12 +4,10 @@ import com.oldwoodsoftware.steward.model.PlatformContext;
 import com.oldwoodsoftware.steward.model.responsibility.listener.TargetFragmentListener;
 import com.oldwoodsoftware.steward.view.fragment.TargetFragment;
 
-public class TargetEvents extends FragmentEvent implements TargetFragmentListener {
-
+public class TargetFragmentEvents extends FragmentEvents implements TargetFragmentListener {
     TargetFragment own;
-    PlatformContext pContext;
 
-    public TargetEvents(TargetFragment fragment, PlatformContext context){
+    public TargetFragmentEvents(TargetFragment fragment, PlatformContext context){
         own = fragment;
         pContext = context;
     }
@@ -20,7 +18,6 @@ public class TargetEvents extends FragmentEvent implements TargetFragmentListene
         float x = pContext.getPG().getTargetX();
         float y = pContext.getPG().getTargetY();
 
-        //TODO: btConenction
         try {
             pContext.getCmdProtocol().putTargetCommand(x,y);
         } catch (Exception e) { }

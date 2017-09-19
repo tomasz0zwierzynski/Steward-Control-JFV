@@ -10,7 +10,7 @@ import android.widget.ToggleButton;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.model.responsibility.patron.TogglePatron;
 
-public class ToggleElement extends GeneralElement {
+public class ToggleListElement extends GeneralListElement {
     private boolean initial_button_state;
 
     private ToggleButton button;
@@ -18,7 +18,7 @@ public class ToggleElement extends GeneralElement {
     private boolean buttonState;
     private TogglePatron parent;
 
-    public ToggleElement(TogglePatron _parent,boolean _initial_button_state ,String _name, String _text){
+    public ToggleListElement(TogglePatron _parent, boolean _initial_button_state , String _name, String _text){
         name = _name;
         tvText = _text;
         parent = _parent;
@@ -27,14 +27,6 @@ public class ToggleElement extends GeneralElement {
 
     public String getName(){
         return name;
-    }
-
-    public String getText(){
-        return tvText;
-    }
-
-    public void setName(String _name){
-        name = _name;
     }
 
     public void setText(String _text){
@@ -55,7 +47,7 @@ public class ToggleElement extends GeneralElement {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 buttonState = isChecked;
-                parent.onButtonToggled(ToggleElement.this);
+                parent.onButtonToggled(ToggleListElement.this);
             }
         });
 

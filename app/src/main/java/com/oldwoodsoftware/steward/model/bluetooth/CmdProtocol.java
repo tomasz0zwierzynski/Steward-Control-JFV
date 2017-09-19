@@ -1,7 +1,6 @@
 package com.oldwoodsoftware.steward.model.bluetooth;
 
 import com.oldwoodsoftware.steward.model.PlatformContext;
-import com.oldwoodsoftware.steward.model.event.DebugEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
 
 import java.nio.charset.StandardCharsets;
@@ -35,7 +34,7 @@ public class CmdProtocol implements BluetoothDataListener {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Timer run()");
+                //System.out.println("Timer run()");
                 isTransferUnlocked = true;
             }
         },TRANSFER_INTERVAL_MS,TRANSFER_INTERVAL_MS);
@@ -59,6 +58,7 @@ public class CmdProtocol implements BluetoothDataListener {
                 btCon.sendMessage(command.getBytes());
             }
             putSubmitCommand();
+            isTransferUnlocked = false;
         }
     }
 
@@ -73,6 +73,7 @@ public class CmdProtocol implements BluetoothDataListener {
             command = CommandType.setIkRoll.get_uC_command_code_as_string() + "=" + String.valueOf(roll);
             btCon.sendMessage(command.getBytes());
             putSubmitCommand();
+            isTransferUnlocked = false;
         }
     }
 
@@ -87,28 +88,13 @@ public class CmdProtocol implements BluetoothDataListener {
             }
 
             putMoveToCommand();
-            String command = CommandType.setSetpointY.get_uC_command_code_as_string() + "=" + String.valueOf(x);
+            String command = CommandType.setSetpointY.get_uC_command_code_as_string() + "=" + String.valueOf(-x);
             btCon.sendMessage(command.getBytes());
             command = CommandType.setSetpointX.get_uC_command_code_as_string() + "=" + String.valueOf(-y);
             btCon.sendMessage(command.getBytes());
             putSubmitCommand();
+            isTransferUnlocked = false;
         }
-    }
-
-    public Command readCommand(byte[] bytes){
-        String sBytes = new String(bytes, StandardCharsets.UTF_8);
-        String sCommand = sBytes.substring(0, sBytes.indexOf('='));
-        String sValue = sBytes.substring(sBytes.indexOf('=')+1, sBytes.length());
-
-        int command = Integer.parseInt(sCommand);
-        float value = Float.parseFloat(sValue);
-
-        //TEMPORALY
-        System.out.println("Recieved: " + CommandType.getCommandType(command).toString()+"="+String.valueOf(value));
-
-        ((DebugEvents)pContext.getParentActivity().getFragmentEvents().get(4)).printCommandLine(CommandType.getCommandType(command).toString()+"="+String.valueOf(value));
-
-        return new Command( CommandType.getCommandType(command),value) ;
     }
 
     public void putCommand(String command) throws Exception{
@@ -121,6 +107,8 @@ public class CmdProtocol implements BluetoothDataListener {
         String msg = CommandType.setMode.get_uC_command_code_as_string() + "=" + mode.get_uC_mode_as_string();
         btCon.sendMessage(msg.getBytes());
         ctMode = mode;
+
+        putStartModeCommand();
     }
 
     public void putMoveToCommand() throws Exception{
@@ -147,16 +135,19 @@ public class CmdProtocol implements BluetoothDataListener {
         //TODO: what about expected returns
 
         commandReciever.recieveCommand(cmd);
-        /*
-        if(cmd.commandType == CommandType.getSetpointX){
+    }
 
-            String sXerr = String.valueOf(cmd.value);
-            pContext.getStatusBar().updatePlatfromStatus(0,sXerr);
-            //pContext.getIK().set
-        }else if(cmd.commandType == CommandType.getSetpointY){
-            String sYerr = String.valueOf(cmd.value);
-            pContext.getStatusBar().updatePlatfromStatus(1,sYerr);
-        }
-        */
+    public Command readCommand(byte[] bytes){
+        String sBytes = new String(bytes, StandardCharsets.UTF_8);
+        String sCommand = sBytes.substring(0, sBytes.indexOf('='));
+        String sValue = sBytes.substring(sBytes.indexOf('=')+1, sBytes.length());
+
+        int command = Integer.parseInt(sCommand);
+        float value = Float.parseFloat(sValue);
+
+        //TEMPORALY
+        System.out.println("Recieved: " + CommandType.getCommandType(command).toString()+"="+String.valueOf(value));
+
+        return new Command( CommandType.getCommandType(command),value) ;
     }
 }

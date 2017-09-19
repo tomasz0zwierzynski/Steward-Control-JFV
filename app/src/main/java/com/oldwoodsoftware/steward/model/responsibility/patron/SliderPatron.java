@@ -1,8 +1,8 @@
 package com.oldwoodsoftware.steward.model.responsibility.patron;
 
-import com.oldwoodsoftware.steward.view.listelement.SliderElement;
+import com.oldwoodsoftware.steward.view.listelement.SliderListElement;
 
 public interface SliderPatron {
-    void onSliderProgressChanged(SliderElement sender);
+    void onSliderProgressChanged(SliderListElement sender);
     void setSliderText(String[] texts);
 }

@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.oldwoodsoftware.steward.model.PlatformContext;
-import com.oldwoodsoftware.steward.model.event.FragmentEvent;
+import com.oldwoodsoftware.steward.model.event.FragmentEventManager;
+import com.oldwoodsoftware.steward.model.event.FragmentEvents;
+import com.oldwoodsoftware.steward.view.NonSwipeableViewPager;
 import com.oldwoodsoftware.steward.view.fragment.*;
 import com.oldwoodsoftware.steward.view.StewardFragmentPagerAdapter;
 
@@ -17,7 +19,10 @@ public class MainActivity extends AppCompatActivity {
 
     private StewardFragmentPagerAdapter fragmentAdapter;
 
-    private List<FragmentEvent> fragmentEvents;
+    //TODO: Wrap List to a FragmentEventsManager class with
+    private List<FragmentEvents> fragmentEvents;
+    private FragmentEventManager fragmentEventManager;
+
     private PlatformContext platformContext;
 
     @Override
@@ -28,11 +33,13 @@ public class MainActivity extends AppCompatActivity {
         platformContext = new PlatformContext(this);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = (NonSwipeableViewPager) findViewById(R.id.viewpager);
         fragmentAdapter = new StewardFragmentPagerAdapter(getSupportFragmentManager(),platformContext);
         viewPager.setAdapter(fragmentAdapter);
 
-        fragmentEvents = fragmentAdapter.createFragmentEvents();
+        fragmentEventManager = new FragmentEventManager(fragmentAdapter);
+        //fragmentEvents = fragmentAdapter.createFragmentEvents();
+        platformContext.setFragmentEventManager(fragmentEventManager);
 
         // Give the PagerSlidingTabStrip the ViewPager
         PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -40,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 try {
+                    //that shoult not be here!!
                     ((AccelerometerFragment) fragmentAdapter.getItem(FragmentType.Accelerometer)).changeState(false);
                 }catch(IllegalStateException ex){ }
             }
@@ -66,8 +74,12 @@ public class MainActivity extends AppCompatActivity {
     // setCurrentBallPosition();
     // statusBar.setBall();
 
-    public List<FragmentEvent> getFragmentEvents(){
-        return fragmentEvents;
+    //public List<FragmentEvents> getFragmentEvents(){
+    //    return fragmentEvents;
+    //}
+
+    public FragmentEventManager getFragmentEventManager(){
+        return fragmentEventManager;
     }
 
     @Override

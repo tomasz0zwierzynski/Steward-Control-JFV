@@ -1,6 +1,9 @@
 package com.oldwoodsoftware.steward.model.bluetooth;
 
 import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.model.event.DebugFragmentEvents;
+import com.oldwoodsoftware.steward.view.fragment.FragmentType;
+
 
 public class CommandReciever {
 
@@ -11,8 +14,13 @@ public class CommandReciever {
     }
 
     void recieveCommand(Command cmd){
-        switch (cmd.commandType){
+        String sCmd = cmd.commandType.toString()+"="+String.valueOf(cmd.value);
+        //Put recieved command into debug console temporarly it looks so ugly
+        if ((cmd.commandType != CommandType.getFreeHeap) && (cmd.commandType != CommandType.getCpuUsage) ){
+            ((DebugFragmentEvents) pContext.getFragmentEventManager().getFragmentEvents(FragmentType.Debug)).printCommandLine(sCmd);
+        }
 
+        switch (cmd.commandType){
             case empty:
                 break;
             case fail:
@@ -108,26 +116,41 @@ public class CommandReciever {
             case isPidWorking:
                 break;
             case getIkX:
+                onServosPositionsUpdate(cmd.value,0);
                 break;
             case getIkY:
+                onServosPositionsUpdate(cmd.value,1);
                 break;
             case getIkZ:
+                onServosPositionsUpdate(cmd.value,2);
                 break;
             case getIkRoll:
+                onServosPositionsUpdate(cmd.value,3);
                 break;
             case getIkPitch:
+                onServosPositionsUpdate(cmd.value,4);
                 break;
             case getIkYaw:
+                onServosPositionsUpdate(cmd.value,5);
+                break;
+            case getFreeHeap:
+                pContext.getStatusBar().updateFreeHeap((int)cmd.value);
+                break;
+            case getCpuUsage:
+                pContext.getStatusBar().updateCPUusage(cmd.value);
                 break;
             default:
                 break;
         }
-
-
     }
 
     void onBallPositionUpdate(float pos, boolean is_X_position){
         pContext.getStatusBar().updateBallStatus(pos,is_X_position);
+    }
+
+    void onServosPositionsUpdate(float pos, int index){
+        pContext.getStatusBar().updatePlatformStatus(pos,index);
+        pContext.getIK().setCurrentXYZABCvalues(pos, index);
     }
 
 }

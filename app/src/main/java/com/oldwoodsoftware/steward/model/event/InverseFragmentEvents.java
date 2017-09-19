@@ -2,15 +2,12 @@ package com.oldwoodsoftware.steward.model.event;
 
 import com.oldwoodsoftware.steward.model.PlatformContext;
 import com.oldwoodsoftware.steward.model.responsibility.listener.InverseFragmentSliderListener;
-import com.oldwoodsoftware.steward.view.fragment.FragmentType;
 import com.oldwoodsoftware.steward.view.fragment.InverseFragment;
 
-public class InverseEvents extends FragmentEvent implements InverseFragmentSliderListener {
-
+public class InverseFragmentEvents extends FragmentEvents implements InverseFragmentSliderListener {
     InverseFragment own;
-    PlatformContext pContext;
 
-    public InverseEvents(InverseFragment fragment, PlatformContext context){
+    public InverseFragmentEvents(InverseFragment fragment, PlatformContext context){
         own = fragment;
         pContext = context;
     }
@@ -45,5 +42,13 @@ public class InverseEvents extends FragmentEvent implements InverseFragmentSlide
     @Override
     public int[] getCurrentSliderProgresses() {
         return pContext.getIK().getPromilesFromCurrentXYZABCvalues();
+    }
+
+    @Override
+    public void onZeroButtonPressed() {
+        try {
+            pContext.getCmdProtocol().putInverseCommand(new float[] {0f, 0f, 0f, 0f, 0f, 0f} );
+        } catch (Exception e) {
+        }
     }
 }

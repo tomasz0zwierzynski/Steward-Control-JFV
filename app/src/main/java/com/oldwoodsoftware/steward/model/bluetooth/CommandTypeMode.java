@@ -1,10 +1,11 @@
 package com.oldwoodsoftware.steward.model.bluetooth;
 
 public enum CommandTypeMode {
-    demo(0),
-    pidMode(1),
-    ikMode(2),
-    servoMode(3),
+    none(0),
+    demo(1),
+    pidMode(2),
+    ikMode(3),
+    servoMode(4),
     //etc
     ;
 
@@ -26,12 +27,14 @@ public enum CommandTypeMode {
     public static CommandTypeMode getMode(int i) {
         switch(i) {
             case 0:
-                return CommandTypeMode.demo;
+                return CommandTypeMode.none;
             case 1:
-                return CommandTypeMode.pidMode;
+                return CommandTypeMode.demo;
             case 2:
-                return CommandTypeMode.ikMode;
+                return CommandTypeMode.pidMode;
             case 3:
+                return CommandTypeMode.ikMode;
+            case 4:
                 return CommandTypeMode.servoMode;
             default:
                 return CommandTypeMode.demo;
