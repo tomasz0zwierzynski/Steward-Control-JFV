@@ -7,5 +7,6 @@ public enum BluetoothStatus {
     TurningOff,
     TurningOn,
     Connecting,
-    Disconnected
+    Disconnected,
+    ErrorOccured,
 }

@@ -16,16 +16,6 @@
             android:layout_margin="5dp" />
 
         <TextView
-            android:text="Platform:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView"
-            android:id="@+id/textView8"
-            android:layout_marginTop="5dp" />
-
-        <TextView
             android:text="X:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -234,6 +224,23 @@
             android:layout_alignTop="@+id/status_freecpu_value"
             android:layout_toStartOf="@+id/status_freecpu_value"
             android:id="@+id/textView5" />
+
+        <TextView
+            android:text="Platform:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView8"
+            android:layout_marginTop="23dp"
+            android:layout_below="@+id/textView"
+            android:layout_alignStart="@+id/textView" />
+
+        <TextView
+            android:text="bluetoothMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btMessageText"
+            android:layout_below="@+id/btStatusText"
+            android:layout_alignStart="@+id/textView" />
 
     </RelativeLayout>
 

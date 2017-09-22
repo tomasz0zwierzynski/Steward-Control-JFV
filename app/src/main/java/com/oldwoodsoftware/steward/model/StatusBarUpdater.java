@@ -5,9 +5,11 @@ import android.widget.TextView;
 import com.oldwoodsoftware.steward.MainActivity;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.model.bluetooth.BluetoothStatus;
+import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
 
-public class StatusBarUpdater {
+public class StatusBarUpdater implements BluetoothDataListener{
     private TextView btStatusText;
+    private TextView btMessageText;
     private TextView ballStatusText1;
     private TextView ballStatusText2;
     private TextView[] platformStatusText;
@@ -21,7 +23,7 @@ public class StatusBarUpdater {
         btStatusText = (TextView) ma.findViewById(R.id.btStatusText);
         ballStatusText1 = (TextView) ma.findViewById(R.id.ballTextView);
         ballStatusText2 = (TextView) ma.findViewById(R.id.ballTextView2);
-
+        btMessageText = (TextView) ma.findViewById(R.id.btMessageText);
         platformStatusText = new TextView[6];
         platformStatusText[0] = (TextView) ma.findViewById(R.id.platformXtext); //X
         platformStatusText[1] = (TextView) ma.findViewById(R.id.platformYtext); //Y
@@ -104,6 +106,10 @@ public class StatusBarUpdater {
                 break;
             case Disconnected:
                 btStatusText.setText(R.string.btDisconnected);
+                break;
+            case ErrorOccured:
+                btStatusText.setText(R.string.btErrorOccured);
+                break;
             default:
                 btStatusText.setText("");
         }
@@ -113,4 +119,20 @@ public class StatusBarUpdater {
         btStatusText.setText(msg);
     }
 
+    @Override
+    public void onBluetoothData(byte[] data) {
+        //bytes received...
+        String str = String.valueOf(data.length) + " bytes received.";
+        btMessageText.setText(str);
+    }
+
+    @Override
+    public void onBluetoothStateChanged(BluetoothStatus btStat) {
+        updateBluetoothStatus(btStat);
+    }
+
+    @Override
+    public void onBluetoothMessage(String msg) {
+        btMessageText.setText(msg);
+    }
 }

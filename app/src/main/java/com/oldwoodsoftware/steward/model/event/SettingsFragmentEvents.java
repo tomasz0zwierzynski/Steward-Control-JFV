@@ -17,47 +17,54 @@ public class SettingsFragmentEvents extends FragmentEvents implements SettingsFr
 
     @Override
     public void onBluetoothConnectionButtonChecked() {
-        pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.Connecting);
-
-        try {
-            BluetoothConnection btConnection = new BluetoothConnection(pContext.getParentActivity());
-            CmdProtocol cmdProtocol = new CmdProtocol(btConnection,pContext);
-            btConnection.addBluetoothListener(cmdProtocol);
-            pContext.setBtConnection(btConnection);
-            pContext.setCmdProtocol(cmdProtocol);
-
-        } catch (Exception e) {
-            pContext.getStatusBar().updateBluetoothStatus(e.getMessage());
-        }
-
-        try {
-            if (pContext.getBtConnection().isConnected()) {
-                pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.Connected);
+        //pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.Connecting);
+        if (pContext.getBtConnection().isInitialized() == false) {
+            try {
+                pContext.getBtConnection().init();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            //statusBar.updateBluetoothStatus(e.getMessage());
         }
+
+            try {
+                pContext.getBtConnection().connect();
+                CmdProtocol cmdProtocol = new CmdProtocol(pContext.getBtConnection(), pContext);
+                pContext.getBtConnection().addBluetoothListener(cmdProtocol);
+                pContext.setCmdProtocol(cmdProtocol);
+
+            } catch (Exception e) {
+                //pContext.getStatusBar().updateBluetoothStatus(e.getMessage());
+            }
+
+            try {
+                if (pContext.getBtConnection().isConnected()) {
+                    pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.Connected);
+                }
+            } catch (Exception e) {
+                //statusBar.updateBluetoothStatus(e.getMessage());
+            }
+
+
     }
 
     @Override
     public void onBluetoothConnectionButtonUnchecked() {
 
-        pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.TurningOff);
+        //pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.TurningOff);
 
         try {
             pContext.getBtConnection().disconnect();
         } catch (Exception e) {
-            pContext.getStatusBar().updateBluetoothStatus(e.getMessage());
+            //pContext.getStatusBar().updateBluetoothStatus(e.getMessage());
         }
 
-        pContext.setBtConnection(null);
         pContext.setCmdProtocol(null);
-        pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.Disconnected);
+        //pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.Disconnected);
     }
 
     @Override
     public boolean isBluetoothConnected() {
-        if (pContext.getBtConnection() == null){
+        if (pContext.getBtConnection().isConnected() == false){
             return false;
         }else{
             return true;

@@ -36,6 +36,9 @@ public class PlatformContext {
         pg = new PanelGeometrics(activity.getBaseContext(), 150f, 100f); // default: 297.0f, 210.0f
 
         fragmentEventManager = parentActivity.getFragmentEventManager();
+
+        btConnection = new BluetoothConnection();
+        btConnection.addBluetoothListener(statusBar);
     }
 
     public void setFragmentEventManager(FragmentEventManager fem){

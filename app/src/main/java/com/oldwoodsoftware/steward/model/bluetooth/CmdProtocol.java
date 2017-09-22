@@ -137,6 +137,16 @@ public class CmdProtocol implements BluetoothDataListener {
         commandReciever.recieveCommand(cmd);
     }
 
+    @Override
+    public void onBluetoothStateChanged(BluetoothStatus btStat) {
+
+    }
+
+    @Override
+    public void onBluetoothMessage(String msg) {
+
+    }
+
     public Command readCommand(byte[] bytes){
         String sBytes = new String(bytes, StandardCharsets.UTF_8);
         String sCommand = sBytes.substring(0, sBytes.indexOf('='));

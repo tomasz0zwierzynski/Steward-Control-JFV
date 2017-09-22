@@ -1,6 +1,5 @@
 package com.oldwoodsoftware.steward.model.bluetooth;
 
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -9,6 +8,7 @@ import android.os.Looper;
 
 import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,65 +23,112 @@ public class BluetoothConnection {
     private BluetoothAdapter _adapter;
     private BluetoothDevice _device;
 
-    private boolean stop_request=false;
+    private boolean isReadThreadStopRequest =false;
     private Thread readThread;
+    private Handler mainHandler;
 
-    public byte[] _data;
+    public byte[] _data = new byte[BUFFER_SIZE];
 
-    private List<BluetoothDataListener> btRecievers = new ArrayList<BluetoothDataListener>();
+    private List<BluetoothDataListener> btReceivers = new ArrayList<BluetoothDataListener>();
 
-    private void getAdapter() {
-        _adapter = BluetoothAdapter.getDefaultAdapter();
+    public void addBluetoothListener(BluetoothDataListener listener){
+        btReceivers.add(listener);
     }
-    private void getDevice() {
-        final List<BluetoothDevice> pairedDevices = new ArrayList<BluetoothDevice>(_adapter.getBondedDevices());
-        for (BluetoothDevice device : pairedDevices) {
-            if (device.getName().toUpperCase().startsWith("HC-05")){
-               _device = device;
+
+    public void connect() throws Exception{
+                    //System.out.println("##################: connect();");
+
+        if (_socket == null){
+            throw new Exception("Socket not created properly...");
+        }
+
+        emitConnectionStateChanged(BluetoothStatus.Connecting);
+
+        Thread connectThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                            //System.out.println("##################: connectThread.run();");
+                boolean success = true;
+                try {
+                    _socket = _device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
+                    _socket.connect();
+                } catch (IOException e) {
+                    success = false;
+                    e.printStackTrace();
+                } finally {
+                    final boolean fSuccess;
+                    if (success){
+                        fSuccess = true;
+                    }else{
+                        fSuccess = false;
+                    }
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            connectCallback(fSuccess);
+                        }
+                    });
+                }
             }
+        });
+        connectThread.start();
+        emitMessage("Connect thread started.");
+
+        isReadThreadStopRequest = false;
+    }
+
+    private void connectCallback(boolean isConnected){
+                    //System.out.println("##################: connectCallback(" + String.valueOf(isConnected) + ")");
+        if (isConnected){
+            emitConnectionStateChanged(BluetoothStatus.Connected);
+            createReadThread();
+        }else{
+            emitConnectionStateChanged(BluetoothStatus.ErrorOccured);
+            emitMessage("Could not connect to device. ");
         }
     }
 
-    public void addBluetoothListener(BluetoothDataListener listener){
-        btRecievers.add(listener);
+    public boolean isInitialized(){
+        return ( (_adapter != null) && (_adapter.isEnabled()) && (_device != null) && (_socket != null));
     }
 
-    public BluetoothConnection(final Activity parent) throws Exception{
-        //We creating connection when constructing new object
-
+    public void init() throws Exception{
+                        ///System.out.println("##################: init();");
         //Get the adapter
         getAdapter();
         if (_adapter == null) {
+            emitMessage("No default bluetooth adapter found!");
             throw new Exception("No default bluetooth adapter found!");
         }
 
         //Check if bluetooth is turned on
         if (_adapter.isEnabled() == false){
+            emitMessage("Bluetooth is turned off!");
             throw new Exception("Turn on bluetooth!");
         }
 
         //Get the device from paired devices
         getDevice();
         if (_device == null){
+            emitMessage("Cannot find HC-05 device!");
             throw new Exception("Cannot found HC-05 device!");
         }
 
         //Create communication socket
         _socket = _device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
-         if (_socket == null){
+        if (_socket == null){
+            emitMessage("Could not create Rfcomm socket!");
             throw new Exception("Error while creating RfcommSocket");
-         }
-
-        //TODO: make running this whole connect thing in another thread or something it blocks UI
-        //Simply connect to the device
-        _socket.connect();
-
-        if (_socket.isConnected() == false){
-            throw new Exception("Error while establishing connection!");
         }
 
-        _data = new byte[BUFFER_SIZE];
+        //Get Handler to deal with threads
+        mainHandler = new Handler(Looper.getMainLooper());
 
+    }
+
+    private void createReadThread(){
+                //System.out.println("##################: createReadThread();");
+        emitMessage("Creating reading thread.");
         readThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -89,14 +136,10 @@ public class BluetoothConnection {
                     _data[i] = 0;
                 }
 
-                Handler mainHandler = new Handler(Looper.getMainLooper()); //Used later
-
-                //Why java not allow to define enum here, classes can be defined...
-                //int state=0; //0-data, 1-term_r 2-term_n
                 int ctr=0;
                 byte next;
 
-                while (stop_request == false)
+                while (isReadThreadStopRequest == false)
                 {
                     try
                     {
@@ -111,9 +154,7 @@ public class BluetoothConnection {
                                     @Override
                                     public void run() {
                                         try {
-                                            for(BluetoothDataListener bdl : btRecievers){
-                                                bdl.onBluetoothData(pack);
-                                            }
+                                            emitDataReceived(pack);
                                         } catch (Exception ex) {
                                         }
                                     }
@@ -129,12 +170,16 @@ public class BluetoothConnection {
                             this.wait(100);
                         }
                     }
-                    catch (Exception ex)
-                    { }
+                    catch (Exception ex){                    }
                 }
+                            //System.out.println("##################: readThreadLeaving...");
             }
         });
         readThread.start();
+    }
+
+    public BluetoothConnection(){
+
     }
 
     public boolean isConnected(){
@@ -146,10 +191,12 @@ public class BluetoothConnection {
     }
 
     public void disconnect() throws Exception{
-        stop_request = true;
+        isReadThreadStopRequest = true;
         readThread.join();
         _socket.close();
 
+        emitMessage("Disconnected from device.");
+        emitConnectionStateChanged(BluetoothStatus.Disconnected);
     }
 
     public void sendMessage(byte[] buffer) throws Exception{
@@ -160,7 +207,40 @@ public class BluetoothConnection {
         _socket.getOutputStream().write('\r');
         _socket.getOutputStream().write('\n');
 
-        System.out.println("Send: " + new String(buffer, StandardCharsets.UTF_8));
+        emitMessage("Buffer send: " + new String(buffer, StandardCharsets.UTF_8));
+                    //System.out.println("Send: " + new String(buffer, StandardCharsets.UTF_8));
+    }
+
+    private void getAdapter() {
+        _adapter = BluetoothAdapter.getDefaultAdapter();
+    }
+
+    private void getDevice() {
+        final List<BluetoothDevice> pairedDevices = new ArrayList<BluetoothDevice>(_adapter.getBondedDevices());
+        for (BluetoothDevice device : pairedDevices) {
+            if (device.getName().toUpperCase().startsWith("HC-05")){
+                _device = device;
+            }
+        }
+    }
+
+    private void emitDataReceived(byte[] data){
+                    //System.out.println("##################: emitDataReceived();");
+        for (BluetoothDataListener bdl : btReceivers){
+            bdl.onBluetoothData(data);
+        }
+    }
+
+    private void emitConnectionStateChanged(BluetoothStatus btStatus){
+        for (BluetoothDataListener bdl : btReceivers){
+            bdl.onBluetoothStateChanged(btStatus);
+        }
+    }
+
+    private void emitMessage(String msg){
+        for (BluetoothDataListener bdl : btReceivers){
+            bdl.onBluetoothMessage(msg);
+        }
     }
 
 }
