@@ -1,4 +1,4 @@
-package com.oldwoodsoftware.steward.model.bluetooth;
+package com.oldwoodsoftware.steward.platform.component;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.oldwoodsoftware.steward.model.bluetooth.BluetoothStatus;
 import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
 
 import java.io.IOException;

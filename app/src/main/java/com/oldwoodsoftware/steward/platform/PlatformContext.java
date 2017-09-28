@@ -1,9 +1,10 @@
-package com.oldwoodsoftware.steward.model;
-
-import android.content.Context;
+package com.oldwoodsoftware.steward.platform;
 
 import com.oldwoodsoftware.steward.MainActivity;
-import com.oldwoodsoftware.steward.model.bluetooth.BluetoothConnection;
+import com.oldwoodsoftware.steward.model.InverseKinematics;
+import com.oldwoodsoftware.steward.model.PanelGeometrics;
+import com.oldwoodsoftware.steward.model.StatusBarUpdater;
+import com.oldwoodsoftware.steward.platform.component.BluetoothConnection;
 import com.oldwoodsoftware.steward.model.bluetooth.CmdProtocol;
 import com.oldwoodsoftware.steward.model.event.FragmentEventManager;
 import com.oldwoodsoftware.steward.model.sensor.AccelerometerHandler;
