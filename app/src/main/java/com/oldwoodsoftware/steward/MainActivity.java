@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.model.event.FragmentEventManager;
 import com.oldwoodsoftware.steward.model.event.FragmentEvents;
 import com.oldwoodsoftware.steward.view.NonSwipeableViewPager;

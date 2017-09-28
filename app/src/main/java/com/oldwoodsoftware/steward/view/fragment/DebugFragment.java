@@ -10,7 +10,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
-import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.model.event.DebugFragmentEvents;
 import com.oldwoodsoftware.steward.model.event.FragmentEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.DebugFragmentListener;

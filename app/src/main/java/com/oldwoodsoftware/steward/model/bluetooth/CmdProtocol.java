@@ -1,7 +1,8 @@
 package com.oldwoodsoftware.steward.model.bluetooth;
 
-import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
+import com.oldwoodsoftware.steward.platform.component.BluetoothConnection;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Timer;

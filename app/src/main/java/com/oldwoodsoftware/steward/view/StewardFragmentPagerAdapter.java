@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.model.event.FragmentEvents;
 import com.oldwoodsoftware.steward.view.fragment.*;
 

@@ -7,7 +7,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.oldwoodsoftware.steward.model.bluetooth.BluetoothStatus;
-import com.oldwoodsoftware.steward.model.responsibility.listener.BluetoothDataListener;
+import com.oldwoodsoftware.steward.platform.event.BluetoothEventListener;
+import com.oldwoodsoftware.steward.platform.type.BluetoothState;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -30,10 +31,10 @@ public class BluetoothConnection {
 
     public byte[] _data = new byte[BUFFER_SIZE];
 
-    private List<BluetoothDataListener> btReceivers = new ArrayList<BluetoothDataListener>();
+    private List<BluetoothEventListener> btReceivers = new ArrayList<>();
 
-    public void addBluetoothListener(BluetoothDataListener listener){
-        btReceivers.add(listener);
+    public void addBluetoothListener(BluetoothEventListener bel){
+        btReceivers.add(bel);
     }
 
     public void connect() throws Exception{
@@ -43,7 +44,7 @@ public class BluetoothConnection {
             throw new Exception("Socket not created properly...");
         }
 
-        emitConnectionStateChanged(BluetoothStatus.Connecting);
+        emitConnectionStateChanged(BluetoothState.connecting);
 
         Thread connectThread = new Thread(new Runnable() {
             @Override
@@ -81,10 +82,10 @@ public class BluetoothConnection {
     private void connectCallback(boolean isConnected){
                     //System.out.println("##################: connectCallback(" + String.valueOf(isConnected) + ")");
         if (isConnected){
-            emitConnectionStateChanged(BluetoothStatus.Connected);
+            emitConnectionStateChanged(BluetoothState.connected);
             createReadThread();
         }else{
-            emitConnectionStateChanged(BluetoothStatus.ErrorOccured);
+            emitConnectionStateChanged(BluetoothState.error);
             emitMessage("Could not connect to device. ");
         }
     }
@@ -197,7 +198,7 @@ public class BluetoothConnection {
         _socket.close();
 
         emitMessage("Disconnected from device.");
-        emitConnectionStateChanged(BluetoothStatus.Disconnected);
+        emitConnectionStateChanged(BluetoothState.disconnected);
     }
 
     public void sendMessage(byte[] buffer) throws Exception{
@@ -227,19 +228,19 @@ public class BluetoothConnection {
 
     private void emitDataReceived(byte[] data){
                     //System.out.println("##################: emitDataReceived();");
-        for (BluetoothDataListener bdl : btReceivers){
-            bdl.onBluetoothData(data);
+        for (BluetoothEventListener bdl : btReceivers){
+            bdl.onBluetoothDataReceived(data);
         }
     }
 
-    private void emitConnectionStateChanged(BluetoothStatus btStatus){
-        for (BluetoothDataListener bdl : btReceivers){
-            bdl.onBluetoothStateChanged(btStatus);
+    private void emitConnectionStateChanged(BluetoothState btStatus){
+        for (BluetoothEventListener bdl : btReceivers){
+            bdl.onBluetoothConnectionStateChanged(btStatus);
         }
     }
 
     private void emitMessage(String msg){
-        for (BluetoothDataListener bdl : btReceivers){
+        for (BluetoothEventListener bdl : btReceivers){
             bdl.onBluetoothMessage(msg);
         }
     }

@@ -5,4 +5,11 @@ package com.oldwoodsoftware.steward.platform.type;
  */
 
 public enum BluetoothState {
+    undefined,
+    disconnected,
+    connecting,
+    connected,
+    disconnecting,
+    error,
+    ;
 }

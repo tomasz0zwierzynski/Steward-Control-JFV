@@ -1,7 +1,6 @@
 package com.oldwoodsoftware.steward.model.event;
 
-import com.oldwoodsoftware.steward.model.PlatformContext;
-import com.oldwoodsoftware.steward.model.bluetooth.BluetoothConnection;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.model.bluetooth.BluetoothStatus;
 import com.oldwoodsoftware.steward.model.bluetooth.CmdProtocol;
 import com.oldwoodsoftware.steward.model.responsibility.listener.SettingsFragmentListener;

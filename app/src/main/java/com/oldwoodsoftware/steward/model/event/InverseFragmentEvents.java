@@ -1,6 +1,6 @@
 package com.oldwoodsoftware.steward.model.event;
 
-import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.model.responsibility.listener.InverseFragmentSliderListener;
 import com.oldwoodsoftware.steward.view.fragment.InverseFragment;
 

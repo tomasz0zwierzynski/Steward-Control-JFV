@@ -1,6 +1,6 @@
 package com.oldwoodsoftware.steward.model.bluetooth;
 
-import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.model.event.DebugFragmentEvents;
 import com.oldwoodsoftware.steward.view.fragment.FragmentType;
 

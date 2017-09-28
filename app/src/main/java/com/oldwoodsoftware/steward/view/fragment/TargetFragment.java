@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
-import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.model.event.FragmentEvents;
 import com.oldwoodsoftware.steward.model.event.TargetFragmentEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.TargetFragmentListener;

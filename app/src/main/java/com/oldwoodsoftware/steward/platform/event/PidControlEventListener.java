@@ -5,4 +5,5 @@ package com.oldwoodsoftware.steward.platform.event;
  */
 
 public interface PidControlEventListener {
+    void onPidSetpointChanged(float setpoint);
 }

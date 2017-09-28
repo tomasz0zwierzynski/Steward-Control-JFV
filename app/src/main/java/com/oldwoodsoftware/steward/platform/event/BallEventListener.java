@@ -5,4 +5,6 @@ package com.oldwoodsoftware.steward.platform.event;
  */
 
 public interface BallEventListener {
+    void onBallPositionChanged(float x, float y);
+    void onBallDetectionChanged(boolean isDetected);
 }

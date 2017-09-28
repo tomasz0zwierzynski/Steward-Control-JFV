@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.oldwoodsoftware.steward.R;
-import com.oldwoodsoftware.steward.model.PlatformContext;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.model.event.FragmentEvents;
 import com.oldwoodsoftware.steward.model.event.InverseFragmentEvents;
 import com.oldwoodsoftware.steward.model.responsibility.listener.InverseFragmentSliderListener;

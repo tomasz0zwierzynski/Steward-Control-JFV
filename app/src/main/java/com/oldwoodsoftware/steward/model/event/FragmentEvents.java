@@ -1,7 +1,6 @@
 package com.oldwoodsoftware.steward.model.event;
 
-import com.oldwoodsoftware.steward.model.PlatformContext;
-import com.oldwoodsoftware.steward.view.fragment.GeneralFragment;
+import com.oldwoodsoftware.steward.platform.PlatformContext;
 
 public abstract class FragmentEvents {
     protected PlatformContext pContext;
