@@ -11,7 +11,12 @@ import java.util.List;
 
 public class PidControlCase {
     private float setpoint = 0;
+    private int id;
     private List<PidControlEventListener> pidControlEventListeners = new ArrayList<>();
+
+    public PidControlCase(int id){
+        this.id = id;
+    }
 
     public void setSetpoint(float setpoint) {
         this.setpoint = setpoint;
@@ -28,7 +33,7 @@ public class PidControlCase {
 
     private void emitSetpointChanged(){
         for (PidControlEventListener pcl : pidControlEventListeners){
-            pcl.onPidSetpointChanged(setpoint);
+            pcl.onPidSetpointChanged(id,setpoint);
         }
     }
 }

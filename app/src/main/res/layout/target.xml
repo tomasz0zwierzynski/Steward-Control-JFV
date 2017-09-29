@@ -27,7 +27,7 @@
     <view
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        class="com.oldwoodsoftware.steward.view.PanelView"
+        class="com.oldwoodsoftware.steward.old_view.PanelView"
         android:layout_below="@+id/target_TextView2"
         android:layout_alignLeft="@+id/target_TextView2"
         android:layout_alignStart="@+id/target_TextView2"

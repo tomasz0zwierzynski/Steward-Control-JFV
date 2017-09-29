@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp" />
 
-    <com.oldwoodsoftware.steward.view.NonSwipeableViewPager
+    <com.oldwoodsoftware.steward.fragment.gui.NonSwipeableViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="324dp"
@@ -21,7 +21,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.oldwoodsoftware.steward.view.fragment.StatusBarFragment"
+        android:name="com.oldwoodsoftware.steward.fragment.base.StatusFragment"
         android:id="@+id/fragment" />
 
 </LinearLayout>

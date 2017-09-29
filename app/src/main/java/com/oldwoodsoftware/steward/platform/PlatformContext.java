@@ -1,89 +1,67 @@
 package com.oldwoodsoftware.steward.platform;
 
-import com.oldwoodsoftware.steward.MainActivity;
-import com.oldwoodsoftware.steward.model.InverseKinematics;
-import com.oldwoodsoftware.steward.model.PanelGeometrics;
-import com.oldwoodsoftware.steward.model.StatusBarUpdater;
+import com.oldwoodsoftware.steward.platform.component.BallOnPlate;
 import com.oldwoodsoftware.steward.platform.component.BluetoothConnection;
-import com.oldwoodsoftware.steward.model.bluetooth.CmdProtocol;
-import com.oldwoodsoftware.steward.model.event.FragmentEventManager;
-import com.oldwoodsoftware.steward.model.sensor.AccelerometerHandler;
+import com.oldwoodsoftware.steward.platform.component.GeneralSystem;
+import com.oldwoodsoftware.steward.platform.component.PidControlCase;
+import com.oldwoodsoftware.steward.platform.component.PlateConfiguration;
+import com.oldwoodsoftware.steward.platform.component.PlatformParameters;
+import com.oldwoodsoftware.steward.platform.component.StateMachine;
 
 public class PlatformContext {
+    private BallOnPlate ballOnPlate;
+    private PidControlCase pidControlX;
+    private PidControlCase pidControlY;
+    private PlateConfiguration plateConfiguration;
+    private GeneralSystem generalSystem;
+    private PlatformParameters platformParameters;
+    private StateMachine stateMachine;
+    private BluetoothConnection bluetoothConnection;
 
-    private BluetoothConnection btConnection;
-    private CmdProtocol cmdProtocol;
-
-    private InverseKinematics ik;
-    private PanelGeometrics pg;
-
-    private StatusBarUpdater statusBar;
-    private AccelerometerHandler accHandler;
-
-    private FragmentEventManager fragmentEventManager;
-
-    private MainActivity parentActivity;
-
-    public PlatformContext(MainActivity activity){
-        parentActivity = activity;
-
-        //Creating StatusBarUpdater
-        statusBar = new StatusBarUpdater(activity);
-        //Creating Accelerometer handler
-        accHandler = new AccelerometerHandler(activity);
-        //IK paramters
-        ik = new InverseKinematics(activity.getBaseContext(), new float[] {-20,-20,-20,-12,-12,-12}, new float[] {+20,+20,+20,+12,+12,+12} );
-        //Geometrical parameters
-        pg = new PanelGeometrics(activity.getBaseContext(), 150f, 100f); // default: 297.0f, 210.0f
-
-        fragmentEventManager = parentActivity.getFragmentEventManager();
-
-        btConnection = new BluetoothConnection();
-        btConnection.addBluetoothListener(statusBar);
+    public PlatformContext(){
     }
 
-    public void setFragmentEventManager(FragmentEventManager fem){
-        fragmentEventManager = fem;
+    public void init(){
+        ballOnPlate = new BallOnPlate();
+        pidControlX = new PidControlCase(0);
+        pidControlY = new PidControlCase(1);
+        plateConfiguration = new PlateConfiguration();
+        generalSystem = new GeneralSystem();
+        platformParameters = new PlatformParameters(150f,100f,new float[]{-20,-20,-20,-12,-12,-12}, new float[]{+20,+20,+20,+12,+12,+12});
+        stateMachine = new StateMachine();
+        bluetoothConnection = new BluetoothConnection();
     }
 
-    public FragmentEventManager getFragmentEventManager(){
-        return fragmentEventManager;
+    public BallOnPlate getBallOnPlate() {
+        return ballOnPlate;
     }
 
-    public void setBtConnection(BluetoothConnection btConnection) {
-        this.btConnection = btConnection;
+    public PidControlCase getPidControlX() {
+        return pidControlX;
     }
 
-    public void setCmdProtocol(CmdProtocol cmdProtocol) {
-        this.cmdProtocol = cmdProtocol;
+    public PidControlCase getPidControlY() {
+        return pidControlY;
     }
 
-    public MainActivity getParentActivity() {
-        return parentActivity;
+    public PlateConfiguration getPlateConfiguration() {
+        return plateConfiguration;
     }
 
-    public CmdProtocol getCmdProtocol() {
-        return cmdProtocol;
+    public GeneralSystem getGeneralSystem() {
+        return generalSystem;
     }
 
-    public BluetoothConnection getBtConnection() {
-        return btConnection;
+    public PlatformParameters getPlatformParameters() {
+        return platformParameters;
     }
 
-    public AccelerometerHandler getAccHandler() {
-        return accHandler;
+    public StateMachine getStateMachine() {
+        return stateMachine;
     }
 
-    public StatusBarUpdater getStatusBar() {
-        return statusBar;
-    }
-
-    public PanelGeometrics getPG() {
-        return pg;
-    }
-
-    public InverseKinematics getIK() {
-        return ik;
+    public BluetoothConnection getBluetoothConnection() {
+        return bluetoothConnection;
     }
 
 }

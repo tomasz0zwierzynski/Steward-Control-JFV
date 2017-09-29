@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.oldwoodsoftware.steward.model.bluetooth.BluetoothStatus;
 import com.oldwoodsoftware.steward.platform.event.BluetoothEventListener;
 import com.oldwoodsoftware.steward.platform.type.BluetoothState;
 
