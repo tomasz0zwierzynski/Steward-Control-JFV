@@ -1,15 +1,10 @@
 package com.oldwoodsoftware.steward;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.oldwoodsoftware.steward.fragment.FragmentApplication;
-import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
-import com.oldwoodsoftware.steward.fragment.FragmentActionManager;
 
 import java.util.List;
 
@@ -26,6 +21,15 @@ public class MainActivity extends AppCompatActivity {
         platformContext.init();
 
         fragmentApplication = new FragmentApplication(this);
+
+        //Debug Purposes
+        System.out.println(platformContext.getBallOnPlate().toString());
+        System.out.println(platformContext.getStateMachine().toString());
+        System.out.println(platformContext.getGeneralSystem().toString());
+        System.out.println(platformContext.getPlateConfiguration().toString());
+        System.out.println(platformContext.getPidControlX().toString());
+        System.out.println(platformContext.getPidControlY().toString());
+        System.out.println(platformContext.getBluetoothConnection().toString());
     }
 
     public PlatformContext getPlatformContext(){

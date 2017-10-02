@@ -1,4 +1,4 @@
-package com.oldwoodsoftware.steward.old_view.listelement;
+package com.oldwoodsoftware.steward.fragment.gui.listelement;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
-import com.oldwoodsoftware.steward.old_model.responsibility.patron.SliderPatron;
+import com.oldwoodsoftware.steward.fragment.gui.listpatron.SliderPatron;
 
 public class SliderListElement extends GeneralListElement {
 

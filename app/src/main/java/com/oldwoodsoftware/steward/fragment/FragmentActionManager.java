@@ -1,14 +1,7 @@
 package com.oldwoodsoftware.steward.fragment;
 
-import com.oldwoodsoftware.steward.fragment.action.AccelerometerFragmentAction;
-import com.oldwoodsoftware.steward.fragment.action.DebugFragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
-import com.oldwoodsoftware.steward.fragment.action.SettingsFragmentAction;
-import com.oldwoodsoftware.steward.fragment.base.AccelerometerFragment;
 import com.oldwoodsoftware.steward.fragment.base.GeneralFragment;
-import com.oldwoodsoftware.steward.fragment.base.SettingsFragment;
-import com.oldwoodsoftware.steward.fragment.gui.StewardFragmentPagerAdapter;
-import com.oldwoodsoftware.steward.fragment.type.FragmentType;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.platform.event.BallEventListener;
 import com.oldwoodsoftware.steward.platform.event.BluetoothEventListener;

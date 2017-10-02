@@ -12,9 +12,12 @@ import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.InverseFragmentAction;
 import com.oldwoodsoftware.steward.fragment.base_listener.InverseFragmentListener;
-import com.oldwoodsoftware.steward.old_model.responsibility.patron.ButtonPatron;
-import com.oldwoodsoftware.steward.old_model.responsibility.patron.SliderPatron;
-import com.oldwoodsoftware.steward.old_view.listelement.*;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.ButtonListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.GeneralListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.SliderListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.TwolineListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listpatron.ButtonPatron;
+import com.oldwoodsoftware.steward.fragment.gui.listpatron.SliderPatron;
 
 import java.util.ArrayList;
 import java.util.List;

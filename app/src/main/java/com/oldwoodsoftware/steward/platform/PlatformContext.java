@@ -1,7 +1,8 @@
 package com.oldwoodsoftware.steward.platform;
 
+import com.oldwoodsoftware.steward.core.ProcessContext;
 import com.oldwoodsoftware.steward.platform.component.BallOnPlate;
-import com.oldwoodsoftware.steward.platform.component.BluetoothConnection;
+import com.oldwoodsoftware.steward.core.bluetooth.BluetoothConnection;
 import com.oldwoodsoftware.steward.platform.component.GeneralSystem;
 import com.oldwoodsoftware.steward.platform.component.PidControlCase;
 import com.oldwoodsoftware.steward.platform.component.PlateConfiguration;
@@ -18,6 +19,8 @@ public class PlatformContext {
     private StateMachine stateMachine;
     private BluetoothConnection bluetoothConnection;
 
+    private ProcessContext processContext;
+
     public PlatformContext(){
     }
 
@@ -30,6 +33,9 @@ public class PlatformContext {
         platformParameters = new PlatformParameters(150f,100f,new float[]{-20,-20,-20,-12,-12,-12}, new float[]{+20,+20,+20,+12,+12,+12});
         stateMachine = new StateMachine();
         bluetoothConnection = new BluetoothConnection();
+
+        processContext = new ProcessContext();
+        processContext.init(this);
     }
 
     public BallOnPlate getBallOnPlate() {
@@ -62,6 +68,10 @@ public class PlatformContext {
 
     public BluetoothConnection getBluetoothConnection() {
         return bluetoothConnection;
+    }
+
+    public ProcessContext getProcessContext(){
+        return processContext;
     }
 
 }

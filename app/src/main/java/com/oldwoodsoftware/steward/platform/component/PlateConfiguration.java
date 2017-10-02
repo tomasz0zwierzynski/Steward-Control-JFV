@@ -6,10 +6,6 @@ import com.oldwoodsoftware.steward.platform.type.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Nails on 28.09.2017.
- */
-
 public class PlateConfiguration {
     private Configuration configuration = new Configuration(0,0,0,0,0,0);
     private List<PlateEventListener> plateEventListeners = new ArrayList<>();
@@ -61,6 +57,11 @@ public class PlateConfiguration {
         for (PlateEventListener pel : plateEventListeners){
             pel.onPlateConfigurationChanged(configuration.getCopy());
         }
+    }
+
+    @Override
+    public String toString(){
+        return "platform.component." + this.getClass().getSimpleName() + ", registered listeners " + plateEventListeners.toString();
     }
 
 }

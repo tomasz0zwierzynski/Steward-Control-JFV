@@ -12,8 +12,16 @@ import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.SettingsFragmentAction;
 import com.oldwoodsoftware.steward.fragment.base_listener.SettingsFragmentListener;
-import com.oldwoodsoftware.steward.old_model.responsibility.patron.*;
-import com.oldwoodsoftware.steward.old_view.listelement.*;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.ButtonListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.GeneralListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.MinmaxListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.SliderListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.TitleListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.ToggleListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.TwolineListElement;
+import com.oldwoodsoftware.steward.fragment.gui.listpatron.ButtonPatron;
+import com.oldwoodsoftware.steward.fragment.gui.listpatron.SliderPatron;
+import com.oldwoodsoftware.steward.fragment.gui.listpatron.TogglePatron;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +69,7 @@ public class SettingsFragment extends GeneralFragment {
         return "Settings";
     }
 
-    private class SettingsListAdapter extends BaseAdapter implements SliderPatron, ButtonPatron, TogglePatron{
+    private class SettingsListAdapter extends BaseAdapter implements SliderPatron, ButtonPatron, TogglePatron {
         private List<GeneralListElement> elements;
         private List<MinmaxListElement> minmaxElements;
 

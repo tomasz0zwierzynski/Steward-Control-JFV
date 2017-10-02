@@ -5,7 +5,7 @@ import com.oldwoodsoftware.steward.old_model.responsibility.listener.BluetoothDa
 import com.oldwoodsoftware.steward.fragment.base_listener.SettingsFragmentListener;
 import com.oldwoodsoftware.steward.fragment.base.SettingsFragment;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
-import com.oldwoodsoftware.steward.platform.component.BluetoothConnection;
+import com.oldwoodsoftware.steward.core.bluetooth.BluetoothConnection;
 
 public class SettingsFragmentAction extends FragmentAction implements SettingsFragmentListener, BluetoothDataListener{
     SettingsFragment own;
@@ -26,34 +26,19 @@ public class SettingsFragmentAction extends FragmentAction implements SettingsFr
 
     @Override
     public void onBluetoothConnectionButtonChecked() {
-        //pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.Connecting);
-    /*    if (pContext.getBtConnection().isInitialized() == false) {
+        if (btConnection.isInitialized() == false) {
             try {
-                pContext.getBtConnection().init();
+                btConnection.init();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
             try {
-                pContext.getBtConnection().connect();
-                CmdProtocol cmdProtocol = new CmdProtocol(pContext.getBtConnection(), pContext);
-                pContext.getBtConnection().addBluetoothListener(cmdProtocol);
-                pContext.setCmdProtocol(cmdProtocol);
-
+                btConnection.connect();
             } catch (Exception e) {
                 //pContext.getStatusBar().updateBluetoothStatus(e.getMessage());
             }
-
-            try {
-                if (pContext.getBtConnection().isConnected()) {
-                    pContext.getStatusBar().updateBluetoothStatus(BluetoothStatus.Connected);
-                }
-            } catch (Exception e) {
-                //statusBar.updateBluetoothStatus(e.getMessage());
-            }
-*/
-
     }
 
     @Override

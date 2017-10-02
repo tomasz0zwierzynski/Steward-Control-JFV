@@ -16,6 +16,7 @@ import com.oldwoodsoftware.steward.fragment.base.InverseFragment;
 import com.oldwoodsoftware.steward.fragment.base.SettingsFragment;
 import com.oldwoodsoftware.steward.fragment.base.StatusFragment;
 import com.oldwoodsoftware.steward.fragment.base.TargetFragment;
+import com.oldwoodsoftware.steward.old_model.StatusBarUpdater;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
 
 public class FragmentApplication {
@@ -42,9 +43,10 @@ public class FragmentApplication {
         tabsStrip.setViewPager(viewPager);
         tabsStrip.setIndicatorColor(Color.parseColor("#101082"));
 
-        //All fragments action
+        //Tabs fragments action
         fragmentActionManager = new FragmentActionManager(settingsFragment, inverseFragment, accelerometerFragment, targetFragment, debugFragment, statusFragment);
         fragmentActionManager.connectListenersWithPlatform(platformContext);
         fragmentActionManager.activeFragmentsAction(platformContext);
     }
+
 }

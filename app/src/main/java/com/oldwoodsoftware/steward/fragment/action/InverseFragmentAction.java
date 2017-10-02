@@ -1,13 +1,17 @@
 package com.oldwoodsoftware.steward.fragment.action;
 
+import com.oldwoodsoftware.steward.core.calculation.UnitConverter;
 import com.oldwoodsoftware.steward.fragment.base_listener.InverseFragmentListener;
 import com.oldwoodsoftware.steward.fragment.base.InverseFragment;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
+import com.oldwoodsoftware.steward.platform.component.PlateConfiguration;
 import com.oldwoodsoftware.steward.platform.event.PlateEventListener;
 import com.oldwoodsoftware.steward.platform.type.Configuration;
 
 public class InverseFragmentAction extends FragmentAction implements InverseFragmentListener, PlateEventListener {
     InverseFragment own;
+    PlateConfiguration plateConfiguration;
+    UnitConverter unitConverter;
 
     public InverseFragmentAction(InverseFragment fragment){
         own = fragment;
@@ -60,6 +64,8 @@ public class InverseFragmentAction extends FragmentAction implements InverseFrag
 
     @Override
     public void activate(PlatformContext pContext) {
+        plateConfiguration = pContext.getPlateConfiguration();
+        unitConverter = pContext.getProcessContext().getUnitConverter();
         isActive = true;
     }
 }

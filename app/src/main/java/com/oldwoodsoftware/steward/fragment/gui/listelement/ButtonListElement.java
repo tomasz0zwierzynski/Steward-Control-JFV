@@ -1,4 +1,4 @@
-package com.oldwoodsoftware.steward.old_view.listelement;
+package com.oldwoodsoftware.steward.fragment.gui.listelement;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
-import com.oldwoodsoftware.steward.old_model.responsibility.patron.ButtonPatron;
+import com.oldwoodsoftware.steward.fragment.gui.listpatron.ButtonPatron;
 
 public class ButtonListElement extends GeneralListElement {
 

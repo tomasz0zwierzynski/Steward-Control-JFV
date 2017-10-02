@@ -5,10 +5,6 @@ import com.oldwoodsoftware.steward.platform.event.BallEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Nails on 28.09.2017.
- */
-
 public class BallOnPlate {
     private float posX = 0;
     private float posY = 0;
@@ -59,5 +55,10 @@ public class BallOnPlate {
         for (BallEventListener bel : ballEventListeners){
             bel.onBallPositionChanged(posX, posY);
         }
+    }
+
+    @Override
+    public String toString(){
+        return "platform.component." + this.getClass().getSimpleName() + ", registered listeners " + ballEventListeners.toString();
     }
 }

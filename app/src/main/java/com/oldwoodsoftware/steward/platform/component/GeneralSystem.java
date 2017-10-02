@@ -47,4 +47,10 @@ public class GeneralSystem {
             sel.onSystemFreeHeapChanged(freeHeap);
         }
     }
+
+    @Override
+    public String toString(){
+        return "platform.component." + this.getClass().getSimpleName() + ", registered listeners " + systemEventListeners.toString();
+    }
+
 }

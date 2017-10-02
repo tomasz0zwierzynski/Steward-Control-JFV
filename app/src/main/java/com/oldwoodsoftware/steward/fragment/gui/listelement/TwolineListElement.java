@@ -1,4 +1,4 @@
-package com.oldwoodsoftware.steward.old_view.listelement;
+package com.oldwoodsoftware.steward.fragment.gui.listelement;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.oldwoodsoftware.steward.platform.component;
+package com.oldwoodsoftware.steward.core.bluetooth;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -242,6 +242,11 @@ public class BluetoothConnection {
         for (BluetoothEventListener bdl : btReceivers){
             bdl.onBluetoothMessage(msg);
         }
+    }
+
+    @Override
+    public String toString(){
+        return "core.bluetooth." + this.getClass().getSimpleName() + ", registered listeners " + btReceivers.toString() + "/n Connected: " + String.valueOf(isConnected());
     }
 
 }

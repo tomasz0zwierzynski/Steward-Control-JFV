@@ -19,7 +19,7 @@ import com.oldwoodsoftware.steward.fragment.base_listener.DebugFragmentListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DebugFragment extends GeneralFragment implements BluetoothDataListener {
+public class DebugFragment extends GeneralFragment {
     List<DebugFragmentListener> debugFragmentListeners = new ArrayList<DebugFragmentListener>();
 
     Button button;
@@ -105,19 +105,4 @@ public class DebugFragment extends GeneralFragment implements BluetoothDataListe
         return "Debug";
     }
 
-
-    @Override
-    public void onBluetoothData(byte[] data) {
-
-    }
-
-    @Override
-    public void onBluetoothStateChanged(BluetoothStatus btStat) {
-
-    }
-
-    @Override
-    public void onBluetoothMessage(String msg) {
-
-    }
 }

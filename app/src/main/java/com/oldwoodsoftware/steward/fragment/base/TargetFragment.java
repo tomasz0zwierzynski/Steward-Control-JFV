@@ -11,7 +11,7 @@ import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.TargetFragmentAction;
 import com.oldwoodsoftware.steward.fragment.base_listener.TargetFragmentListener;
-import com.oldwoodsoftware.steward.old_view.PanelView;
+import com.oldwoodsoftware.steward.fragment.gui.customview.PanelView;
 
 import java.util.ArrayList;
 import java.util.List;

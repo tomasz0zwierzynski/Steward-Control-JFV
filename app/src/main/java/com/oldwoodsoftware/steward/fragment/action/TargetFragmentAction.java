@@ -1,13 +1,20 @@
 package com.oldwoodsoftware.steward.fragment.action;
 
+import com.oldwoodsoftware.steward.core.calculation.UnitConverter;
 import com.oldwoodsoftware.steward.fragment.base_listener.TargetFragmentListener;
 import com.oldwoodsoftware.steward.fragment.base.TargetFragment;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
+import com.oldwoodsoftware.steward.platform.component.BallOnPlate;
+import com.oldwoodsoftware.steward.platform.component.PidControlCase;
 import com.oldwoodsoftware.steward.platform.event.BallEventListener;
 import com.oldwoodsoftware.steward.platform.event.PidControlEventListener;
 
 public class TargetFragmentAction extends FragmentAction implements TargetFragmentListener, BallEventListener, PidControlEventListener {
     TargetFragment own;
+    BallOnPlate ballOnPlate;
+    PidControlCase pidControlX;
+    PidControlCase pidControlY;
+    UnitConverter unitConverter;
 
     public TargetFragmentAction(TargetFragment fragment){
         own = fragment;
@@ -15,6 +22,10 @@ public class TargetFragmentAction extends FragmentAction implements TargetFragme
 
     @Override
     public void activate(PlatformContext pContext){
+        ballOnPlate = pContext.getBallOnPlate();
+        pidControlX = pContext.getPidControlX();
+        pidControlY = pContext.getPidControlY();
+        unitConverter = pContext.getProcessContext().getUnitConverter();
         isActive = true;
     }
 

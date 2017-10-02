@@ -6,9 +6,7 @@ import com.oldwoodsoftware.steward.platform.type.PlatformMode;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Nails on 28.09.2017.
- */
+//TODO: remember more states, like isMoveTo...
 
 public class StateMachine {
     private PlatformMode mode = PlatformMode.none;
@@ -31,5 +29,10 @@ public class StateMachine {
         for (StateMachineEventListener sml : stateMachineEventListeners){
             sml.onStateMachineModeChanged(mode);
         }
+    }
+
+    @Override
+    public String toString(){
+        return "platform.component." + this.getClass().getSimpleName() + ", registered listeners " + stateMachineEventListeners.toString();
     }
 }

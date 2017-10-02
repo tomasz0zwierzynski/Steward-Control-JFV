@@ -5,10 +5,6 @@ import com.oldwoodsoftware.steward.platform.event.PidControlEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Nails on 28.09.2017.
- */
-
 public class PidControlCase {
     private float setpoint = 0;
     private int id;
@@ -36,4 +32,10 @@ public class PidControlCase {
             pcl.onPidSetpointChanged(id,setpoint);
         }
     }
+
+    @Override
+    public String toString(){
+        return "platform.component." + this.getClass().getSimpleName() + ", registered listeners " + pidControlEventListeners.toString();
+    }
+
 }

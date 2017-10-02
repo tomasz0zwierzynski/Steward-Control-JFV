@@ -1,4 +1,4 @@
-package com.oldwoodsoftware.steward.old_view;
+package com.oldwoodsoftware.steward.fragment.gui.customview;
 
 import android.content.Context;
 import android.content.res.Resources;

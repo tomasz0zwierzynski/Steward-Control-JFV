@@ -1,4 +1,4 @@
-package com.oldwoodsoftware.steward.old_view.listelement;
+package com.oldwoodsoftware.steward.fragment.gui.listelement;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.oldwoodsoftware.steward.R;
-import com.oldwoodsoftware.steward.old_model.responsibility.patron.TogglePatron;
+import com.oldwoodsoftware.steward.fragment.gui.listpatron.TogglePatron;
 
 public class ToggleListElement extends GeneralListElement {
     private boolean initial_button_state;
