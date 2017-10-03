@@ -1,8 +1,7 @@
 package com.oldwoodsoftware.steward.fragment;
 
-import android.app.Activity;
 import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -16,7 +15,6 @@ import com.oldwoodsoftware.steward.fragment.base.InverseFragment;
 import com.oldwoodsoftware.steward.fragment.base.SettingsFragment;
 import com.oldwoodsoftware.steward.fragment.base.StatusFragment;
 import com.oldwoodsoftware.steward.fragment.base.TargetFragment;
-import com.oldwoodsoftware.steward.old_model.StatusBarUpdater;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
 
 public class FragmentApplication {
@@ -43,7 +41,12 @@ public class FragmentApplication {
         tabsStrip.setViewPager(viewPager);
         tabsStrip.setIndicatorColor(Color.parseColor("#101082"));
 
-        //Tabs fragments action
+        // Status fragment
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.statusFrame, statusFragment);
+        ft.commit();
+
+        //All fragments action
         fragmentActionManager = new FragmentActionManager(settingsFragment, inverseFragment, accelerometerFragment, targetFragment, debugFragment, statusFragment);
         fragmentActionManager.connectListenersWithPlatform(platformContext);
         fragmentActionManager.activeFragmentsAction(platformContext);

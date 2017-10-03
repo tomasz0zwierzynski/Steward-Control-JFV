@@ -7,12 +7,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
+import com.oldwoodsoftware.steward.core.bluetooth.BluetoothState;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.StatusFragmentAction;
 import com.oldwoodsoftware.steward.fragment.base_listener.StatusFragmentListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.oldwoodsoftware.steward.old_model.bluetooth.BluetoothStatus.Connected;
 
 public class StatusFragment extends GeneralFragment{
     private List<StatusFragmentListener> statusListeners = new ArrayList<StatusFragmentListener>();
@@ -52,21 +55,52 @@ public class StatusFragment extends GeneralFragment{
 
     public void updateFreeHeap(int value){
         //((TextView) getActivity().findViewById(R.id.status_freecpu_value)).setText(" " + String.valueOf(value) + " bytes");
+        System.out.println("Debug: updateFreeHeap()");
         freeHeap.setText(" " + String.valueOf(value) + " bytes");
     }
 
     public void updateCPUusage(float value){
+        System.out.println("Debug: updateCpuUsage()");
         cpuUsage.setText(" " + String.valueOf(value) + " %");
     }
 
+    public void updateBluetoothStatus(BluetoothState bs) {
+        System.out.println("Debug: updateBluetoothState(): " +  bs.toString());
+        switch(bs){
+
+            case undefined:
+                break;
+            case disconnected:
+                btStatusText.setText(R.string.btGettingOff);
+                break;
+            case connecting:
+                btStatusText.setText(R.string.btGettingConnected);
+                break;
+            case connected:
+                btStatusText.setText(R.string.btConnected);
+                break;
+            case disconnecting:
+                btStatusText.setText(R.string.btDisconnected);
+                break;
+            case error:
+                btStatusText.setText(R.string.btErrorOccured);
+                break;
+        }
+    }
+
+    public void updateBluetoothMessage(String msg){
+        btMessageText.setText(msg);
+    }
 
     @Override
     public FragmentAction createFragmentAction() {
+        System.out.println("Debug: Create Fragment action()");
         return new StatusFragmentAction(this);
     }
 
     @Override
     public void addFragmentListener(FragmentAction fe) {
+        System.out.println("Debug: Add fragment listener()");
         try {
             statusListeners.add((StatusFragmentListener) fe);
         }catch (ClassCastException ex){}

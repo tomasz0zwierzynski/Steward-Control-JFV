@@ -6,7 +6,7 @@ import com.oldwoodsoftware.steward.platform.event.BallEventListener;
 import com.oldwoodsoftware.steward.platform.event.BluetoothEventListener;
 import com.oldwoodsoftware.steward.platform.event.PlateEventListener;
 import com.oldwoodsoftware.steward.platform.event.SystemEventListener;
-import com.oldwoodsoftware.steward.platform.type.BluetoothState;
+import com.oldwoodsoftware.steward.core.bluetooth.BluetoothState;
 import com.oldwoodsoftware.steward.platform.type.Configuration;
 
 public class StatusFragmentAction extends FragmentAction implements SystemEventListener, BallEventListener, BluetoothEventListener, PlateEventListener {
@@ -35,7 +35,7 @@ public class StatusFragmentAction extends FragmentAction implements SystemEventL
 
     @Override
     public void onBluetoothConnectionStateChanged(BluetoothState btState) {
-
+        own.updateBluetoothStatus(btState);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class StatusFragmentAction extends FragmentAction implements SystemEventL
 
     @Override
     public void onBluetoothMessage(String msg) {
-
+       own.updateBluetoothMessage(msg);
     }
 
     @Override

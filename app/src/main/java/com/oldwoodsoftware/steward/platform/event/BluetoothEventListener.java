@@ -1,6 +1,6 @@
 package com.oldwoodsoftware.steward.platform.event;
 
-import com.oldwoodsoftware.steward.platform.type.BluetoothState;
+import com.oldwoodsoftware.steward.core.bluetooth.BluetoothState;
 
 /**
  * Created by Nails on 28.09.2017.

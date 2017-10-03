@@ -2,12 +2,9 @@ package com.oldwoodsoftware.steward.fragment.action;
 
 import com.oldwoodsoftware.steward.fragment.base_listener.DebugFragmentListener;
 import com.oldwoodsoftware.steward.fragment.base.DebugFragment;
-import com.oldwoodsoftware.steward.old_model.bluetooth.BluetoothStatus;
-import com.oldwoodsoftware.steward.old_model.responsibility.listener.BluetoothDataListener;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
-import com.oldwoodsoftware.steward.platform.component.PlateConfiguration;
 import com.oldwoodsoftware.steward.platform.event.BluetoothEventListener;
-import com.oldwoodsoftware.steward.platform.type.BluetoothState;
+import com.oldwoodsoftware.steward.core.bluetooth.BluetoothState;
 
 public class DebugFragmentAction extends FragmentAction implements DebugFragmentListener, BluetoothEventListener {
     DebugFragment own;

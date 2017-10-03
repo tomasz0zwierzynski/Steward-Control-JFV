@@ -1,4 +1,4 @@
-package com.oldwoodsoftware.steward.platform.type;
+package com.oldwoodsoftware.steward.core.bluetooth;
 
 /**
  * Created by Nails on 28.09.2017.

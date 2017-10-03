@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.oldwoodsoftware.steward.platform.event.BluetoothEventListener;
-import com.oldwoodsoftware.steward.platform.type.BluetoothState;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -37,7 +36,7 @@ public class BluetoothConnection {
     }
 
     public void connect() throws Exception{
-                    //System.out.println("##################: connect();");
+                    System.out.println("##################: connect();");
 
         if (_socket == null){
             throw new Exception("Socket not created properly...");
@@ -48,7 +47,7 @@ public class BluetoothConnection {
         Thread connectThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                            //System.out.println("##################: connectThread.run();");
+                            System.out.println("##################: connectThread.run();");
                 boolean success = true;
                 try {
                     _socket = _device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
@@ -79,7 +78,7 @@ public class BluetoothConnection {
     }
 
     private void connectCallback(boolean isConnected){
-                    //System.out.println("##################: connectCallback(" + String.valueOf(isConnected) + ")");
+                    System.out.println("##################: connectCallback(" + String.valueOf(isConnected) + ")");
         if (isConnected){
             emitConnectionStateChanged(BluetoothState.connected);
             createReadThread();
@@ -94,7 +93,7 @@ public class BluetoothConnection {
     }
 
     public void init() throws Exception{
-                        ///System.out.println("##################: init();");
+                        System.out.println("##################: init();");
         //Get the adapter
         getAdapter();
         if (_adapter == null) {
@@ -128,7 +127,7 @@ public class BluetoothConnection {
     }
 
     private void createReadThread(){
-                //System.out.println("##################: createReadThread();");
+                System.out.println("##################: createReadThread();");
         emitMessage("Creating reading thread.");
         readThread = new Thread(new Runnable() {
             @Override
@@ -173,7 +172,7 @@ public class BluetoothConnection {
                     }
                     catch (Exception ex){                    }
                 }
-                            //System.out.println("##################: readThreadLeaving...");
+                            System.out.println("##################: readThreadLeaving...");
             }
         });
         readThread.start();
@@ -209,7 +208,7 @@ public class BluetoothConnection {
         _socket.getOutputStream().write('\n');
 
         emitMessage("Buffer send: " + new String(buffer, StandardCharsets.UTF_8));
-                    //System.out.println("Send: " + new String(buffer, StandardCharsets.UTF_8));
+                    System.out.println("Send: " + new String(buffer, StandardCharsets.UTF_8));
     }
 
     private void getAdapter() {

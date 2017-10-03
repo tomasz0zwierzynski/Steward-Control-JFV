@@ -29,6 +29,7 @@ public class SettingsFragmentAction extends FragmentAction implements SettingsFr
         if (btConnection.isInitialized() == false) {
             try {
                 btConnection.init();
+                System.out.println("##########: btConnection.init()");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -36,6 +37,7 @@ public class SettingsFragmentAction extends FragmentAction implements SettingsFr
 
             try {
                 btConnection.connect();
+                System.out.println("##########: btConnection.connect()");
             } catch (Exception e) {
                 //pContext.getStatusBar().updateBluetoothStatus(e.getMessage());
             }
@@ -65,7 +67,7 @@ public class SettingsFragmentAction extends FragmentAction implements SettingsFr
         }else{
             return true;
         }*/
-        return false;
+        return btConnection.isConnected();
     }
 
     @Override

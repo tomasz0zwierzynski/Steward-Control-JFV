@@ -3,7 +3,6 @@ package com.oldwoodsoftware.steward.core.bluetooth;
 import com.oldwoodsoftware.steward.core.command.CommandCreator;
 import com.oldwoodsoftware.steward.core.command.CommandInputQueuer;
 import com.oldwoodsoftware.steward.platform.event.BluetoothEventListener;
-import com.oldwoodsoftware.steward.platform.type.BluetoothState;
 
 import java.nio.charset.StandardCharsets;
 
