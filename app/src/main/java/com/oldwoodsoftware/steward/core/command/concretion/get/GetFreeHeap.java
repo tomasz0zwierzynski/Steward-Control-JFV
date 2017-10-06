@@ -7,8 +7,7 @@ import com.oldwoodsoftware.steward.platform.PlatformContext;
 public class GetFreeHeap extends AbstractGetCommand{
 
     public GetFreeHeap(PlatformContext pContext, float value, boolean incoming){
-        this.incoming = incoming;
-        this.pContext = pContext;
+        super(pContext,incoming);
         this.value = value;
     }
 

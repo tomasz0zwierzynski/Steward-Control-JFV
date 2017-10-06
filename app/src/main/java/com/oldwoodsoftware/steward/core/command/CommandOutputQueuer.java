@@ -1,8 +1,7 @@
 package com.oldwoodsoftware.steward.core.command;
 
-/**
- * Created by Nails on 01.10.2017.
- */
+import com.oldwoodsoftware.steward.core.command.abstraction.AbstractCommand;
 
 public interface CommandOutputQueuer {
+    void addOutputCommandToQueue(AbstractCommand cmd);
 }

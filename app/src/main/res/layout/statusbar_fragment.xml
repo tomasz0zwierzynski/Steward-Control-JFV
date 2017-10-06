@@ -230,16 +230,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView8"
-            android:layout_marginTop="23dp"
             android:layout_below="@+id/textView"
-            android:layout_alignStart="@+id/textView" />
-
-        <TextView
-            android:text="bluetoothMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btMessageText"
-            android:layout_below="@+id/btStatusText"
             android:layout_alignStart="@+id/textView" />
 
     </RelativeLayout>

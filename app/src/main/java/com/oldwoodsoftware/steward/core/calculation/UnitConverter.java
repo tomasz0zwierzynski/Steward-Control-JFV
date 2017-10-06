@@ -9,12 +9,16 @@ public class UnitConverter {
         this.params = params;
     }
 
+    public float plateGetRatio(){
+        return params.usableHeight / params.usableWidth;
+    }
+
     public float[] platePercentToFloat(float x_percent, float y_percent){
         float[] values = new float[2];
         values[0] = ((x_percent/100) * params.usableWidth) - params.usableWidth/2;
         values[1] = ((y_percent/100) * params.usableHeight) - params.usableHeight/2;
 
-        return null;
+        return values;
     }
 
     public float[] plateFloatToPercent(float x_real, float y_real){

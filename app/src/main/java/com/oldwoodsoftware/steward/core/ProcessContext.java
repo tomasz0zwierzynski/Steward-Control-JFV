@@ -31,7 +31,7 @@ public class ProcessContext {
     public void connectListenersWithCore(PlatformContext pContext){
         pContext.getBluetoothConnection().addBluetoothListener(bluetoothReceiver);
         pContext.getBluetoothConnection().addBluetoothListener(commandParser);
-        pContext.getStateMachine().addStateMachineEventListener(commandParser);
+        //pContext.getStateMachine().addStateMachineEventListener(commandParser); //TODO:remove this line
     }
 
     public BluetoothReceiver getBluetoothReceiver() {

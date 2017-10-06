@@ -1,14 +1,14 @@
 package com.oldwoodsoftware.steward.fragment.action;
 
 import com.oldwoodsoftware.steward.core.calculation.UnitConverter;
-import com.oldwoodsoftware.steward.fragment.base_listener.InverseFragmentListener;
+import com.oldwoodsoftware.steward.fragment.agent.InverseFragmentAgent;
 import com.oldwoodsoftware.steward.fragment.base.InverseFragment;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
 import com.oldwoodsoftware.steward.platform.component.PlateConfiguration;
 import com.oldwoodsoftware.steward.platform.event.PlateEventListener;
 import com.oldwoodsoftware.steward.platform.type.Configuration;
 
-public class InverseFragmentAction extends FragmentAction implements InverseFragmentListener, PlateEventListener {
+public class InverseFragmentAction extends FragmentAction implements InverseFragmentAgent, PlateEventListener {
     InverseFragment own;
     PlateConfiguration plateConfiguration;
     UnitConverter unitConverter;
@@ -24,8 +24,6 @@ public class InverseFragmentAction extends FragmentAction implements InverseFrag
         //String[] strings = pContext.getIK().getStringRepresentation();
 
         //setInverseFragmentSliderTexts(strings);
-
-        //TODO: btConnection
         try {
          //   pContext.getCmdProtocol().putInverseCommand(realValues);
         } catch (Exception e) { }

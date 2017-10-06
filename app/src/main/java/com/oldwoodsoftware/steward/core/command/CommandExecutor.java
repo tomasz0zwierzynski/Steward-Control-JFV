@@ -12,4 +12,14 @@ public class CommandExecutor implements CommandOutputQueuer, CommandInputQueuer 
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void addOutputCommandToQueue(AbstractCommand cmd) {
+        System.out.println("Debug: commandExecuter action!");
+        try {
+            cmd.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -3,24 +3,20 @@ package com.oldwoodsoftware.steward.core.command.concretion.set;
 import com.oldwoodsoftware.steward.core.command.abstraction.AbstractSetCommand;
 import com.oldwoodsoftware.steward.core.command.type.CommandType;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
-import com.oldwoodsoftware.steward.platform.type.PlatformMode;
 
-public class SetMode extends AbstractSetCommand{
-    private PlatformMode platformMode;
-
-    public SetMode(PlatformContext pContext, PlatformMode pMode, boolean incoming){
+public class SetSetpointX extends AbstractSetCommand{
+    public SetSetpointX(PlatformContext pContext, float value, boolean incoming){
         super(pContext,incoming);
-        platformMode = pMode;
+        this.value = value;
     }
-
     @Override
     public void execute() throws Exception {
         if(incoming){
 
         }else{
-            String msg = CommandType.setMode.get_uC_command_code_as_string() + "=" + platformMode.get_uC_mode_as_string();
+            System.out.println("Debug: SetSetopintX.execute()");
+            String msg = CommandType.setSetpointX.get_uC_command_code_as_string() + "=" + String.valueOf(value);
             btConnection.sendMessage(msg.getBytes());
-            pContext.getStateMachine().setMode(platformMode);
         }
     }
 }

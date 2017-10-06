@@ -10,13 +10,13 @@ import android.widget.TextView;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.AccelerometerFragmentAction;
-import com.oldwoodsoftware.steward.fragment.base_listener.AccelerometerFragmentListener;
+import com.oldwoodsoftware.steward.fragment.agent.AccelerometerFragmentAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccelerometerFragment extends GeneralFragment{
-    private List<AccelerometerFragmentListener> stateListeners = new ArrayList<AccelerometerFragmentListener>();
+    private List<AccelerometerFragmentAgent> stateListeners = new ArrayList<AccelerometerFragmentAgent>();
 
     private TextView textview1;
     private TextView textview2;
@@ -75,7 +75,7 @@ public class AccelerometerFragment extends GeneralFragment{
             textRoll.setText(getString(R.string.accelerometer_TV_roll));
             button.setText(getString(R.string.accelerometer_whenOFF_button));
         }
-        for(AccelerometerFragmentListener afl : stateListeners) {
+        for(AccelerometerFragmentAgent afl : stateListeners) {
             afl.onAccelerometerFragmentStateChange(toState);
         }
     }
@@ -93,7 +93,7 @@ public class AccelerometerFragment extends GeneralFragment{
     @Override
     public void addFragmentListener(FragmentAction fe) {
         try {
-            stateListeners.add((AccelerometerFragmentListener) fe);
+            stateListeners.add((AccelerometerFragmentAgent) fe);
         }catch (ClassCastException ex){}
     }
 

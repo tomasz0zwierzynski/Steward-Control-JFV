@@ -1,6 +1,6 @@
-package com.oldwoodsoftware.steward.fragment.base_listener;
+package com.oldwoodsoftware.steward.fragment.agent;
 
-public interface SettingsFragmentListener {
+public interface SettingsFragmentAgent {
     void onBluetoothConnectionButtonChecked();
     void onBluetoothConnectionButtonUnchecked();
     boolean isBluetoothConnected();

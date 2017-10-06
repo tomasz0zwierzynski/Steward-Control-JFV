@@ -6,4 +6,6 @@ import com.oldwoodsoftware.steward.core.command.type.CommandType;
 public interface CommandCreator {
     public AbstractCommand createCommand(CommandType cmdType, float value, boolean incoming);
     public AbstractCommand createCommand(String cmd, boolean incoming);
+    //public AbstractCommand createCommand(CommandType cmdType, float value);
+    //public AbstractCommand createCommand(String cmd);
 }

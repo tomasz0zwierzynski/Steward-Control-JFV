@@ -1,6 +1,6 @@
-package com.oldwoodsoftware.steward.fragment.base_listener;
+package com.oldwoodsoftware.steward.fragment.agent;
 
-public interface InverseFragmentListener {
+public interface InverseFragmentAgent {
     void onInverseFragmentSliderChange(int[] new_progresses);
     void setInverseFragmentSliderTexts(String[] texts);
     String[] getInverseFragmentSliderTexts();

@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.InverseFragmentAction;
-import com.oldwoodsoftware.steward.fragment.base_listener.InverseFragmentListener;
+import com.oldwoodsoftware.steward.fragment.agent.InverseFragmentAgent;
 import com.oldwoodsoftware.steward.fragment.gui.listelement.ButtonListElement;
 import com.oldwoodsoftware.steward.fragment.gui.listelement.GeneralListElement;
 import com.oldwoodsoftware.steward.fragment.gui.listelement.SliderListElement;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InverseFragment extends GeneralFragment {
-    private List<InverseFragmentListener> sliderListeners = new ArrayList<InverseFragmentListener>();
+    private List<InverseFragmentAgent> sliderListeners = new ArrayList<InverseFragmentAgent>();
 
     private InverseListAdapter inverseAdapter;
 
@@ -44,7 +44,7 @@ public class InverseFragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        for(InverseFragmentListener ifl : sliderListeners){
+        for(InverseFragmentAgent ifl : sliderListeners){
             initial_progresses = ifl.getCurrentSliderProgresses();
             initial_strings = ifl.getInverseFragmentSliderTexts();
         }
@@ -66,7 +66,7 @@ public class InverseFragment extends GeneralFragment {
     @Override
     public void addFragmentListener(FragmentAction fe) {
         try {
-            sliderListeners.add((InverseFragmentListener) fe);
+            sliderListeners.add((InverseFragmentAgent) fe);
         }catch (ClassCastException ex){}
     }
 
@@ -125,7 +125,7 @@ public class InverseFragment extends GeneralFragment {
             int index = sliderObjects.indexOf(sender);
             sliderValues[index] = sender.getProgress();
 
-            for(InverseFragmentListener ifl : InverseFragment.this.sliderListeners) {
+            for(InverseFragmentAgent ifl : InverseFragment.this.sliderListeners) {
                 ifl.onInverseFragmentSliderChange(sliderValues);
             }
         }
@@ -159,7 +159,7 @@ public class InverseFragment extends GeneralFragment {
 
         @Override
         public void onButtonPressed(ButtonListElement sender) {
-            for (InverseFragmentListener lis :sliderListeners){
+            for (InverseFragmentAgent lis :sliderListeners){
                 lis.onZeroButtonPressed();
             }
             for (SliderListElement se : sliderObjects){

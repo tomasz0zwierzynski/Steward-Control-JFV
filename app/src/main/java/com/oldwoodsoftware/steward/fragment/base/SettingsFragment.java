@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.SettingsFragmentAction;
-import com.oldwoodsoftware.steward.fragment.base_listener.SettingsFragmentListener;
+import com.oldwoodsoftware.steward.fragment.agent.SettingsFragmentAgent;
 import com.oldwoodsoftware.steward.fragment.gui.listelement.ButtonListElement;
 import com.oldwoodsoftware.steward.fragment.gui.listelement.GeneralListElement;
 import com.oldwoodsoftware.steward.fragment.gui.listelement.MinmaxListElement;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SettingsFragment extends GeneralFragment {
-    private List<SettingsFragmentListener> settingsListeners = new ArrayList<SettingsFragmentListener>();
+    private List<SettingsFragmentAgent> settingsListeners = new ArrayList<SettingsFragmentAgent>();
 
     private boolean isBTconnected;
 
@@ -40,7 +40,7 @@ public class SettingsFragment extends GeneralFragment {
     // Set the associated text for the title
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        for (SettingsFragmentListener sfl : settingsListeners){
+        for (SettingsFragmentAgent sfl : settingsListeners){
             isBTconnected = sfl.isBluetoothConnected();
         }
 
@@ -60,7 +60,7 @@ public class SettingsFragment extends GeneralFragment {
     @Override
     public void addFragmentListener(FragmentAction fe) {
         try {
-            settingsListeners.add((SettingsFragmentListener) fe);
+            settingsListeners.add((SettingsFragmentAgent) fe);
         }catch (ClassCastException ex){}
     }
 
@@ -147,7 +147,7 @@ public class SettingsFragment extends GeneralFragment {
             //One toggle element for now, so just send it further
             boolean state = sender.getButtonState();
 
-            for (SettingsFragmentListener sfl : settingsListeners) {
+            for (SettingsFragmentAgent sfl : settingsListeners) {
                 if (state) {
                     sfl.onBluetoothConnectionButtonChecked();
                 } else {

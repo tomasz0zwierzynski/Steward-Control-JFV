@@ -10,14 +10,14 @@ import android.widget.TextView;
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.TargetFragmentAction;
-import com.oldwoodsoftware.steward.fragment.base_listener.TargetFragmentListener;
+import com.oldwoodsoftware.steward.fragment.agent.TargetFragmentAgent;
 import com.oldwoodsoftware.steward.fragment.gui.customview.PanelView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TargetFragment extends GeneralFragment {
-    private List<TargetFragmentListener> targetListeners = new ArrayList<TargetFragmentListener>();
+    private List<TargetFragmentAgent> targetListeners = new ArrayList<TargetFragmentAgent>();
 
     private TextView textview1;
     private TextView textview2;
@@ -39,7 +39,7 @@ public class TargetFragment extends GeneralFragment {
         textview2.setText(getString(R.string.target_TV_tip2));
         panelview = (PanelView) view.findViewById(R.id.target_panelview);
             float ratio = 1.41f;
-        for (TargetFragmentListener tfl : targetListeners){
+        for (TargetFragmentAgent tfl : targetListeners){
             ratio = tfl.getPanelLenghtRatio();
         }
         panelview.setPanelRatio(ratio);
@@ -68,7 +68,7 @@ public class TargetFragment extends GeneralFragment {
         float x_percent = (100/width)*((float)x_pixels - (float)panelview.getLeftEdge());
         float y_percent = (100/height)*((float)y_pixels - (float)panelview.getTopEdge());
 
-        for (TargetFragmentListener tfl : targetListeners) {
+        for (TargetFragmentAgent tfl : targetListeners) {
             tfl.onNewTargetPosition(x_percent, y_percent);
         }
     }
@@ -99,7 +99,7 @@ public class TargetFragment extends GeneralFragment {
     @Override
     public void addFragmentListener(FragmentAction fe) {
         try {
-            targetListeners.add((TargetFragmentListener) fe);
+            targetListeners.add((TargetFragmentAgent) fe);
         }catch (ClassCastException ex){}
     }
 

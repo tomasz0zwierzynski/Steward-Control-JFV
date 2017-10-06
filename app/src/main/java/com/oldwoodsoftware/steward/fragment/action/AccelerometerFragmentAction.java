@@ -1,11 +1,11 @@
 package com.oldwoodsoftware.steward.fragment.action;
 
-import com.oldwoodsoftware.steward.fragment.base_listener.AccelerometerFragmentListener;
+import com.oldwoodsoftware.steward.fragment.agent.AccelerometerFragmentAgent;
 import com.oldwoodsoftware.steward.old_model.responsibility.listener.AccelerometerHandlerListener;
 import com.oldwoodsoftware.steward.fragment.base.AccelerometerFragment;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
 
-public class AccelerometerFragmentAction extends FragmentAction implements AccelerometerFragmentListener, AccelerometerHandlerListener{
+public class AccelerometerFragmentAction extends FragmentAction implements AccelerometerFragmentAgent, AccelerometerHandlerListener{
     AccelerometerFragment own;
 
     public AccelerometerFragmentAction(AccelerometerFragment fragment){

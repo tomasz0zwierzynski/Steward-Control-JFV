@@ -7,8 +7,7 @@ import com.oldwoodsoftware.steward.platform.PlatformContext;
 public class GetCpuUsage extends AbstractGetCommand{
 
     public GetCpuUsage(PlatformContext pContext, float value, boolean incoming){
-        this.incoming = incoming;
-        this.pContext = pContext;
+        super(pContext,incoming);
         this.value = value;
     }
 

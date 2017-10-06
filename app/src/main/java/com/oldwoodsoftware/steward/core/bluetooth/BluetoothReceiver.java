@@ -23,6 +23,7 @@ public class BluetoothReceiver implements BluetoothEventListener{
     @Override
     public void onBluetoothDataReceived(byte[] data) {
         String sBytes = new String(data, StandardCharsets.UTF_8);
+        //System.out.println("Debug: BluetoothReceiver: " + sBytes);
         inQueuer.addInputCommandToQueue(cmdCreate.createCommand(sBytes,true));
     }
 

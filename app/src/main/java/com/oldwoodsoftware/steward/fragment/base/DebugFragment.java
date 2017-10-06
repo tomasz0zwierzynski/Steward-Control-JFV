@@ -10,17 +10,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.oldwoodsoftware.steward.R;
-import com.oldwoodsoftware.steward.old_model.bluetooth.BluetoothStatus;
-import com.oldwoodsoftware.steward.old_model.responsibility.listener.BluetoothDataListener;
 import com.oldwoodsoftware.steward.fragment.action.DebugFragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
-import com.oldwoodsoftware.steward.fragment.base_listener.DebugFragmentListener;
+import com.oldwoodsoftware.steward.fragment.agent.DebugFragmentAgent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DebugFragment extends GeneralFragment {
-    List<DebugFragmentListener> debugFragmentListeners = new ArrayList<DebugFragmentListener>();
+    List<DebugFragmentAgent> debugFragmentAgents = new ArrayList<DebugFragmentAgent>();
 
     Button button;
     EditText editTextCommand;
@@ -57,7 +55,7 @@ public class DebugFragment extends GeneralFragment {
             @Override
             public void onClick(View v) {
                 String command_to_send = editTextCommand.getText() + "=" + editTextValue.getText();
-                for(DebugFragmentListener dfl : debugFragmentListeners){
+                for(DebugFragmentAgent dfl : debugFragmentAgents){
                     dfl.onDebugCommand(command_to_send);
                 }
             }
@@ -96,7 +94,7 @@ public class DebugFragment extends GeneralFragment {
     @Override
     public void addFragmentListener(FragmentAction fe) {
         try {
-            debugFragmentListeners.add((DebugFragmentListener) fe);
+            debugFragmentAgents.add((DebugFragmentAgent) fe);
         }catch (ClassCastException ex){}
     }
 

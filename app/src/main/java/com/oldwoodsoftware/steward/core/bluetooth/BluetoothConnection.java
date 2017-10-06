@@ -191,6 +191,8 @@ public class BluetoothConnection {
     }
 
     public void disconnect() throws Exception{
+        emitConnectionStateChanged(BluetoothState.disconnecting);
+
         isReadThreadStopRequest = true;
         readThread.join();
         _socket.close();
@@ -200,6 +202,7 @@ public class BluetoothConnection {
     }
 
     public void sendMessage(byte[] buffer) throws Exception{
+        //If isConnected==false then don't send anything!!!
         for (int i = 0; i < buffer.length; i++){
             _socket.getOutputStream().write(buffer[i]);
 
