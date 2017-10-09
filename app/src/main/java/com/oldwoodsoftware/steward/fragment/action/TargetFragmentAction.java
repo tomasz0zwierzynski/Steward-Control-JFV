@@ -31,8 +31,6 @@ public class TargetFragmentAction extends FragmentAction implements TargetFragme
     CommandParser cmdParser;
 
     //Temporarly
-    PlatformContext pContext;
-
     public TargetFragmentAction(TargetFragment fragment){
         own = fragment;
     }
@@ -44,95 +42,33 @@ public class TargetFragmentAction extends FragmentAction implements TargetFragme
         pidControlY = pContext.getPidControlY();
         unitConverter = pContext.getProcessContext().getUnitConverter();
         cmdParser = pContext.getProcessContext().getCommandParser();
-        //Temporarly
-        this.pContext = pContext;
         isActive = true;
     }
 
     @Override
-    public void onNewTargetPosition(float x_per, float y_per) {
+    public void outTargetPositionChanged(float x_per, float y_per) {
         System.out.println("Debug: onNewTargetPosition() called!");
         float[] XY = unitConverter.platePercentToFloat(x_per,y_per);
             System.out.println("Debug: TargetValuesToSend: X = " + String.valueOf(XY[0]) + " Y = " + String.valueOf(XY[1]));
-        /*cmdParser.addRequest(AbstractRequest.createRequest(RequestType.setTargetX,XY[0]));
+        //Intentionally axes reversed.
+        cmdParser.addRequest(AbstractRequest.createRequest(RequestType.setTargetX,XY[0]));
         cmdParser.addRequest(AbstractRequest.createRequest(RequestType.setTargetY,XY[1]));
-        cmdParser.pushRequests();*/
-
-        StateMachine stateMachine = pContext.getStateMachine();
-        CommandCreator cmdCreate = pContext.getProcessContext().getCommandFactory();
-        CommandExecutor cmdExecute = pContext.getProcessContext().getCommandExecutor();
-
-        if( stateMachine.getMode() != PlatformMode.pidMode){
-            try {
-                //cmdCreate.createCommand(CommandType.setMode,(float)PlatformMode.pidMode.get_uC_mode()).execute();
-                //(new SetMode(pContext, PlatformMode.pidMode)).execute();
-                String msg = CommandType.setMode.get_uC_command_code_as_string() + "=" + PlatformMode.pidMode.get_uC_mode_as_string();
-                pContext.getBluetoothConnection().sendMessage(msg.getBytes());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            stateMachine.setMode(PlatformMode.pidMode);
-        }
-        if( stateMachine.isModeStarted() == false){
-            try {
-                //cmdCreate.createCommand(CommandType.startMode,0).execute();
-                (new StartMode(pContext,false)).execute();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            stateMachine.setModeStarted(true);
-        }
-        if( stateMachine.isMoveTo() == false){
-            try {
-                //cmdCreate.createCommand(CommandType.moveTo,0).execute();
-                (new MoveTo(pContext,false)).execute();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            stateMachine.setMoveTo(true);
-        }
-        try {
-            cmdCreate.createCommand(CommandType.setSetpointX, XY[0],false).execute();
-            cmdCreate.createCommand(CommandType.setSetpointY, XY[1],false).execute();
-            //cmdCreate.createCommand(CommandType.submit, 0).execute();
-
-            (new Submit(pContext,false)).execute();
-            }catch (Exception ex){
-            ex.printStackTrace();
-        }
+        cmdParser.pushRequests();
     }
 
-    /*
     @Override
-    public void setCurrentBallPosition(float x_per, float y_per, boolean show) {
-      //  pContext.getPG().setBallXY(x_per,y_per);
-
-        if(show){
-      //      float[] per_XY = pContext.getPG().getPercentBallXY();
-            try {
-     //           own.onCurrentBallPositionChanged(per_XY[0],per_XY[1],true);
-            }catch(IllegalStateException ex){ }
-        }else{
-            try {
-      //          own.onCurrentBallPositionChanged(0,0,false);
-            }catch(IllegalStateException ex){ }
-        }
-    }
-    */
-
-    @Override
-    public float getPanelLenghtRatio() {
+    public float inGetPanelLengthRatio() {
         return unitConverter.plateGetRatio();
     }
 
     @Override
     public void onBallPositionChanged(float x, float y) {
-
+        //TODO: implement method
     }
 
     @Override
     public void onBallDetectionChanged(boolean isDetected) {
-
+        //TODO: implement method
     }
 
     @Override

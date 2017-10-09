@@ -19,22 +19,17 @@ public class AccelerometerFragmentAction extends FragmentAction implements Accel
     }
 
     @Override
-    public void onAccelerometerFragmentStateChange(boolean state) {
-        if (state) { //active
-            //pContext.getAccHandler().startRead();
-        }else{
-            //pContext.getAccHandler().stopRead();
-        }
-    }
-
-    @Override
     public void onAccelerometerHandlerNewData(float pitch, float roll) {
-        //TODO; btSending
         try {
             //pContext.getCmdProtocol().putAccelerometerCommand(pitch,roll);
         } catch (Exception e) { }
         try {
             own.updateControls(pitch,roll);
         }catch(IllegalStateException ex){ }
+    }
+
+    @Override
+    public void outControlStateChanged(boolean state) {
+
     }
 }

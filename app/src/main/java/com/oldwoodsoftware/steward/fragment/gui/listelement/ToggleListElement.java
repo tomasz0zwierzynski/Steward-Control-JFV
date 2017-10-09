@@ -37,6 +37,10 @@ public class ToggleListElement extends GeneralListElement {
         return buttonState;
     }
 
+    public void setButtonState(boolean state){
+        button.setChecked(state);
+    }
+
     public View getView(LayoutInflater li, ViewGroup vg){
         View view = li.inflate(R.layout.listelement_toggle,vg,false);
         textview = (TextView) view.findViewById(R.id.listelement_toggle_TextView);

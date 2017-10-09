@@ -1,6 +1,7 @@
 package com.oldwoodsoftware.steward.fragment.base;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +41,7 @@ public class TargetFragment extends GeneralFragment {
         panelview = (PanelView) view.findViewById(R.id.target_panelview);
             float ratio = 1.41f;
         for (TargetFragmentAgent tfl : targetListeners){
-            ratio = tfl.getPanelLenghtRatio();
+            ratio = tfl.inGetPanelLengthRatio();
         }
         panelview.setPanelRatio(ratio);
 
@@ -68,9 +69,7 @@ public class TargetFragment extends GeneralFragment {
         float x_percent = (100/width)*((float)x_pixels - (float)panelview.getLeftEdge());
         float y_percent = (100/height)*((float)y_pixels - (float)panelview.getTopEdge());
 
-        for (TargetFragmentAgent tfl : targetListeners) {
-            tfl.onNewTargetPosition(x_percent, y_percent);
-        }
+        emitTargetPositionChanged(x_percent, y_percent);
     }
 
     public void onCurrentBallPositionChanged(float x_percent, float y_percent, boolean detected){
@@ -87,17 +86,25 @@ public class TargetFragment extends GeneralFragment {
         }
     }
 
+    private void emitTargetPositionChanged(float x_percent, float y_percent) {
+        for (TargetFragmentAgent tfl : targetListeners) {
+            tfl.outTargetPositionChanged(x_percent, y_percent);
+        }
+    }
+
     @Override
     public String toString(){
         return "Target";
     }
 
     public FragmentAction createFragmentAction(){
+        Log.i("ApplicationBuild","TargetFragment.createFragmentAction() called");
         return new TargetFragmentAction(this);
     }
 
     @Override
     public void addFragmentListener(FragmentAction fe) {
+        Log.i("ApplicationBuild","TargetFragment.addFragmentListener("+ fe.getClass().getSimpleName() +") called");
         try {
             targetListeners.add((TargetFragmentAgent) fe);
         }catch (ClassCastException ex){}

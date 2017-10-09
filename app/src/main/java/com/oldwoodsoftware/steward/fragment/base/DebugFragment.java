@@ -1,6 +1,7 @@
 package com.oldwoodsoftware.steward.fragment.base;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,9 +56,7 @@ public class DebugFragment extends GeneralFragment {
             @Override
             public void onClick(View v) {
                 String command_to_send = editTextCommand.getText() + "=" + editTextValue.getText();
-                for(DebugFragmentAgent dfl : debugFragmentAgents){
-                    dfl.onDebugCommand(command_to_send);
-                }
+                emitDebugCommandPushed(command_to_send);
             }
         });
 
@@ -88,11 +87,19 @@ public class DebugFragment extends GeneralFragment {
 
     @Override
     public FragmentAction createFragmentAction(){
+        Log.i("ApplicationBuild","DebugFragment.createFragmentAction() called");
         return new DebugFragmentAction(this);
+    }
+
+    private void emitDebugCommandPushed(String cmd){
+        for(DebugFragmentAgent dfl : debugFragmentAgents){
+            dfl.outDebugCommandPushed(cmd);
+        }
     }
 
     @Override
     public void addFragmentListener(FragmentAction fe) {
+        Log.i("ApplicationBuild","DebugFragment.addFragmentListener("+ fe.getClass().getSimpleName() +") called");
         try {
             debugFragmentAgents.add((DebugFragmentAgent) fe);
         }catch (ClassCastException ex){}

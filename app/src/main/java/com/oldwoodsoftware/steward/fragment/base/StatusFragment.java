@@ -3,6 +3,7 @@ package com.oldwoodsoftware.steward.fragment.base;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,13 +119,13 @@ public class StatusFragment extends GeneralFragment{
 
     @Override
     public FragmentAction createFragmentAction() {
-        //System.out.println("Debug: Create Fragment action()");
+        Log.i("ApplicationBuild","StatusFragment.createFragmentAction() called");
         return new StatusFragmentAction(this);
     }
 
     @Override
     public void addFragmentListener(FragmentAction fe) {
-        //System.out.println("Debug: Add fragment listener()");
+        Log.i("ApplicationBuild","StatusFragment.addFragmentListener("+ fe.getClass().getSimpleName() +") called");
         try {
             statusListeners.add((StatusFragmentAgent) fe);
         }catch (ClassCastException ex){}

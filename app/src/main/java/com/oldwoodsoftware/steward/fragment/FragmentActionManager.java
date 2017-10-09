@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.fragment;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.base.GeneralFragment;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
@@ -17,6 +19,7 @@ public class FragmentActionManager {
     private List<FragmentAction> fragmentActions = new ArrayList<FragmentAction>();
 
     public FragmentActionManager(GeneralFragment... actionFragments){
+        Log.i("ApplicationBuild","FragmentActionManager() called");
         for (GeneralFragment gf : actionFragments){
             FragmentAction fa = gf.createFragmentAction();
             gf.addFragmentListener(fa);
@@ -26,12 +29,14 @@ public class FragmentActionManager {
 
     //TODO: at particular fragmentAction getFrom pContext what it needs
     public void activeFragmentsAction(PlatformContext pContext){
+        Log.i("ApplicationBuild","FragmentActionManager.activeFragmentsAction() called");
         for(FragmentAction fa : fragmentActions){
             fa.activate(pContext);
         }
     }
 
     public void connectListenersWithPlatform(PlatformContext pContext){
+        Log.i("ApplicationBuild","FragmentActionManager.connectListenersWithPlatform() called");
         //Some magic here, anyone has idea if it is "clean" ?
         for (FragmentAction fa : fragmentActions){
             if(fa instanceof BallEventListener){

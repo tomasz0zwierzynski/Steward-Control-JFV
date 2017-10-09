@@ -19,31 +19,22 @@ public class DebugFragmentAction extends FragmentAction implements DebugFragment
     }
 
     @Override
-    public void onDebugCommand(String cmd) {
-
-        //TODO: debug command btComm
-        try {
-           // pContext.getCmdProtocol().putCommand(cmd);
-        } catch (Exception e) { }
-    }
-
-    @Override
-    public void printCommandLine(String command) {
-        own.println(command);
-    }
-
-    @Override
     public void onBluetoothConnectionStateChanged(BluetoothState btState) {
 
     }
 
     @Override
     public void onBluetoothDataReceived(byte[] data) {
-
+        //TODO: Print bt data
     }
 
     @Override
     public void onBluetoothMessage(String msg) {
+        //TODO: Print bt msgs
+    }
+
+    @Override
+    public void outDebugCommandPushed(String cmd) {
 
     }
 }

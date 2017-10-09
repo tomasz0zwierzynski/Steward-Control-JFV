@@ -11,6 +11,7 @@ public class SetIkX extends AbstractSetCommand{
     }
     @Override
     public void execute() throws Exception {
+        logExecution();
         if(incoming){
 
         }else{

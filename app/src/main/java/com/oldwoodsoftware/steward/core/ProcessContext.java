@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.core;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.core.bluetooth.BluetoothReceiver;
 import com.oldwoodsoftware.steward.core.calculation.UnitConverter;
 import com.oldwoodsoftware.steward.core.command.CommandExecutor;
@@ -15,22 +17,27 @@ public class ProcessContext {
     private UnitConverter unitConverter;
 
     public ProcessContext(){
-
+        Log.i("ApplicationBuild","ProcessContext() called");
     }
 
     public void init(PlatformContext platformContext){
+        Log.i("ApplicationBuild","ProcessContext.init() called");
         commandExecutor = new CommandExecutor();
         commandFactory = new CommandFactory(platformContext);
         commandParser = new CommandParser(platformContext.getStateMachine(),commandFactory,commandExecutor);
         bluetoothReceiver = new BluetoothReceiver(commandFactory, commandExecutor);
         unitConverter = new UnitConverter(platformContext.getPlatformParameters());
+        Log.i("ApplicationBuild","ProcessContext (Core Components) components successfully created.");
 
         connectListenersWithCore(platformContext);
     }
 
     public void connectListenersWithCore(PlatformContext pContext){
+        Log.i("ApplicationBuild","ProcessContext.connectListenersWithCore() called");
         pContext.getBluetoothConnection().addBluetoothListener(bluetoothReceiver);
+        Log.i("ApplicationBuild","ProcessContext.connectListenersWithCore().BluetoothReceiver connected with BluetoothConnection");
         pContext.getBluetoothConnection().addBluetoothListener(commandParser);
+        Log.i("ApplicationBuild","ProcessContext.connectListenersWithCore().BluetoothReceiver connected with CommandParser");
         //pContext.getStateMachine().addStateMachineEventListener(commandParser); //TODO:remove this line
     }
 

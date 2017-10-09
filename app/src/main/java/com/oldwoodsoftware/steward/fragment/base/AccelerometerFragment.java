@@ -1,6 +1,7 @@
 package com.oldwoodsoftware.steward.fragment.base;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,9 +76,7 @@ public class AccelerometerFragment extends GeneralFragment{
             textRoll.setText(getString(R.string.accelerometer_TV_roll));
             button.setText(getString(R.string.accelerometer_whenOFF_button));
         }
-        for(AccelerometerFragmentAgent afl : stateListeners) {
-            afl.onAccelerometerFragmentStateChange(toState);
-        }
+        emitControlStateChanged(toState);
     }
 
     public void updateControls(float nPitch, float nRoll){
@@ -87,14 +86,22 @@ public class AccelerometerFragment extends GeneralFragment{
 
     @Override
     public FragmentAction createFragmentAction(){
+        Log.i("ApplicationBuild","AccelerometerFragment.createFragmentAction() called");
         return new AccelerometerFragmentAction(this);
     }
 
     @Override
     public void addFragmentListener(FragmentAction fe) {
+        Log.i("ApplicationBuild","AccelerometerFragment.addFragmentListener("+ fe.getClass().getSimpleName() +") called");
         try {
             stateListeners.add((AccelerometerFragmentAgent) fe);
         }catch (ClassCastException ex){}
+    }
+
+    private void emitControlStateChanged(boolean state){
+        for(AccelerometerFragmentAgent afl : stateListeners) {
+            afl.outControlStateChanged(state);
+        }
     }
 
     @Override

@@ -47,6 +47,8 @@ public class CommandParser implements BluetoothEventListener{
             outQueuer.addOutputCommandToQueue(pendingCommands.removeFirst());
         }
             outQueuer.addOutputCommandToQueue(cmdCreate.createCommand(CommandType.submit,0,false));
+        //
+
         //stateMachine.setFromTemplate(requestStateMachine);
         //Commands while executing changes MachineState
         System.out.println("Debug: Printing pending Command List after: ");

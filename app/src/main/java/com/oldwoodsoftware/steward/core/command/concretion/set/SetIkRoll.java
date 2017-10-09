@@ -11,6 +11,7 @@ public class SetIkRoll extends AbstractSetCommand{
     }
     @Override
     public void execute() throws Exception {
+        logExecution();
         if(incoming){
 
         }else{

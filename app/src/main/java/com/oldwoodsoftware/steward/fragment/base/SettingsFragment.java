@@ -2,26 +2,20 @@ package com.oldwoodsoftware.steward.fragment.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.ToggleButton;
 
 import com.oldwoodsoftware.steward.R;
 import com.oldwoodsoftware.steward.fragment.action.FragmentAction;
 import com.oldwoodsoftware.steward.fragment.action.SettingsFragmentAction;
 import com.oldwoodsoftware.steward.fragment.agent.SettingsFragmentAgent;
-import com.oldwoodsoftware.steward.fragment.gui.listelement.ButtonListElement;
-import com.oldwoodsoftware.steward.fragment.gui.listelement.GeneralListElement;
-import com.oldwoodsoftware.steward.fragment.gui.listelement.MinmaxListElement;
-import com.oldwoodsoftware.steward.fragment.gui.listelement.SliderListElement;
-import com.oldwoodsoftware.steward.fragment.gui.listelement.TitleListElement;
-import com.oldwoodsoftware.steward.fragment.gui.listelement.ToggleListElement;
-import com.oldwoodsoftware.steward.fragment.gui.listelement.TwolineListElement;
-import com.oldwoodsoftware.steward.fragment.gui.listpatron.ButtonPatron;
-import com.oldwoodsoftware.steward.fragment.gui.listpatron.SliderPatron;
-import com.oldwoodsoftware.steward.fragment.gui.listpatron.TogglePatron;
+import com.oldwoodsoftware.steward.fragment.gui.listelement.*;
+import com.oldwoodsoftware.steward.fragment.gui.listpatron.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +23,7 @@ import java.util.List;
 public class SettingsFragment extends GeneralFragment {
     private List<SettingsFragmentAgent> settingsListeners = new ArrayList<SettingsFragmentAgent>();
 
+    private SettingsListAdapter sa;
     private boolean isBTconnected;
 
     @Override
@@ -41,12 +36,12 @@ public class SettingsFragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         for (SettingsFragmentAgent sfl : settingsListeners){
-            isBTconnected = sfl.isBluetoothConnected();
+            isBTconnected = sfl.inIsConnected();
         }
 
         View view = inflater.inflate(R.layout.settings, container, false);
         final ListView listview = (ListView) view.findViewById(R.id.settings_listview);
-        SettingsListAdapter sa = new SettingsListAdapter();
+        sa = new SettingsListAdapter();
         listview.setAdapter(sa);
 
         return view;
@@ -54,11 +49,19 @@ public class SettingsFragment extends GeneralFragment {
 
     @Override
     public FragmentAction createFragmentAction(){
+        Log.i("ApplicationBuild","SettingsFragment.createFragmentAction() called");
         return new SettingsFragmentAction(this);
+    }
+
+    public void forceBtButtonState(boolean state){
+        if (sa != null){
+            sa.setToggleButtonState(state);
+        }
     }
 
     @Override
     public void addFragmentListener(FragmentAction fe) {
+        Log.i("ApplicationBuild","SettingsFragment.addFragmentListener("+ fe.getClass().getSimpleName() +") called");
         try {
             settingsListeners.add((SettingsFragmentAgent) fe);
         }catch (ClassCastException ex){}
@@ -73,11 +76,14 @@ public class SettingsFragment extends GeneralFragment {
         private List<GeneralListElement> elements;
         private List<MinmaxListElement> minmaxElements;
 
+        private ToggleListElement btToggleElement;
+
         public SettingsListAdapter(){
             elements = new ArrayList<GeneralListElement>();
             minmaxElements = new ArrayList<MinmaxListElement>();
             elements.add(new TitleListElement("btTitle",getString(R.string.settings_TV_btTitle)));
-            elements.add(new ToggleListElement(this,SettingsFragment.this.isBTconnected,"btToggle",getString(R.string.settings_TV_btToggleTextOFF)));
+            btToggleElement = new ToggleListElement(this,SettingsFragment.this.isBTconnected,"btToggle",getString(R.string.settings_TV_btToggleTextOFF));
+            elements.add(btToggleElement);
             elements.add(new TitleListElement("invTitle",getString(R.string.settings_TV_invTitle)));
             elements.add(new TwolineListElement("invNote",getString(R.string.settings_TV_invTip1),getString(R.string.settings_TV_invTip2)));
             MinmaxListElement minmax = new MinmaxListElement("invX",getString(R.string.settings_TV_invX));
@@ -127,6 +133,10 @@ public class SettingsFragment extends GeneralFragment {
             return row;
         }
 
+        public void setToggleButtonState(boolean state){
+            btToggleElement.setButtonState(state);
+        }
+
         @Override
         public void onSliderProgressChanged(SliderListElement sender) {
 
@@ -149,9 +159,9 @@ public class SettingsFragment extends GeneralFragment {
 
             for (SettingsFragmentAgent sfl : settingsListeners) {
                 if (state) {
-                    sfl.onBluetoothConnectionButtonChecked();
+                    sfl.outBluetoothButtonON();
                 } else {
-                    sfl.onBluetoothConnectionButtonUnchecked();
+                    sfl.outBluetoothButtonOFF();
                 }
             }
         }

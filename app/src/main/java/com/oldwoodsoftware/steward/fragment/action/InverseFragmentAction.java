@@ -17,43 +17,6 @@ public class InverseFragmentAction extends FragmentAction implements InverseFrag
         own = fragment;
     }
 
-    @Override
-    public void onInverseFragmentSliderChange(int[] new_progresses) {
-        //pContext.getIK().calculateCurrentXYZABCvalues(new_progresses);
-        //float[] realValues = pContext.getIK().getCurrentXYZABCvalues();
-        //String[] strings = pContext.getIK().getStringRepresentation();
-
-        //setInverseFragmentSliderTexts(strings);
-        try {
-         //   pContext.getCmdProtocol().putInverseCommand(realValues);
-        } catch (Exception e) { }
-    }
-
-    @Override
-    public void setInverseFragmentSliderTexts(String[] texts) {
-        try {
-            own.getInverseAdapter().setSliderText(texts);
-        }catch(IllegalStateException ex){ }
-        catch(NullPointerException ex){}
-    }
-
-    @Override
-    public String[] getInverseFragmentSliderTexts() {
-        return null;//pContext.getIK().getStringRepresentation();
-    }
-
-    @Override
-    public int[] getCurrentSliderProgresses() {
-        return null;// pContext.getIK().getPromilesFromCurrentXYZABCvalues();
-    }
-
-    @Override
-    public void onZeroButtonPressed() {
-        try {
-            //pContext.getCmdProtocol().putInverseCommand(new float[] {0f, 0f, 0f, 0f, 0f, 0f} );
-        } catch (Exception e) {
-        }
-    }
 
     @Override
     public void onPlateConfigurationChanged(Configuration configuration) {
@@ -65,5 +28,25 @@ public class InverseFragmentAction extends FragmentAction implements InverseFrag
         plateConfiguration = pContext.getPlateConfiguration();
         unitConverter = pContext.getProcessContext().getUnitConverter();
         isActive = true;
+    }
+
+    @Override
+    public void outSliderChanged(int index, int progress) {
+
+    }
+
+    @Override
+    public void outZeroButtonPressed() {
+
+    }
+
+    @Override
+    public float inGetSliderTextValue(int index) {
+        return 0;
+    }
+
+    @Override
+    public int inGetSliderProgress(int index) {
+        return 0;
     }
 }

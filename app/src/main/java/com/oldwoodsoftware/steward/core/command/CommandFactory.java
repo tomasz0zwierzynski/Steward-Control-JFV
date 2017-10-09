@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.core.command;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.core.command.abstraction.AbstractCommand;
 import com.oldwoodsoftware.steward.core.command.concretion.Empty;
 import com.oldwoodsoftware.steward.core.command.concretion.MoveTo;
@@ -38,13 +40,13 @@ public class CommandFactory implements CommandCreator{
             case ok:
                 break;
             case submit:
-                System.out.println("Debug: CreateCommand():submit");
+                Log.i("CommandFactory","CreateCommand():submit");
                 acCommand = new Submit(pContext,incoming);
                 break;
             case cancel:
                 break;
             case startMode:
-                System.out.println("Debug: CreateCommand():startMode");
+                Log.i("CommandFactory","CreateCommand():startMode");
                 acCommand = new StartMode(pContext,incoming);
                 break;
             case stopMode:
@@ -52,22 +54,21 @@ public class CommandFactory implements CommandCreator{
             case resetMode:
                 break;
             case moveTo:
-                System.out.println("Debug: CreateCommand():moveTo");
+                Log.i("CommandFactory","CreateCommand():moveTo");
                 acCommand = new MoveTo(pContext,incoming);
                 break;
             case selectPid:
                 break;
             case setMode:
-                System.out.println("Debug: CreateCommand():setMode");
+                Log.i("CommandFactory","CreateCommand():setMode("+String.valueOf(value)+")");
                 acCommand = new SetMode(pContext, PlatformMode.getMode((int)value),incoming);
-                //new Exception().printStackTrace();
                 break;
             case setSetpointX:
-                System.out.println("Debug: CreateCommand():setSetpointX");
+                Log.i("CommandFactory","CreateCommand():setSetpointX("+String.valueOf(value)+")");
                 acCommand = new SetSetpointX(pContext, value, incoming);
                 break;
             case setSetpointY:
-                System.out.println("Debug: CreateCommand():setSetpointY");
+                Log.i("CommandFactory","CreateCommand():setSetpointY("+String.valueOf(value)+")");
                 acCommand = new SetSetpointY(pContext, value, incoming);
                 break;
             case setPidSamplingInterval:
@@ -87,21 +88,27 @@ public class CommandFactory implements CommandCreator{
             case setPidDeadband:
                 break;
             case setIkX:
+                Log.i("CommandFactory","CreateCommand():setIkX("+String.valueOf(value)+")");
                 acCommand = new SetIkX(pContext,value, incoming);
                 break;
             case setIkY:
+                Log.i("CommandFactory","CreateCommand():setIkY("+String.valueOf(value)+")");
                 acCommand = new SetIkY(pContext,value, incoming);
                 break;
             case setIkZ:
+                Log.i("CommandFactory","CreateCommand():setIkZ("+String.valueOf(value)+")");
                 acCommand = new SetIkZ(pContext,value, incoming);
                 break;
             case setIkRoll:
+                Log.i("CommandFactory","CreateCommand():setIkRoll("+String.valueOf(value)+")");
                 acCommand = new SetIkRoll(pContext,value, incoming);
                 break;
             case setIkPitch:
+                Log.i("CommandFactory","CreateCommand():setIkPitch("+String.valueOf(value)+")");
                 acCommand = new SetIkPitch(pContext,value, incoming);
                 break;
             case setIkYaw:
+                Log.i("CommandFactory","CreateCommand():setIkYaw("+String.valueOf(value)+")");
                 acCommand = new SetIkYaw(pContext,value, incoming);
                 break;
             case isPanelTouched:
@@ -155,11 +162,11 @@ public class CommandFactory implements CommandCreator{
             case getIkYaw:
                 break;
             case getFreeHeap:
-                System.out.println("Debug: CreateCommand():getFreeHeap");
+                Log.i("CommandFactory","CreateCommand():getFreeHeap("+String.valueOf(value)+")");
                 acCommand = new GetFreeHeap(pContext,value,incoming);
                 break;
             case getCpuUsage:
-                System.out.println("Debug: CreateCommand():getCpuUsage");
+                Log.i("CommandFactory","CreateCommand():getCpuUsage("+String.valueOf(value)+")");
                 acCommand = new GetCpuUsage(pContext,value,incoming);
                 break;
         }

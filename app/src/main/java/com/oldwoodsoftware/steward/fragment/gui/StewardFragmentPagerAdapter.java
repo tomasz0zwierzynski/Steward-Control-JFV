@@ -29,20 +29,18 @@ public class StewardFragmentPagerAdapter extends FragmentPagerAdapter {
         return tabbedFragments.get(position);
     }
 
-    /*
-    public List<FragmentAction> createFragmentEvents() {
-        List<FragmentAction> fragmentEvents = new ArrayList<FragmentAction>();
-        for (GeneralFragment gf: fragments){
-            FragmentAction fe = gf.createFragmentEvent(pContext);
-            gf.addFragmentListener(fe);
-            fragmentEvents.add( fe );
-        }
-        return fragmentEvents;
-    }
-    */
-
     @Override
     public CharSequence getPageTitle(int position) {
         return tabbedFragments.get(position).toString();
     }
+
+    @Override
+    public String toString(){
+        String value = "Fragments associated to tabs: ";
+        for (GeneralFragment gf : tabbedFragments){
+            value += gf.getClass().getSimpleName() + " ";
+        }
+        return value;
+    }
+
 }

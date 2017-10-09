@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.platform;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.core.ProcessContext;
 import com.oldwoodsoftware.steward.platform.component.BallOnPlate;
 import com.oldwoodsoftware.steward.core.bluetooth.BluetoothConnection;
@@ -22,9 +24,11 @@ public class PlatformContext {
     private ProcessContext processContext;
 
     public PlatformContext(){
+        Log.i("ApplicationBuild","PlatformContext() called");
     }
 
     public void init(){
+        Log.i("ApplicationBuild","PlatformContext.init() called");
         ballOnPlate = new BallOnPlate();
         pidControlX = new PidControlCase(0);
         pidControlY = new PidControlCase(1);
@@ -33,6 +37,7 @@ public class PlatformContext {
         platformParameters = new PlatformParameters(150f,100f,new float[]{-20,-20,-20,-12,-12,-12}, new float[]{+20,+20,+20,+12,+12,+12});
         stateMachine = new StateMachine();
         bluetoothConnection = new BluetoothConnection();
+        Log.i("ApplicationBuild","PlatformContext (Platform Components) components successfully created.");
 
         processContext = new ProcessContext();
         processContext.init(this);

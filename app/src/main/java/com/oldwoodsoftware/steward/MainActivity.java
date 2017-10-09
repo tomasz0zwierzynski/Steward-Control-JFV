@@ -2,6 +2,7 @@ package com.oldwoodsoftware.steward;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.oldwoodsoftware.steward.fragment.FragmentApplication;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
@@ -16,20 +17,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.i("ApplicationBuild","MainActivity.onCreate() called");
 
         platformContext = new PlatformContext();
         platformContext.init();
 
         fragmentApplication = new FragmentApplication(this);
-
-        //Debug Purposes
-        System.out.println(platformContext.getBallOnPlate().toString());
-        System.out.println(platformContext.getStateMachine().toString());
-        System.out.println(platformContext.getGeneralSystem().toString());
-        System.out.println(platformContext.getPlateConfiguration().toString());
-        System.out.println(platformContext.getPidControlX().toString());
-        System.out.println(platformContext.getPidControlY().toString());
-        System.out.println(platformContext.getBluetoothConnection().toString());
+        Log.i("ApplicationBuild","Application build succeed.");
     }
 
     public PlatformContext getPlatformContext(){

@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.oldwoodsoftware.steward.platform.event.BluetoothEventListener;
 
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 public class BluetoothConnection {
 
-    private final int BUFFER_SIZE = 32;
+    private final int BUFFER_SIZE = 16;
 
     private BluetoothSocket _socket = null;
     private BluetoothAdapter _adapter;
@@ -36,9 +37,9 @@ public class BluetoothConnection {
     }
 
     public void connect() throws Exception{
-                    System.out.println("##################: connect();");
-
+        Log.i("BluetoothConnection","connect() function called");
         if (_socket == null){
+            Log.e("BluetoothConnection","_socket is null");
             throw new Exception("Socket not created properly...");
         }
 
@@ -47,7 +48,7 @@ public class BluetoothConnection {
         Thread connectThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                            System.out.println("##################: connectThread.run();");
+                Log.i("BluetoothConnection","connectThread.run() called");
                 boolean success = true;
                 try {
                     _socket = _device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
@@ -78,7 +79,7 @@ public class BluetoothConnection {
     }
 
     private void connectCallback(boolean isConnected){
-                    System.out.println("##################: connectCallback(" + String.valueOf(isConnected) + ")");
+        Log.i("BluetoothConnection","connectCallback( " + String.valueOf(isConnected) + ") called");
         if (isConnected){
             emitConnectionStateChanged(BluetoothState.connected);
             createReadThread();
@@ -93,28 +94,25 @@ public class BluetoothConnection {
     }
 
     public void init() throws Exception{
-                        System.out.println("##################: init();");
-        //Get the adapter
+        Log.i("BluetoothConnection","init() called");
+
         getAdapter();
         if (_adapter == null) {
             emitMessage("No default bluetooth adapter found!");
             throw new Exception("No default bluetooth adapter found!");
         }
 
-        //Check if bluetooth is turned on
         if (_adapter.isEnabled() == false){
             emitMessage("Bluetooth is turned off!");
             throw new Exception("Turn on bluetooth!");
         }
 
-        //Get the device from paired devices
         getDevice();
         if (_device == null){
             emitMessage("Cannot find HC-05 device!");
             throw new Exception("Cannot found HC-05 device!");
         }
 
-        //Create communication socket
         _socket = _device.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
         if (_socket == null){
             emitMessage("Could not create Rfcomm socket!");
@@ -123,11 +121,10 @@ public class BluetoothConnection {
 
         //Get Handler to deal with threads
         mainHandler = new Handler(Looper.getMainLooper());
-
     }
 
     private void createReadThread(){
-                System.out.println("##################: createReadThread();");
+        Log.i("BluetoothConnection","createReadThread() called");
         emitMessage("Creating reading thread.");
         readThread = new Thread(new Runnable() {
             @Override
@@ -172,7 +169,7 @@ public class BluetoothConnection {
                     }
                     catch (Exception ex){                    }
                 }
-                            System.out.println("##################: readThreadLeaving...");
+                Log.i("BluetoothConnection","readThread is about to finish");
             }
         });
         readThread.start();
@@ -228,7 +225,7 @@ public class BluetoothConnection {
     }
 
     private void emitDataReceived(byte[] data){
-                    //System.out.println("##################: emitDataReceived();");
+        Log.i("BluetoothConnection/in","Data received: " + new String(data, StandardCharsets.UTF_8));
         for (BluetoothEventListener bdl : btReceivers){
             bdl.onBluetoothDataReceived(data);
         }

@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.core.command.abstraction;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.core.bluetooth.BluetoothConnection;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
 
@@ -15,5 +17,9 @@ public abstract class AbstractCommand {
         this.pContext = pContext;
         this.btConnection = pContext.getBluetoothConnection();
         this.incoming = incoming;
+    }
+
+    protected void logExecution() {
+        Log.i("AbstractCommand",this.getClass().getSimpleName() + ".execute("+ String.valueOf(value) +") called");
     }
 }

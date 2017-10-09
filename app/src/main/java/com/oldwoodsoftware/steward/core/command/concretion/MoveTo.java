@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.core.command.concretion;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.core.command.abstraction.AbstractCommand;
 import com.oldwoodsoftware.steward.core.command.type.CommandType;
 import com.oldwoodsoftware.steward.platform.PlatformContext;
@@ -12,6 +14,7 @@ public class MoveTo extends AbstractCommand{
 
     @Override
     public void execute() throws Exception {
+        logExecution();
         if (incoming){
 
         }else{

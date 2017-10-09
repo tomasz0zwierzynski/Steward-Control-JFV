@@ -13,6 +13,7 @@ public class GetFreeHeap extends AbstractGetCommand{
 
     @Override
     public void execute() throws Exception{
+        logExecution();
         if(incoming){
             pContext.getGeneralSystem().setFreeHeap((int)value);
         }else{

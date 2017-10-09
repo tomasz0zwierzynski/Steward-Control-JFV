@@ -11,12 +11,13 @@ public class SetSetpointY extends AbstractSetCommand{
     }
     @Override
     public void execute() throws Exception {
+        logExecution();
         if(incoming){
 
         }else{
-            System.out.println("Debug: SetSetpointY.execute()");
             String msg = CommandType.setSetpointY.get_uC_command_code_as_string() + "=" + String.valueOf(value);
             btConnection.sendMessage(msg.getBytes());
+            pContext.getPidControlY().setSetpoint(value);
         }
     }
 }

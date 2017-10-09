@@ -2,6 +2,7 @@ package com.oldwoodsoftware.steward.fragment.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,10 @@ public class InverseFragment extends GeneralFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         for(InverseFragmentAgent ifl : sliderListeners){
-            initial_progresses = ifl.getCurrentSliderProgresses();
-            initial_strings = ifl.getInverseFragmentSliderTexts();
+            for (int i=0; i<initial_progresses.length; i++){
+                initial_progresses[i] = ifl.inGetSliderProgress(i);
+                initial_strings[i] = String.valueOf(ifl.inGetSliderTextValue(i));
+            }
         }
 
         View view = inflater.inflate(R.layout.inverse, container, false);
@@ -60,11 +63,13 @@ public class InverseFragment extends GeneralFragment {
 
     @Override
     public FragmentAction createFragmentAction(){
+        Log.i("ApplicationBuild","InverseFragment.createFragmentAction() called");
         return new InverseFragmentAction(this);
     }
 
     @Override
     public void addFragmentListener(FragmentAction fe) {
+        Log.i("ApplicationBuild","InverseFragment.addFragmentListener("+ fe.getClass().getSimpleName() +") called");
         try {
             sliderListeners.add((InverseFragmentAgent) fe);
         }catch (ClassCastException ex){}
@@ -126,7 +131,7 @@ public class InverseFragment extends GeneralFragment {
             sliderValues[index] = sender.getProgress();
 
             for(InverseFragmentAgent ifl : InverseFragment.this.sliderListeners) {
-                ifl.onInverseFragmentSliderChange(sliderValues);
+                ifl.outSliderChanged(index,sliderValues[index]);
             }
         }
 
@@ -160,7 +165,7 @@ public class InverseFragment extends GeneralFragment {
         @Override
         public void onButtonPressed(ButtonListElement sender) {
             for (InverseFragmentAgent lis :sliderListeners){
-                lis.onZeroButtonPressed();
+                lis.outZeroButtonPressed();
             }
             for (SliderListElement se : sliderObjects){
                 se.setSeekbarProgress(500);
