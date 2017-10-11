@@ -8,6 +8,8 @@ import com.oldwoodsoftware.steward.platform.PlatformContext;
 public class AccelerometerFragmentAction extends FragmentAction implements AccelerometerFragmentAgent, AccelerometerHandlerListener{
     AccelerometerFragment own;
 
+    //TODO: add accelerometer stuff
+
     public AccelerometerFragmentAction(AccelerometerFragment fragment){
         own = fragment;
      //   pContext.getAccHandler().addSensorChangedListener(this);

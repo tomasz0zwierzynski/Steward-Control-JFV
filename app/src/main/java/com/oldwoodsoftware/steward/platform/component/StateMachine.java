@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.platform.component;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.platform.event.StateMachineEventListener;
 import com.oldwoodsoftware.steward.platform.type.PlatformMode;
 
@@ -67,18 +69,21 @@ public class StateMachine {
     }
 
     private void emitModeChanged(){
+        Log.i("PlatformComponentSignal",this.getClass().getSimpleName() + ".modeChanged emitting...");
         for (StateMachineEventListener sml : stateMachineEventListeners){
             sml.onStateMachineModeChanged(mode);
         }
     }
 
     private void emitMoveToChanged(){
+        Log.i("PlatformComponentSignal",this.getClass().getSimpleName() + ".moveToChanged emitting...");
         for (StateMachineEventListener sml : stateMachineEventListeners){
             sml.onMoveToChanged(isMoveTo);
         }
     }
 
     private void emitModeStartedChanged(){
+        Log.i("PlatformComponentSignal",this.getClass().getSimpleName() + ".modeStartedChanged emitting...");
         for (StateMachineEventListener sml : stateMachineEventListeners){
             sml.onModeStartedChanged(isModeStarted);
         }

@@ -17,6 +17,7 @@ public class SetIkX extends AbstractSetCommand{
         }else{
             String msg = CommandType.setIkX.get_uC_command_code_as_string() + "=" + String.valueOf(value);
             btConnection.sendMessage(msg.getBytes());
+            //TODO: all setIk commands should have also pContext.getPlateConfiguration.setX() method called.
         }
     }
 }

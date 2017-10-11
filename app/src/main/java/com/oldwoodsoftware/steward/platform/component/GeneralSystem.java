@@ -1,13 +1,11 @@
 package com.oldwoodsoftware.steward.platform.component;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.platform.event.SystemEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by Nails on 28.09.2017.
- */
 
 public class GeneralSystem {
     private float cpuUsage = 0;
@@ -37,12 +35,14 @@ public class GeneralSystem {
     }
 
     private void emitCpuUsageChanged(){
+        Log.i("PlatformComponentSignal",this.getClass().getSimpleName() + ".cpuUsageChanged emitting...");
         for(SystemEventListener sel : systemEventListeners){
             sel.onSystemCpuUsageChanged(cpuUsage);
         }
     }
 
     private void emitFreeHeapChanged(){
+        Log.i("PlatformComponentSignal",this.getClass().getSimpleName() + ".freeHeapChanged emitting...");
         for(SystemEventListener sel : systemEventListeners){
             sel.onSystemFreeHeapChanged(freeHeap);
         }

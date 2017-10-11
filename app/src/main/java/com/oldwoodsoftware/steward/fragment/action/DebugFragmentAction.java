@@ -8,7 +8,7 @@ import com.oldwoodsoftware.steward.core.bluetooth.BluetoothState;
 
 public class DebugFragmentAction extends FragmentAction implements DebugFragmentAgent, BluetoothEventListener {
     DebugFragment own;
-
+    //TODO: CommandParser and in another Action Classes
     public DebugFragmentAction(DebugFragment fragment){
         own = fragment;
     }
@@ -35,6 +35,6 @@ public class DebugFragmentAction extends FragmentAction implements DebugFragment
 
     @Override
     public void outDebugCommandPushed(String cmd) {
-
+        //TODO: Send command
     }
 }

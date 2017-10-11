@@ -6,6 +6,8 @@ import com.oldwoodsoftware.steward.core.command.abstraction.AbstractCommand;
 
 public class CommandExecutor implements CommandOutputQueuer, CommandInputQueuer {
 
+    //TODO: add timing and queuing features here (timing groups)
+
     @Override
     public void addInputCommandToQueue(AbstractCommand cmd) {
         try {

@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.platform.component;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.platform.event.PidControlEventListener;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class PidControlCase {
     }
 
     private void emitSetpointChanged(){
+        Log.i("PlatformComponentSignal",this.getClass().getSimpleName() + " from " + this.hashCode() + " #.setpointChanged emitting...");
         for (PidControlEventListener pcl : pidControlEventListeners){
             pcl.onPidSetpointChanged(id,setpoint);
         }

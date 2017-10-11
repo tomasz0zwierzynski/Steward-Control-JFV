@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.platform.component;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.platform.event.BallEventListener;
 
 import java.util.ArrayList;
@@ -46,12 +48,14 @@ public class BallOnPlate {
     }
 
     private void emitDetectionChanged(){
+        Log.i("PlatformComponentSignal",this.getClass().getSimpleName() + ".detectionChanged emitting...");
         for (BallEventListener bel : ballEventListeners){
             bel.onBallDetectionChanged(isDetected);
         }
     }
 
     private void emitPositionChanged(){
+        Log.i("PlatformComponentSignal",this.getClass().getSimpleName() + ".positionChanged emitting...");
         for (BallEventListener bel : ballEventListeners){
             bel.onBallPositionChanged(posX, posY);
         }

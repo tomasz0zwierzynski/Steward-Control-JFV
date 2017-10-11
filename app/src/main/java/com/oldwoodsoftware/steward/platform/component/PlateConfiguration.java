@@ -1,5 +1,7 @@
 package com.oldwoodsoftware.steward.platform.component;
 
+import android.util.Log;
+
 import com.oldwoodsoftware.steward.platform.event.PlateEventListener;
 import com.oldwoodsoftware.steward.platform.type.Configuration;
 
@@ -54,6 +56,7 @@ public class PlateConfiguration {
     }
 
     private void emitConfigurationChanged(){
+        Log.i("PlatformComponentSignal",this.getClass().getSimpleName() + ".configurationChanged emitting...");
         for (PlateEventListener pel : plateEventListeners){
             pel.onPlateConfigurationChanged(configuration.getCopy());
         }
