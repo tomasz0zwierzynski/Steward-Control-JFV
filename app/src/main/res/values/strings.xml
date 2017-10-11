@@ -8,7 +8,8 @@
     <string name="btGettingOn">Bluetooth is turning on...</string>
     <string name="btGettingOff">Bluetooth is turning off...</string>
     <string name="btGettingConnected">Connecting to device...</string>
-    <string name="btErrorOccured">Error occurred...</string>
+    <string name="btGettingDisconnected">Disconnecting...</string>
+    <string name="btErrorOccured">Error occurred.</string>
     <string name="ballUndetected">Ball undetected on platform</string>
     <string name="ballDetected">position: </string>
 
